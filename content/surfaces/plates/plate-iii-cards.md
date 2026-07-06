@@ -7,7 +7,11 @@ as_observed: 2026-07-06
 summary: "An online card purchase dissected organ by organ: a two-second approval on the experience clock, a days-long loan with a months-long undo window on the money clock."
 tldr: "Auth is a promise, clearing is an invoice, settlement is the money. Every swipe is a short-term loan governed by an apparatus — interchange, chargebacks, network rules — that newcomers keep mistaking for overhead."
 cooked_from: [cut-0200, cut-0211, cut-0212]
-pair_with: [/dialogues/the-agent-meets-the-network/, /parables/the-merchant-who-hated-fees/]
+pair_with:
+  - href: /dialogues/the-agent-meets-the-network/
+    label: The Agent Meets the Network (dialogue)
+  - href: /parables/the-merchant-who-hated-fees/
+    label: The Merchant Who Hated Fees (parable)
 clocks: [experience clock, money clock]
 organs:
   - n: 1

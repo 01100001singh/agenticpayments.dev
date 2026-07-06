@@ -70,7 +70,9 @@ const plates = defineCollection({
         money_clock: z.string(),
       }),
     ),
-    pair_with: z.array(z.string()).default([]), // site-relative paths
+    pair_with: z
+      .array(z.object({ href: z.string(), label: z.string() }))
+      .default([]),
   }),
 });
 

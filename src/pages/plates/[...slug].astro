@@ -71,7 +71,7 @@ const jsonld = {
           {d.pair_with.map((p, i) => (
             <>
               {i > 0 && ' · '}
-              <a href={p}>{p.replaceAll('/', ' ').trim().replaceAll('-', ' ')}</a>
+              <a href={p.href}>{p.label}</a>
             </>
           ))}.
         </p>

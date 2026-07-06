@@ -7,7 +7,11 @@ as_observed: 2026-07-06
 summary: "A UPI P2M payment dissected organ by organ: what fires in the seconds you watch, and what settles on the clock you don't."
 tldr: "The success screen is the experience clock; the interbank money settles later, netted in batches. UPI's genius is making the deferral invisible — its risk is that everyone, including regulators, forgets the deferral exists."
 cooked_from: [cut-0200, cut-0201, cut-0203, cut-0204]
-pair_with: [/bestiary/the-switch/, /receipts/0071/]
+pair_with:
+  - href: /bestiary/the-switch/
+    label: The Switch (bestiary)
+  - href: /receipts/0071/
+    label: Receipt #0071
 clocks: [experience clock, money clock]
 organs:
   - n: 1
