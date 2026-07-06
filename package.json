@@ -1,0 +1,34 @@
+{
+  "name": "agenticpayments.dev",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "validate": "tsx scripts/validate.ts",
+    "gen:stock": "tsx scripts/gen-stock.ts",
+    "sign": "tsx scripts/sign.ts",
+    "gen:machine": "tsx scripts/gen-machine-layer.ts",
+    "gen:keys": "tsx scripts/gen-keys.ts",
+    "pipeline": "npm run validate && npm run gen:stock && npm run sign && npm run gen:machine",
+    "prebuild": "npm run pipeline",
+    "build": "astro build",
+    "postbuild": "pagefind --site dist",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.0.0",
+    "@fontsource/ibm-plex-mono": "^5.0.0",
+    "@fontsource/spectral": "^5.0.0",
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.0.0",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "pagefind": "^1.1.0",
+    "tsx": "^4.19.0",
+    "zod": "^3.23.0"
+  }
+}

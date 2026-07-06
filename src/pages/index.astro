@@ -1,0 +1,163 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import CutCard from '../components/CutCard.astro';
+
+const cuts = (await getCollection('cuts', (c) => !c.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.id.localeCompare(b.data.id),
+);
+
+// The display case: cuts grouped by type, cases ordered by what's freshest.
+const TYPE_ORDER = ['frame', 'principle', 'scar', 'observation', 'datapoint', 'parable', 'entry'];
+const TYPE_LABEL: Record<string, string> = {
+  frame: 'Frames — ways of seeing',
+  principle: 'Principles — rules that held',
+  scar: 'Scars — lessons paid for',
+  observation: 'Observations — things seen in the field',
+  datapoint: 'Datapoints — numbers that matter',
+  parable: 'Parables — mechanics carried farther',
+  entry: 'Entries — dated sightings',
+};
+const byType = TYPE_ORDER.map((t) => [t, cuts.filter((c) => c.data.type === t)] as const).filter(
+  ([, list]) => list.length > 0,
+);
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'agenticpayments.dev',
+  url: 'https://agenticpayments.dev/',
+  description:
+    'Cuts on agentic payments: atomic, schema’d, CC-BY-licensed primitives of operator thinking, plus a machine layer built for agents.',
+};
+---
+
+<Base
+  title="The Counter"
+  description="A display case of Cuts on agentic payments — atomic, licensed, signed primitives of operator thinking. Take one home; cook it however you like."
+  path="/"
+  jsonld={jsonld}
+>
+  <div class="wrap">
+    <section class="masthead">
+      <p class="eyebrow eyebrow--crimson">The Counter</p>
+      <h1>Operator notes on agentic payments,<br />sold by the cut.</h1>
+      <p class="lede measure">
+        This is not a blog. Each <strong>Cut</strong> below is one idea — dated, typed, licensed
+        CC-BY, signed, and shipped with a <a href="/llms.txt">machine twin</a>. Read the pieces
+        I've plated, or hand any Cut to your own agent and have it cooked to order.
+      </p>
+    </section>
+
+    <section class="start-here" aria-labelledby="start-here-h">
+      <p class="eyebrow" id="start-here-h">Start here — the reference pair</p>
+      <div class="start-grid">
+        <a class="start-item" href="/plates/plate-ii-upi/">
+          <span class="plate-no">Plate II</span>
+          <span class="start-title">Dissection of a UPI payment</span>
+          <span class="start-note">A rail you half-know, laid open organ by organ.</span>
+        </a>
+        <a class="start-item" href="/plates/plate-iii-cards/">
+          <span class="plate-no">Plate III</span>
+          <span class="start-title">Dissection of a card purchase</span>
+          <span class="start-note">The same template on the world's oldest online rail.</span>
+        </a>
+      </div>
+      <p class="start-math">
+        One UPI carcass yields a <a href="/bestiary/the-switch/">creature</a>, a plate, and a
+        <a href="/receipts/0071/">receipt</a>; one card carcass yields a plate, a
+        <a href="/dialogues/the-agent-meets-the-network/">dialogue</a>, and a
+        <a href="/parables/the-merchant-who-hated-fees/">parable</a>. Two spines, six dishes —
+        that's the whole thesis, performed.
+      </p>
+    </section>
+
+    {byType.map(([type, list]) => (
+      <section class="case-section" aria-label={TYPE_LABEL[type]}>
+        <p class="case-label">{TYPE_LABEL[type]}</p>
+        <div class="counter-grid">
+          {list.map((cut) => (
+            <CutCard cut={cut} />
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="how-to-read">
+      <p class="eyebrow">How to read this place</p>
+      <p class="measure">
+        Three ways in. <strong>No agent:</strong> the plated dishes — Plates, the Bestiary,
+        parables, receipts — are complete on their own. <strong>With an agent:</strong> every
+        page carries prompts; copy one and cook the Cut into your shape.
+        <strong>Agent only:</strong> point it at <a href="/spine.jsonl">/spine.jsonl</a> and skip
+        the plating entirely. <a href="/about/">More on the whole arrangement →</a>
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .masthead { padding: 2.6rem 0 2.2rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; max-width: 46rem; }
+  .lede { font-size: var(--fs-lg); color: var(--soft); line-height: 1.55; }
+
+  .start-here {
+    border: 1px solid var(--crimson);
+    outline: 1px solid var(--rule2);
+    outline-offset: 3px;
+    background: var(--cream);
+    padding: 1.2rem 1.4rem 1.1rem;
+    margin-bottom: 3rem;
+  }
+  .start-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+  }
+  .start-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    background: var(--paper);
+    border: 1px solid var(--rule2);
+    padding: 0.9rem 1rem;
+    color: var(--ink);
+  }
+  .start-item:hover { text-decoration: none; border-color: var(--crimson); }
+  .plate-no {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--track-label);
+    color: var(--crimson);
+  }
+  .start-title { font-size: var(--fs-lg); font-weight: 700; line-height: 1.2; }
+  .start-note { font-size: var(--fs-sm); color: var(--soft); }
+  .start-math { font-size: var(--fs-sm); color: var(--soft); margin: 0.9rem 0 0; font-style: italic; }
+
+  .case-section { margin-bottom: 2.6rem; }
+  .case-label {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--track-label);
+    color: var(--ink);
+    background: var(--cream2);
+    border: 1px solid var(--rule2);
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    margin: 0 0 1rem;
+  }
+  .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 0 2rem;
+  }
+  .how-to-read { margin: 3.5rem 0 0; border-top: 1px solid var(--rule2); padding-top: 1.2rem; }
+  @media (max-width: 44rem) {
+    .start-grid { grid-template-columns: 1fr; }
+  }
+</style>

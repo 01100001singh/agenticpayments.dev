@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const entries = (await getCollection('bestiary', (e) => !e.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<Base
+  title="Bestiary"
+  description="Payment protocols described as observed creatures: habitat, diet, lifespan, predators, symbiotes, markings."
+  path="/bestiary"
+>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow eyebrow--crimson">Bestiary</p>
+      <h1>Protocols, as creatures actually observed</h1>
+      <p class="lede measure">
+        A protocol spec tells you what a thing promises. A field record tells you how it
+        behaves — what it eats, what eats it, and how long its kind tends to live.
+      </p>
+    </header>
+    <div class="specimen-list">
+      {entries.map((e) => (
+        <a class="specimen-card" href={`/bestiary/${e.id}/`}>
+          <span class="spec-name">{e.data.title}</span>
+          <span class="spec-latin">{e.data.latin}</span>
+          <span class="spec-habitat">{e.data.fields.habitat}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-head { padding: 2.6rem 0 1.8rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; max-width: 44rem; }
+  .lede { font-size: var(--fs-lg); color: var(--soft); }
+  .specimen-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1.2rem; }
+  .specimen-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    border: 1px solid var(--rule2);
+    background: var(--cream);
+    padding: 1.1rem 1.2rem;
+    color: var(--ink);
+  }
+  .specimen-card:hover { border-color: var(--crimson); text-decoration: none; }
+  .spec-name { font-size: var(--fs-lg); font-weight: 700; }
+  .spec-latin { font-style: italic; color: var(--soft); font-size: var(--fs-sm); }
+  .spec-habitat { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin-top: 0.5rem; }
+</style>

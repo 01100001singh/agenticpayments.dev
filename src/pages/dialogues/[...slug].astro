@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PromptSidebar from '../../components/PromptSidebar.astro';
+import CookedFrom from '../../components/CookedFrom.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('dialogues', (e) => !e.data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const url = `https://agenticpayments.dev/dialogues/${entry.id}`;
+---
+
+<Base title={d.title} description={d.summary ?? `A dialogue: ${d.speakers.join(' meets ')}.`} path={`/dialogues/${entry.id}`}>
+  <div class="wrap layout">
+    <article>
+      <header>
+        <p class="eyebrow eyebrow--crimson">Dialogue</p>
+        <h1>{d.title}</h1>
+        <p class="speakers">Dramatis personae: {d.speakers.join(' · ')}</p>
+      </header>
+      <div class="prose transcript">
+        <Content />
+      </div>
+      <CookedFrom ids={d.cooked_from} />
+    </article>
+    <div class="side">
+      <PromptSidebar title={d.title} url={url} prompts={d.prompts} />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 3.5rem;
+    padding-top: 2.4rem;
+    align-items: start;
+  }
+  h1 { font-size: var(--fs-xl); font-weight: 800; margin: 0.3rem 0 0.3rem; max-width: var(--measure); }
+  .speakers { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin-bottom: 1.6rem; }
+  /* speaker labels are bold-strong at paragraph start in the markdown */
+  .transcript :global(p > strong:first-child) {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--crimson);
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+  .transcript :global(p) { margin-bottom: 1.3em; }
+  .side { position: sticky; top: 1.5rem; }
+  @media (max-width: 58rem) {
+    .layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .side { position: static; }
+  }
+</style>

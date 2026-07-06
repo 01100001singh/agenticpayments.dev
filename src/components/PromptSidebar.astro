@@ -1,0 +1,103 @@
+---
+/**
+ * The Prompt Sidebar — "cook this with your agent."
+ * Static v1: a copy-button prompt list attached to every Cut and Surface.
+ * Copies fire a Vercel Analytics custom event (no PII, prompt index only).
+ */
+interface Props {
+  title: string;
+  url: string;
+  prompts?: string[]; // per-surface overrides; falls back to the seed set
+}
+const { title, url, prompts } = Astro.props;
+
+const seed = [
+  'Turn this into a Socratic dialogue between a merchant and an agent.',
+  'Generate a five-panel comic explaining this to a twelve-year-old.',
+  'Write a one-paragraph version for a board memo.',
+  "Compare this to another protocol's model; which fits my use case?",
+  'Stress-test it against a scenario from my own business.',
+];
+const list = prompts?.length ? prompts : seed;
+---
+
+<aside class="sidebar" aria-labelledby="sidebar-heading">
+  <p class="eyebrow eyebrow--crimson" id="sidebar-heading">Cook this with your agent</p>
+  <p class="sidebar-note">
+    This page is one rendering. The raw Cut is yours —
+    <a href={`${url}.stock.json`} data-stock>machine twin</a> included. Copy a prompt,
+    paste it with the link, and let your model plate it differently.
+  </p>
+  <ul class="prompt-list">
+    {list.map((p, i) => (
+      <li>
+        <button type="button" class="prompt" data-prompt={`${p}\n\nSource: "${title}" — ${url}`} data-i={i}>
+          <span class="prompt-text">{p}</span>
+          <span class="copy-mark" aria-hidden="true">copy</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <p class="sidebar-own">…or paste your own scenario and see what your model does.</p>
+</aside>
+
+<style>
+  .sidebar {
+    background: var(--cream);
+    border: 1px solid var(--rule2);
+    padding: 1.1rem 1.2rem 1rem;
+  }
+  .sidebar-note { font-size: var(--fs-sm); color: var(--soft); margin: 0.5rem 0 0.9rem; }
+  .prompt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+  .prompt {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.7rem;
+    width: 100%;
+    text-align: left;
+    font-family: var(--serif);
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule2);
+    padding: 0.5rem 0.65rem;
+    cursor: pointer;
+  }
+  .prompt:hover { border-color: var(--crimson); }
+  .prompt:hover .copy-mark { color: var(--crimson); }
+  .copy-mark {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--faint);
+    flex-shrink: 0;
+  }
+  .prompt.copied .copy-mark { color: var(--olive); }
+  .sidebar-own { font-size: var(--fs-sm); font-style: italic; color: var(--faint); margin: 0.9rem 0 0; }
+</style>
+
+<script>
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('.prompt')) {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.prompt!);
+        const mark = btn.querySelector('.copy-mark')!;
+        btn.classList.add('copied');
+        mark.textContent = 'copied';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          mark.textContent = 'copy';
+        }, 1600);
+        (window as any).va?.('event', {
+          name: 'prompt_copy',
+          data: { page: location.pathname, prompt: btn.dataset.i },
+        });
+      } catch {
+        /* clipboard unavailable; nothing to do */
+      }
+    });
+  }
+</script>

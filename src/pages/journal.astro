@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const entries = (await getCollection('journal', (e) => !e.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const rendered = await Promise.all(
+  entries.map(async (e) => ({ e, Content: (await render(e)).Content })),
+);
+---
+
+<Base
+  title="Field Journal"
+  description="Dated sightings from the agentic-payments field. First-person, short, and honest about what was actually observed."
+  path="/journal"
+>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow eyebrow--crimson">Field Journal</p>
+      <h1>Sightings, dated</h1>
+      <p class="lede measure">
+        Short first-person records of things observed in the wild — announcements, behaviors,
+        anomalies. A journal forgives gaps; it does not forgive embellishment.
+      </p>
+    </header>
+
+    <div class="entries measure">
+      {rendered.map(({ e, Content }) => (
+        <article class="entry">
+          <p class="entry-date">{e.data.date.toISOString().slice(0, 10)}</p>
+          <h2>{e.data.title}</h2>
+          <div class="prose entry-body">
+            <Content />
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-head { padding: 2.6rem 0 1.8rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; }
+  .lede { font-size: var(--fs-lg); color: var(--soft); }
+  .entries { display: grid; gap: 2.2rem; }
+  .entry { border-top: 1px solid var(--rule2); padding-top: 1rem; }
+  .entry-date { font-family: var(--mono); font-size: var(--fs-xs); color: var(--crimson); margin: 0 0 0.3rem; }
+  .entry h2 { font-size: var(--fs-lg); margin-bottom: 0.4rem; }
+  .entry-body :global(p:first-of-type) { font-size: var(--fs-base); }
+</style>

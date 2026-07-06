@@ -1,0 +1,36 @@
+---
+/** "Cooked from" footer — which Cuts a Surface was rendered from. */
+import { getCollection } from 'astro:content';
+
+interface Props {
+  ids: string[];
+}
+const { ids } = Astro.props;
+const cuts = ids.length
+  ? (await getCollection('cuts', (c) => ids.includes(c.data.id))).sort(
+      (a, b) => ids.indexOf(a.data.id) - ids.indexOf(b.data.id),
+    )
+  : [];
+---
+
+{cuts.length > 0 && (
+  <footer class="cooked">
+    <p class="eyebrow">Cooked from</p>
+    <ul>
+      {cuts.map((c) => (
+        <li>
+          <a href={`/cuts/${c.data.id}/`}>{c.data.id}</a>
+          <span class="cooked-title">— {c.data.title}</span>
+        </li>
+      ))}
+    </ul>
+  </footer>
+)}
+
+<style>
+  .cooked { margin-top: 2.5rem; border-top: 1px solid var(--rule2); padding-top: 0.9rem; }
+  ul { list-style: none; margin: 0.4rem 0 0; padding: 0; }
+  li { font-size: var(--fs-sm); margin-bottom: 0.25rem; }
+  li a { font-family: var(--mono); font-size: var(--fs-xs); }
+  .cooked-title { color: var(--soft); }
+</style>

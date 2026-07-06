@@ -1,0 +1,107 @@
+---
+// Renders only when Supabase env vars are present at build time, so the
+// site deploys cleanly before the project is wired up.
+const url = import.meta.env.PUBLIC_SUPABASE_URL;
+const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+const enabled = Boolean(url && key);
+---
+
+{enabled && (
+  <div class="subscribe">
+    <p class="eyebrow">Field notes, by mail</p>
+    <p class="sub-note">New Cuts and Plates as they're pinned. No schedule promised; no noise.</p>
+    <form id="subscribe-form" data-url={url} data-key={key}>
+      <label class="visually-hidden" for="subscribe-email">Email address</label>
+      <input
+        id="subscribe-email"
+        type="email"
+        name="email"
+        required
+        placeholder="you@example.com"
+        autocomplete="email"
+      />
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="sub-status" id="subscribe-status" role="status" aria-live="polite"></p>
+  </div>
+)}
+
+<style>
+  .subscribe { max-width: 26rem; justify-self: end; }
+  .sub-note { font-size: var(--fs-sm); color: var(--soft); margin: 0.4rem 0 0.7rem; }
+  form { display: flex; gap: 0; }
+  input {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: var(--fs-sm);
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--rule2);
+    border-right: 0;
+    background: var(--paper);
+    color: var(--ink);
+    min-width: 0;
+  }
+  input:focus { outline: 2px solid var(--crimson); outline-offset: -1px; }
+  button {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--crimson);
+    background: var(--crimson);
+    color: var(--paper);
+    cursor: pointer;
+  }
+  button:hover { background: var(--crimson2); border-color: var(--crimson2); }
+  .sub-status { font-family: var(--mono); font-size: var(--fs-xs); margin-top: 0.5rem; min-height: 1em; }
+  .sub-status.ok { color: var(--olive); }
+  .sub-status.err { color: var(--crimson); }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; margin: -1px;
+    clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+  }
+  @media (max-width: 44rem) {
+    .subscribe { justify-self: start; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('subscribe-form') as HTMLFormElement | null;
+  if (form) {
+    const status = document.getElementById('subscribe-status')!;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+      status.className = 'sub-status';
+      status.textContent = '…';
+      try {
+        const res = await fetch(`${form.dataset.url}/rest/v1/subscribers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: form.dataset.key!,
+            Authorization: `Bearer ${form.dataset.key}`,
+            Prefer: 'return=minimal',
+          },
+          body: JSON.stringify({ email, source: location.pathname }),
+        });
+        if (res.status === 409) {
+          status.textContent = 'Already on the list.';
+          status.classList.add('ok');
+        } else if (res.ok) {
+          status.textContent = 'Noted. Thank you.';
+          status.classList.add('ok');
+          form.reset();
+          (window as any).va?.('event', { name: 'subscribe' });
+        } else {
+          throw new Error(String(res.status));
+        }
+      } catch {
+        status.textContent = 'Something failed — try again in a moment.';
+        status.classList.add('err');
+      }
+    });
+  }
+</script>

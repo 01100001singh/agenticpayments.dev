@@ -1,0 +1,184 @@
+/* ————————————————————————————————————————————————————————————————
+   agenticpayments.dev — design tokens & base styles
+   Register: scientific engraving. Flat ink on warm paper; depth comes
+   from hairlines and panel layering, never shadows. The failure mode
+   is cute; every choice moves toward naturalist precision.
+   ———————————————————————————————————————————————————————————————— */
+
+:root {
+  /* palette (house style) */
+  --ink: #211e1a;
+  --soft: #57514a;
+  --faint: #8a8275;
+  --paper: #fdfcf9;
+  --cream: #f6f1e7;
+  --cream2: #efe6d5;
+  --cream3: #e9dfca;
+  --crimson: #9c2b27;
+  --crimson2: #7f231f;
+  --ochre: #b07d2e;
+  --olive: #566b34;
+  --rule: #e7e0d0;
+  --rule2: #d8cfba;
+
+  /* type */
+  --serif: 'Spectral', 'Iowan Old Style', Georgia, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* scale (fluid) */
+  --fs-xs: 0.72rem;
+  --fs-sm: 0.815rem;
+  --fs-base: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  --fs-lg: clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --fs-xl: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+  --fs-xxl: clamp(1.9rem, 1.5rem + 1.8vw, 2.9rem);
+
+  --measure: 42rem;
+  --wide: 72rem;
+  --track-label: 0.14em;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: var(--fs-base);
+  font-weight: 400;
+  line-height: 1.62;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1; width: 100%; }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+}
+
+p { margin: 0 0 1em; }
+
+a { color: var(--crimson); text-decoration: none; }
+a:hover { color: var(--crimson2); text-decoration: underline; text-underline-offset: 0.18em; }
+
+code, kbd, pre { font-family: var(--mono); font-size: 0.88em; }
+pre {
+  background: var(--cream);
+  border: 1px solid var(--rule2);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+hr { border: 0; border-top: 1px solid var(--rule2); margin: 2.5rem 0; }
+
+img { max-width: 100%; height: auto; }
+
+::selection { background: var(--cream3); }
+
+/* ————— shared primitives ————— */
+
+.wrap { max-width: var(--wide); margin: 0 auto; padding: 0 1.25rem; }
+.measure { max-width: var(--measure); }
+
+/* mono specimen label — the site's structural voice */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  color: var(--faint);
+}
+
+.eyebrow--crimson { color: var(--crimson); }
+
+/* engraving-style double rule */
+.double-rule {
+  border: 0;
+  border-top: 1px solid var(--ink);
+  position: relative;
+  margin: 0.4rem 0 0;
+}
+.double-rule::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--rule2);
+}
+
+/* type/era chips */
+.chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--rule2);
+  background: var(--cream);
+  color: var(--soft);
+  white-space: nowrap;
+}
+.chip--type { border-color: var(--crimson); color: var(--crimson); background: transparent; }
+.chip--era { }
+
+/* long-form article body */
+.prose { max-width: var(--measure); }
+.prose > p:first-of-type { font-size: var(--fs-lg); line-height: 1.5; }
+.prose h2 { font-size: var(--fs-lg); margin-top: 2.2em; }
+.prose blockquote {
+  margin: 1.5em 0;
+  padding: 0 0 0 1.25em;
+  border-left: 2px solid var(--crimson);
+  font-style: italic;
+  color: var(--soft);
+}
+.prose ul, .prose ol { padding-left: 1.4em; }
+
+/* data tables */
+table { border-collapse: collapse; width: 100%; }
+th {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  text-align: left;
+  color: var(--soft);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--ink);
+  background: var(--cream2);
+}
+td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+/* skip link */
+.skip {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--ink); color: var(--paper);
+  padding: 0.5rem 1rem; z-index: 10; font-family: var(--mono);
+}
+.skip:focus { left: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

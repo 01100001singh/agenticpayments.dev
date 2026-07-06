@@ -1,0 +1,144 @@
+---
+import '@fontsource/spectral/300.css';
+import '@fontsource/spectral/400.css';
+import '@fontsource/spectral/400-italic.css';
+import '@fontsource/spectral/500.css';
+import '@fontsource/spectral/600.css';
+import '@fontsource/spectral/600-italic.css';
+import '@fontsource/spectral/700.css';
+import '@fontsource/spectral/800.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import '../styles/global.css';
+import SubscribeForm from '../components/SubscribeForm.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string; // site-relative, e.g. /cuts/cut-0101
+  jsonld?: Record<string, any> | Record<string, any>[];
+}
+
+const { title, description, path, jsonld } = Astro.props;
+const site = 'https://agenticpayments.dev';
+const canonical = site + (path === '/' ? '/' : path.replace(/\/?$/, '/'));
+const fullTitle = path === '/' ? 'agenticpayments.dev — cuts on agentic payments' : `${title} · agenticpayments.dev`;
+
+const nav = [
+  ['/plates', 'Plates'],
+  ['/bestiary', 'Bestiary'],
+  ['/journal', 'Journal'],
+  ['/lexicon', 'Lexicon'],
+  ['/atlas', 'Atlas'],
+  ['/about', 'About'],
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="agenticpayments.dev" href="/rss.xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content={`${site}/og-default.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+    <script defer src="/_vercel/insights/script.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a href="/" class="logotype" aria-label="agenticpayments.dev — home"
+          >agenticpayments<span class="dot">.</span>dev</a
+        >
+        <nav aria-label="Primary">
+          {nav.map(([href, label]) => (
+            <a href={href} class:list={['nav-link', { active: path.startsWith(href) }]}>{label}</a>
+          ))}
+        </nav>
+      </div>
+      <div class="wrap"><hr class="double-rule" /></div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <hr class="double-rule" />
+        <div class="footer-grid">
+          <div>
+            <p class="eyebrow">Colophon</p>
+            <p class="footer-note">
+              Cuts are CC-BY-4.0 and Ed25519-signed; cite the canonical URL.
+              Code is MIT, in the open, at
+              <a href="https://github.com/01100001singh/agenticpayments.dev">GitHub</a>.
+            </p>
+            <p class="footer-note mono-links">
+              <a href="/llms.txt">llms.txt</a> · <a href="/spine.jsonl">spine.jsonl</a> ·
+              <a href="/graph.json">graph.json</a> · <a href="/rss.xml">rss</a> ·
+              <a href="/.well-known/agenticpayments.json">keys</a>
+            </p>
+          </div>
+          <SubscribeForm />
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header { padding-top: 1.4rem; }
+  .header-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    padding-bottom: 0.65rem;
+  }
+  .logotype {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  .logotype:hover { text-decoration: none; color: var(--ink); }
+  .dot { color: var(--crimson); }
+  nav { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+  .nav-link {
+    font-family: var(--mono);
+    font-size: var(--fs-sm);
+    text-transform: lowercase;
+    color: var(--soft);
+  }
+  .nav-link:hover { color: var(--crimson); text-decoration: none; }
+  .nav-link.active { color: var(--crimson); }
+
+  .site-footer { margin-top: 4.5rem; padding-bottom: 2.5rem; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding-top: 1.4rem;
+  }
+  .footer-note { font-size: var(--fs-sm); color: var(--soft); max-width: 34rem; }
+  .mono-links { font-family: var(--mono); font-size: var(--fs-xs); }
+  .mono-links a { color: var(--faint); }
+  .mono-links a:hover { color: var(--crimson); }
+  @media (max-width: 44rem) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>

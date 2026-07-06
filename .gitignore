@@ -1,0 +1,21 @@
+# deps / build
+node_modules/
+dist/
+.astro/
+
+# generated machine layer (built in CI/Vercel, never committed)
+public/cuts/*.stock.json
+public/spine.jsonl
+public/graph.json
+public/llms.txt
+public/rss.xml
+public/sitemap.xml
+
+# env & keys — the signing key must NEVER be committed
+.env
+.env.*
+*.pem
+signing-key*
+
+# os
+.DS_Store

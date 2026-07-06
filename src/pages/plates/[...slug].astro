@@ -1,0 +1,160 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PromptSidebar from '../../components/PromptSidebar.astro';
+import CookedFrom from '../../components/CookedFrom.astro';
+
+export async function getStaticPaths() {
+  const plates = await getCollection('plates', (p) => !p.data.draft);
+  return plates.map((plate) => ({ params: { slug: plate.id }, props: { plate } }));
+}
+
+const { plate } = Astro.props;
+const d = plate.data;
+const { Content } = await render(plate);
+const url = `https://agenticpayments.dev/plates/${plate.id}`;
+const observed = d.as_observed.toISOString().slice(0, 10);
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: `Plate ${d.plate} — ${d.title}`,
+  datePublished: d.date.toISOString().slice(0, 10),
+  url,
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  author: { '@type': 'Person', name: 'Ankit Singh' },
+};
+---
+
+<Base title={`Plate ${d.plate} — ${d.title}`} description={d.summary ?? d.tldr} path={`/plates/${plate.id}`} jsonld={jsonld}>
+  <div class="wrap layout">
+    <article>
+      <header class="plate-head">
+        <p class="eyebrow eyebrow--crimson">Plate {d.plate}</p>
+        <h1>{d.title}</h1>
+        <p class="subtitle">{d.subtitle}</p>
+        <p class="observed">as observed {observed}</p>
+      </header>
+
+      <div class="organ-table" role="table" aria-label={`Anatomy of ${d.title}`}>
+        <div class="organ-row organ-row--head" role="row">
+          <span role="columnheader" class="col-n">№</span>
+          <span role="columnheader" class="col-organ">Organ</span>
+          <span role="columnheader" class="col-role">What it does</span>
+          <span role="columnheader" class="col-clock">{d.clocks[0]}</span>
+          <span role="columnheader" class="col-clock">{d.clocks[1]}</span>
+        </div>
+        {d.organs.map((o) => (
+          <div class="organ-row" role="row">
+            <span role="cell" class="col-n">{o.n}</span>
+            <span role="cell" class="col-organ">{o.organ}</span>
+            <span role="cell" class="col-role">{o.role}</span>
+            <span role="cell" class="col-clock" data-label={d.clocks[0]}>{o.experience_clock}</span>
+            <span role="cell" class="col-clock" data-label={d.clocks[1]}>{o.money_clock}</span>
+          </div>
+        ))}
+        <div class="tldr" role="row">
+          <span class="tldr-label">TL;DR</span>
+          <span class="tldr-body">{d.tldr}</span>
+        </div>
+      </div>
+
+      <div class="prose plate-prose">
+        <Content />
+      </div>
+
+      <CookedFrom ids={d.cooked_from} />
+
+      {d.pair_with.length > 0 && (
+        <p class="pairing">
+          This Plate is one half of a pairing — see also{' '}
+          {d.pair_with.map((p, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a href={p}>{p.replaceAll('/', ' ').trim().replaceAll('-', ' ')}</a>
+            </>
+          ))}.
+        </p>
+      )}
+    </article>
+
+    <div class="side">
+      <PromptSidebar title={`Plate ${d.plate} — ${d.title}`} url={url} prompts={d.prompts} />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 3.5rem;
+    padding-top: 2.4rem;
+    align-items: start;
+  }
+  .plate-head { margin-bottom: 1.8rem; }
+  h1 { font-size: var(--fs-xl); font-weight: 800; margin: 0.3rem 0 0.2rem; }
+  .subtitle { font-style: italic; color: var(--soft); font-size: var(--fs-lg); margin: 0 0 0.5rem; }
+  .observed { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin: 0; }
+
+  .organ-table { border: 1px solid var(--ink); outline: 1px solid var(--rule2); outline-offset: 3px; }
+  .organ-row {
+    display: grid;
+    grid-template-columns: 2.2rem 9.5rem minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+    border-bottom: 1px solid var(--rule);
+  }
+  .organ-row:last-of-type { border-bottom: 0; }
+  .organ-row > span { padding: 0.55rem 0.7rem; font-size: var(--fs-sm); }
+  .organ-row--head { background: var(--cream2); border-bottom: 1px solid var(--ink); }
+  .organ-row--head > span {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--soft);
+  }
+  .col-n { font-family: var(--mono); color: var(--faint); }
+  .col-organ { font-weight: 600; }
+  .col-role { color: var(--soft); }
+  .col-clock { font-family: var(--mono); font-size: var(--fs-xs); color: var(--soft); }
+
+  .tldr {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+    background: var(--cream);
+    border-top: 2px solid var(--crimson);
+    padding: 0.75rem 0.9rem;
+  }
+  .tldr-label {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    color: var(--crimson);
+    flex-shrink: 0;
+  }
+  .tldr-body { font-size: var(--fs-base); font-weight: 500; }
+
+  .plate-prose { margin-top: 2.2rem; }
+  .pairing { font-size: var(--fs-sm); font-style: italic; color: var(--soft); margin-top: 1.6rem; }
+
+  .side { position: sticky; top: 1.5rem; }
+  @media (max-width: 58rem) {
+    .layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .side { position: static; }
+    /* mobile: card-per-row collapse */
+    .organ-row { grid-template-columns: 2.2rem 1fr; grid-auto-rows: auto; }
+    .organ-row--head .col-role, .organ-row--head .col-clock { display: none; }
+    .col-role { grid-column: 2; padding-top: 0; }
+    .col-clock { grid-column: 2; padding-top: 0; }
+    .col-clock::before {
+      content: attr(data-label) ' — ';
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .tldr { flex-direction: column; gap: 0.3rem; }
+  }
+</style>

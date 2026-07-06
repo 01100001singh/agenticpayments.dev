@@ -1,0 +1,176 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Chips from '../../components/Chips.astro';
+import PromptSidebar from '../../components/PromptSidebar.astro';
+
+export async function getStaticPaths() {
+  const cuts = await getCollection('cuts', (c) => !c.data.draft);
+  return cuts.map((cut) => ({ params: { id: cut.data.id }, props: { cut } }));
+}
+
+const { cut } = Astro.props;
+const d = cut.data;
+const { Content } = await render(cut);
+const url = `https://agenticpayments.dev/cuts/${d.id}`;
+const dateStr = d.date.toISOString().slice(0, 10);
+const validStr = d.valid_as_of.toISOString().slice(0, 10);
+const staleStr = d.stale_after ? d.stale_after.toISOString().slice(0, 10) : null;
+const preview = (cut.body ?? '').split(/\n\n+/)[0].replace(/[#*_>`[\]]/g, '').replace(/\n/g, ' ').slice(0, 155);
+
+// Which authored Surfaces were cooked from this Cut
+const surfaceKinds = ['bestiary', 'plates', 'parables', 'dialogues', 'receipts', 'journal', 'notebook'] as const;
+const cookedInto: { title: string; href: string; kind: string }[] = [];
+for (const kind of surfaceKinds) {
+  for (const s of await getCollection(kind, (e: any) => !e.data.draft)) {
+    if ((s.data as any).cooked_from?.includes(d.id)) {
+      cookedInto.push({ title: (s.data as any).title, href: `/${kind}/${s.id}/`, kind });
+    }
+  }
+}
+
+const related = d.related.length
+  ? await getCollection('cuts', (c) => d.related.includes(c.data.id) && !c.data.draft)
+  : [];
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.title,
+  datePublished: dateStr,
+  dateModified: validStr,
+  url,
+  identifier: d.id,
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  author: { '@type': 'Person', name: 'Ankit Singh', url: 'https://agenticpayments.dev/about/' },
+  publisher: { '@type': 'Organization', name: 'agenticpayments.dev', url: 'https://agenticpayments.dev/' },
+  keywords: d.tags.join(', '),
+  encoding: { '@type': 'MediaObject', contentUrl: `${url}.stock.json`, encodingFormat: 'application/json' },
+};
+---
+
+<Base title={d.title} description={`${preview}…`} path={`/cuts/${d.id}`} jsonld={jsonld}>
+  <div class="wrap layout">
+    <article class="cut">
+      <header>
+        <div class="meta-row">
+          <Chips type={d.type} era={d.era} />
+          <span class="mono-meta">{d.id} · {dateStr}</span>
+        </div>
+        <h1>{d.title}</h1>
+      </header>
+
+      <div class="prose cut-body">
+        <Content />
+      </div>
+
+      {d.superseded_by && (
+        <p class="supersede">
+          ⚠ Superseded by <a href={`/cuts/${d.superseded_by}/`}>{d.superseded_by}</a>.
+        </p>
+      )}
+
+      <footer class="colophon" aria-label="Specimen record">
+        <p class="eyebrow">Specimen record</p>
+        <dl>
+          <div><dt>provenance</dt><dd>{d.provenance}</dd></div>
+          <div><dt>valid as of</dt><dd>{validStr}</dd></div>
+          {staleStr && <div><dt>stale after</dt><dd>{staleStr}</dd></div>}
+          <div><dt>license</dt><dd>CC-BY-4.0 — take it, cite the URL</dd></div>
+          <div><dt>tags</dt><dd>{d.tags.join(' · ')}</dd></div>
+          <div>
+            <dt>machine twin</dt>
+            <dd><a href={`/cuts/${d.id}.stock.json`}>{d.id}.stock.json</a></dd>
+          </div>
+        </dl>
+
+        {related.length > 0 && (
+          <div class="related">
+            <p class="eyebrow">Related cuts</p>
+            <ul>
+              {related.map((r) => (
+                <li>
+                  <a href={`/cuts/${r.data.id}/`}>{r.data.id}</a>
+                  <span class="rel-title">— {r.data.title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {cookedInto.length > 0 && (
+          <div class="related">
+            <p class="eyebrow">Cooked into</p>
+            <ul>
+              {cookedInto.map((s) => (
+                <li>
+                  <a href={s.href}>{s.title}</a>
+                  <span class="rel-title">({s.kind})</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </footer>
+    </article>
+
+    <div class="side">
+      <PromptSidebar title={d.title} url={url} />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 3.5rem;
+    padding-top: 2.4rem;
+    align-items: start;
+  }
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.9rem;
+  }
+  .mono-meta { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); }
+  h1 { font-size: var(--fs-xl); font-weight: 800; max-width: var(--measure); }
+  .cut-body { margin-top: 1.2rem; }
+  .supersede { color: var(--crimson); font-size: var(--fs-sm); }
+
+  .colophon {
+    margin-top: 2.8rem;
+    border-top: 1px solid var(--ink);
+    padding-top: 0.9rem;
+    position: relative;
+  }
+  .colophon::before {
+    content: '';
+    position: absolute; top: 2px; left: 0; right: 0;
+    border-top: 1px solid var(--rule2);
+  }
+  dl { margin: 0.7rem 0 0; display: grid; gap: 0.3rem; }
+  dl > div { display: grid; grid-template-columns: 9rem 1fr; gap: 1rem; }
+  dt {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--faint);
+  }
+  dd { margin: 0; font-size: var(--fs-sm); color: var(--soft); }
+  .related { margin-top: 1.4rem; }
+  .related ul { list-style: none; margin: 0.4rem 0 0; padding: 0; }
+  .related li { font-size: var(--fs-sm); margin-bottom: 0.25rem; }
+  .related li a { font-family: inherit; }
+  .rel-title { color: var(--soft); }
+
+  .side { position: sticky; top: 1.5rem; }
+  @media (max-width: 58rem) {
+    .layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .side { position: static; }
+  }
+</style>

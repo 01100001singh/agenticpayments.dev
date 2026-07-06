@@ -1,0 +1,69 @@
+---
+import { readFileSync } from 'node:fs';
+import yaml from 'js-yaml';
+import Base from '../layouts/Base.astro';
+
+interface AtlasLink {
+  title: string;
+  url: string;
+  note: string; // one-line editorial
+  section: string;
+}
+const atlas = yaml.load(readFileSync(new URL('../../content/atlas.yaml', import.meta.url), 'utf8')) as {
+  sections: { name: string; links: AtlasLink[] }[];
+};
+---
+
+<Base
+  title="Atlas"
+  description="A curated map of the agentic-payments territory: specs, posts, and primary sources, each with one honest editorial line."
+  path="/atlas"
+>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow eyebrow--crimson">Atlas</p>
+      <h1>The territory, mapped</h1>
+      <p class="lede measure">
+        Primary sources worth your time, each with exactly one line of editorial. If a link
+        is here, I read it; the note tells you why it earned the spot.
+      </p>
+    </header>
+
+    {atlas.sections.map((section) => (
+      <section class="atlas-section">
+        <p class="case-label">{section.name}</p>
+        <ul>
+          {section.links.map((l) => (
+            <li>
+              <a href={l.url} rel="noopener">{l.title}</a>
+              <span class="note">— {l.note}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .page-head { padding: 2.6rem 0 1.8rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; }
+  .lede { font-size: var(--fs-lg); color: var(--soft); }
+  .case-label {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--track-label);
+    background: var(--cream2);
+    border: 1px solid var(--rule2);
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    margin: 0 0 0.8rem;
+  }
+  .atlas-section { margin-bottom: 2.2rem; }
+  ul { list-style: none; margin: 0; padding: 0; max-width: 50rem; }
+  li { border-top: 1px solid var(--rule); padding: 0.55rem 0; font-size: var(--fs-sm); }
+  li a { font-weight: 600; }
+  .note { color: var(--soft); }
+</style>

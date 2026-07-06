@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Remix Gallery" description="Reader-cooked Surfaces, attributed. Not yet open." path="/gallery">
+  <div class="wrap reserved">
+    <p class="eyebrow eyebrow--crimson">Remix Gallery</p>
+    <h1>Reserved.</h1>
+    <p class="measure">
+      Cook a Cut into something better than my plating and it will hang here, attributed.
+      Submissions open once there's a fair way to take them. Until then: the
+      <a href="/">Counter</a> is stocked, and every page carries prompts.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .reserved { padding-top: 4rem; min-height: 40vh; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; }
+</style>

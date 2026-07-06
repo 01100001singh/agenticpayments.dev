@@ -1,0 +1,16 @@
+---
+interface Props {
+  type?: string;
+  era?: string;
+}
+const { type, era } = Astro.props;
+---
+
+<span class="chips">
+  {type && <span class="chip chip--type">{type}</span>}
+  {era && <span class="chip chip--era">{era}</span>}
+</span>
+
+<style>
+  .chips { display: inline-flex; gap: 0.4rem; }
+</style>

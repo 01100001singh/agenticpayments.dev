@@ -1,0 +1,55 @@
+---
+import Chips from './Chips.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  cut: CollectionEntry<'cuts'>;
+}
+const { cut } = Astro.props;
+const d = cut.data;
+const preview = (cut.body ?? '')
+  .split(/\n\n+/)[0]
+  .replace(/[#*_>`[\]]/g, '')
+  .replace(/\n/g, ' ')
+  .slice(0, 150);
+const dateStr = d.date.toISOString().slice(0, 10);
+---
+
+<article class="cut-card">
+  <div class="card-top">
+    <Chips type={d.type} era={d.era} />
+    <span class="cut-id">{d.id}</span>
+  </div>
+  <h3 class="card-title"><a href={`/cuts/${d.id}/`}>{d.title}</a></h3>
+  <p class="card-preview">{preview}…</p>
+  <p class="card-date">{dateStr}</p>
+</article>
+
+<style>
+  .cut-card {
+    border-top: 1px solid var(--ink);
+    padding: 0.7rem 0 1.1rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .cut-card::before {
+    content: '';
+    position: absolute;
+    top: 2px; left: 0; right: 0;
+    border-top: 1px solid var(--rule2);
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.55rem;
+  }
+  .cut-id { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); }
+  .card-title { font-size: var(--fs-lg); font-weight: 700; margin: 0 0 0.4rem; }
+  .card-title a { color: var(--ink); }
+  .card-title a:hover { color: var(--crimson); text-decoration: none; }
+  .card-preview { font-size: var(--fs-sm); color: var(--soft); flex: 1; margin-bottom: 0.6rem; }
+  .card-date { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin: 0; }
+</style>

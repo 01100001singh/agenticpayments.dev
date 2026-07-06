@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const terms = await getCollection('lexicon', (t) => !t.data.draft);
+  return terms.map((term) => ({ params: { slug: term.id }, props: { term } }));
+}
+
+const { term } = Astro.props;
+const { Content } = await render(term);
+const plain = (term.body ?? '').replace(/[#*_>`[\]]/g, '').replace(/\n+/g, ' ').trim().slice(0, 155);
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: term.data.term,
+  url: `https://agenticpayments.dev/lexicon/${term.id}/`,
+  inDefinedTermSet: 'https://agenticpayments.dev/lexicon/',
+  description: plain,
+};
+---
+
+<Base title={term.data.term} description={plain} path={`/lexicon/${term.id}`} jsonld={jsonld}>
+  <div class="wrap">
+    <article class="term measure">
+      <p class="eyebrow eyebrow--crimson">Lexicon</p>
+      <h1>{term.data.term}</h1>
+      {term.data.aka.length > 0 && <p class="aka">also known as: {term.data.aka.join(', ')}</p>}
+      <div class="prose">
+        <Content />
+      </div>
+      <p class="back"><a href="/lexicon/">← full lexicon</a></p>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .term { padding-top: 2.6rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; margin: 0.3rem 0 0.4rem; }
+  .aka { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin-bottom: 1.4rem; }
+  .back { font-family: var(--mono); font-size: var(--fs-sm); margin-top: 2.2rem; }
+</style>

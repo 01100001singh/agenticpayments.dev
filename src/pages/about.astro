@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="About"
+  description="What this site is, how to read it, and why every Cut ships with a machine twin: attribution that survives mixing, freshness you can verify, a corpus agents can trust."
+  path="/about"
+>
+  <div class="wrap">
+    <article class="measure about">
+      <p class="eyebrow eyebrow--crimson">About</p>
+      <h1>A demonstration kitchen,<br />not a restaurant.</h1>
+
+      <div class="prose">
+        <p>
+          This is a publication about agentic payments — software that spends money on a
+          person's behalf — built the way the thing it describes works.
+        </p>
+        <p>
+          Most publishing ships finished dishes: presentation and meaning fused, one shape for
+          every reader. This site ships <strong>Cuts</strong> — atomic, schema'd, open-licensed
+          primitives of operator thinking. One idea, one screen, one breath, dated and signed.
+          The corpus of Cuts is the <strong>Spine</strong>. Everything else you see here —
+          the <a href="/plates/">Plates</a>, the <a href="/bestiary/">Bestiary</a>, the
+          parables and receipts — is a <strong>Surface</strong>: one possible rendering of the
+          Spine, plated by me to prove the format.
+        </p>
+        <blockquote>
+          I provide the best meat cut and they cook, because everyone likes the data in a
+          different way.
+        </blockquote>
+        <p>
+          I author one signature Surface per format. Your agent does the rest. Every page
+          carries prompts for exactly that — and if you don't use an agent, the authored
+          Surfaces are a complete meal on their own.
+        </p>
+
+        <h2>How to read this site</h2>
+        <p>
+          Start with the reference pair: <a href="/plates/plate-ii-upi/">Plate II</a> dissects
+          a UPI payment end to end; <a href="/plates/plate-iii-cards/">Plate III</a> does the
+          same for a card purchase. You half-know both flows already — which is the point.
+          On familiar material you can judge the format itself: what the organ tables show,
+          what the two clocks separate, what the prompts let you rebuild. One UPI carcass
+          yields a creature, a plate, and a receipt; one card carcass yields a plate, a
+          dialogue, and a parable. Two spines, six dishes — the thesis performed rather than
+          argued.
+        </p>
+        <p>
+          From there: <a href="/">the Counter</a> holds recent Cuts by type. The
+          <a href="/journal/">Field Journal</a> is dated sightings. The
+          <a href="/lexicon/">Lexicon</a> pins the vocabulary down, and the
+          <a href="/atlas/">Atlas</a> maps the primary sources.
+        </p>
+
+        <h2>For your agent</h2>
+        <p>
+          Every Cut has a machine twin at <code>/cuts/&#123;id&#125;.stock.json</code>: same
+          meaning, presentation deleted. The whole corpus streams from
+          <a href="/spine.jsonl"><code>/spine.jsonl</code></a>, byte-stable across builds so
+          caches hold. <a href="/llms.txt"><code>/llms.txt</code></a> explains the format;
+          <a href="/graph.json"><code>/graph.json</code></a> carries the relations. Everything
+          is CC-BY-4.0 and Ed25519-signed — attribution that survives mixing, freshness you
+          can verify, a corpus agents can trust. Verify signatures against
+          <a href="/.well-known/agenticpayments.json"><code>/.well-known/agenticpayments.json</code></a>.
+        </p>
+
+        <h2>Voice</h2>
+        <p>
+          Rules this site is written under: one idea per Cut. Operator voice — things done
+          and seen, not things imagined. Claims carry dates; numbers with short half-lives
+          are avoided or marked. Provenance is declared (<em>first-hand</em>,
+          <em>sourced</em>, or <em>synthesised</em>). When something stops being true, it is
+          superseded, never silently edited.
+        </p>
+
+        <h2>Licensing</h2>
+        <p>
+          Content is <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a> —
+          republish, remix, feed it to anything; cite the canonical URL. Code is MIT, public,
+          at <a href="https://github.com/01100001singh/agenticpayments.dev">GitHub</a>. Each
+          stock file includes a <code>suggested_citation</code>.
+        </p>
+
+        <h2>Who</h2>
+        <p>
+          I'm Ankit Singh. I've spent my career inside payment systems — India's prepaid
+          wallet era, UPI, cards — and now work on what happens when software starts holding
+          the wallet. The scars in the Spine are mostly mine. Reach me by
+          <a href="mailto:ankitdotsingh@gmail.com">email</a>, or subscribe below for new Cuts.
+        </p>
+      </div>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .about { padding-top: 2.6rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; margin: 0.3rem 0 1.2rem; }
+</style>

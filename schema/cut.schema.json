@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticpayments.dev/schema/cut.schema.json",
+  "title": "Cut frontmatter",
+  "description": "The atomic content primitive of agenticpayments.dev: one idea, one screen, one breath. The type and era taxonomies are CLOSED — free-text values fail the build.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "date", "type", "title", "era", "tags", "license", "provenance", "valid_as_of"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^cut-[0-9]{4}$" },
+    "date": { "type": "string", "format": "date" },
+    "type": {
+      "enum": ["principle", "scar", "observation", "parable", "frame", "datapoint", "entry"]
+    },
+    "title": { "type": "string", "minLength": 3, "maxLength": 120 },
+    "era": {
+      "enum": ["ppi-india", "upi", "venmo", "cards", "agentic", "crypto", "universal"]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+      "minItems": 1,
+      "maxItems": 8
+    },
+    "related": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^cut-[0-9]{4}$" }
+    },
+    "license": { "const": "CC-BY-4.0" },
+    "length": { "type": "string" },
+    "remixable_as": { "type": "array", "items": { "type": "string" } },
+    "provenance": { "enum": ["first-hand", "sourced", "synthesised"] },
+    "valid_as_of": { "type": "string", "format": "date" },
+    "stale_after": { "type": ["string", "null"], "format": "date" },
+    "superseded_by": { "type": ["string", "null"], "pattern": "^cut-[0-9]{4}$" },
+    "draft": { "type": "boolean", "description": "Draft Cuts build locally but are excluded from the site, the stock layer, and the spine." }
+  }
+}

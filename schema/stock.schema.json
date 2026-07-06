@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agenticpayments.dev/schema/stock.schema.json",
+  "title": "Stock — the machine twin of a Cut",
+  "description": "Same meaning as the Cut, presentation deleted, engineered for machine economics. Generated from the Cut's markdown (plus an optional human-reviewed claims sidecar); never hand-edited; never rendered to humans. Byte-stable: canonical serialization is UTF-8, LF, keys sorted lexicographically at every level, no nondeterministic fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "canonical_url", "content_hash", "version", "gist", "claims", "entities", "relations", "provenance", "license", "valid_as_of", "suggested_citation"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^cut-[0-9]{4}$" },
+    "canonical_url": { "type": "string", "format": "uri" },
+    "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "version": { "type": "integer", "minimum": 1 },
+    "gist": { "type": "string", "description": "One- to two-sentence machine summary." },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["s", "p", "o"],
+        "properties": {
+          "s": { "type": "string", "description": "subject" },
+          "p": { "type": "string", "description": "predicate" },
+          "o": { "type": "string", "description": "object" },
+          "q": { "type": "object", "description": "qualifiers (era, basis, …)" }
+        }
+      }
+    },
+    "entities": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "entity → site-relative lexicon anchor"
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": {
+          "type": { "type": "string" },
+          "target": { "type": "string", "pattern": "^cut-[0-9]{4}$" }
+        }
+      }
+    },
+    "provenance": { "enum": ["first-hand", "sourced", "synthesised"] },
+    "license": { "const": "CC-BY-4.0" },
+    "valid_as_of": { "type": "string", "format": "date" },
+    "stale_after": { "type": ["string", "null"], "format": "date" },
+    "superseded_by": { "type": ["string", "null"], "pattern": "^cut-[0-9]{4}$" },
+    "suggested_citation": { "type": "string" },
+    "sig": {
+      "type": ["string", "null"],
+      "pattern": "^ed25519:",
+      "description": "Ed25519 over UTF-8 \"{id}\\n{canonical_url}\\n{content_hash}\"; verify against /.well-known/agenticpayments.json"
+    }
+  }
+}

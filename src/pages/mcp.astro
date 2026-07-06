@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="MCP" description="Reserved for the read-only MCP endpoint. The static machine layer is live today." path="/mcp">
+  <div class="wrap reserved">
+    <p class="eyebrow eyebrow--crimson">MCP</p>
+    <h1>Reserved.</h1>
+    <p class="measure">
+      A read-only MCP server (<code>search_cuts</code>, <code>get_cut</code>,
+      <code>get_related</code>, <code>list_recent</code>) lands here once the Spine is big
+      enough to be worth querying. Your agent doesn't have to wait:
+      <a href="/llms.txt"><code>/llms.txt</code></a> and
+      <a href="/spine.jsonl"><code>/spine.jsonl</code></a> are live now, static, and
+      byte-stable.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .reserved { padding-top: 4rem; min-height: 40vh; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; }
+</style>

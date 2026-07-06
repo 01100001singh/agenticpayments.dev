@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const plates = (await getCollection('plates', (p) => !p.data.draft)).sort((a, b) =>
+  a.data.plate.localeCompare(b.data.plate),
+);
+---
+
+<Base
+  title="Plates"
+  description="Anatomical dissections of payment flows: every organ, both clocks, one TL;DR."
+  path="/plates"
+>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow eyebrow--crimson">Plates</p>
+      <h1>Dissections of payment flows</h1>
+      <p class="lede measure">
+        Every payment system is two clocks: the one the user watches and the one the money
+        obeys. Each Plate lays a flow open organ by organ, with both clocks on the table.
+      </p>
+    </header>
+    <div class="plate-list">
+      {plates.map((p) => (
+        <a class="plate-card" href={`/plates/${p.id}/`}>
+          <span class="plate-no">Plate {p.data.plate}</span>
+          <span class="plate-title">{p.data.title}</span>
+          <span class="plate-sub">{p.data.subtitle}</span>
+          <span class="plate-obs">as observed {p.data.as_observed.toISOString().slice(0, 10)}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-head { padding: 2.6rem 0 1.8rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; }
+  .lede { font-size: var(--fs-lg); color: var(--soft); }
+  .plate-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); gap: 1.2rem; }
+  .plate-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    border: 1px solid var(--ink);
+    outline: 1px solid var(--rule2);
+    outline-offset: 3px;
+    background: var(--paper);
+    padding: 1.1rem 1.2rem;
+    color: var(--ink);
+    margin: 3px;
+  }
+  .plate-card:hover { text-decoration: none; border-color: var(--crimson); }
+  .plate-no {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--track-label);
+    color: var(--crimson);
+  }
+  .plate-title { font-size: var(--fs-lg); font-weight: 700; }
+  .plate-sub { font-style: italic; color: var(--soft); font-size: var(--fs-sm); }
+  .plate-obs { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin-top: 0.5rem; }
+</style>

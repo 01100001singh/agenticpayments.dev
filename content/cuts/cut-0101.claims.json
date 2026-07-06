@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "gist": "Delegated agent spend should be structured as allowances (cap, scope, expiry, one-gesture revoke) rather than wallets (custodial balances), because allowances are the only delegated-money model ordinary users can reason about and they avoid custody/float regulatory exposure.",
+  "claims": [
+    { "s": "agent-allowance", "p": "requires-properties", "o": "cap+scope+expiry+revoke", "q": { "era": "agentic" } },
+    { "s": "agent-wallet-balance", "p": "concentrates", "o": "custody-and-float-risk", "q": { "basis": "ppi-india" } },
+    { "s": "allowance-model", "p": "proven-by", "o": "parental-and-corporate-card-controls" }
+  ],
+  "entities": {
+    "allowance": "lexicon/allowance",
+    "mandate": "lexicon/mandate",
+    "agentic-payment": "lexicon/agentic-payment"
+  },
+  "relations": [
+    { "type": "supports", "target": "cut-0215" },
+    { "type": "derives-from", "target": "cut-0100" }
+  ]
+}

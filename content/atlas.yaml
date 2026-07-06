@@ -1,0 +1,39 @@
+# The Atlas — curated links, one honest editorial line each.
+# If a link is here, it was read. The note says why it earned the spot.
+sections:
+  - name: Protocols & specs
+    links:
+      - title: AP2 — Agent Payments Protocol
+        url: https://ap2-protocol.org
+        note: the mandate object is the part to read; skim the rest
+        section: protocols
+      - title: x402
+        url: https://www.x402.org
+        note: HTTP 402 finally employed; elegant exactly until something needs a refund
+        section: protocols
+      - title: Agentic Commerce Protocol (OpenAI × Stripe)
+        url: https://developers.openai.com/commerce
+        note: chat surface as storefront; note who stays merchant of record
+        section: protocols
+      - title: Model Context Protocol
+        url: https://modelcontextprotocol.io
+        note: how agents will actually reach corpora like this one
+        section: protocols
+      - title: A2A — Agent2Agent
+        url: https://a2a-protocol.org
+        note: agents describing capabilities to each other; payments will ride on top
+        section: protocols
+  - name: Rails & primary sources
+    links:
+      - title: NPCI — UPI product overview
+        url: https://www.npci.org.in/what-we-do/upi/product-overview
+        note: the primary source for how the switch describes itself
+        section: rails
+      - title: RBI — Master Directions on PPIs
+        url: https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx
+        note: the weather system of cut-0100, in the regulator's own words
+        section: rails
+      - title: llms.txt specification
+        url: https://llmstxt.org
+        note: the convention this site's machine layer follows
+        section: rails

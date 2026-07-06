@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="The Tape" description="The live feed of agentic-payments activity. Not yet running." path="/tape">
+  <div class="wrap reserved">
+    <p class="eyebrow eyebrow--crimson">The Tape</p>
+    <h1>Reserved.</h1>
+    <p class="measure">
+      This address will carry the feed of observed agentic-payments activity — a weekly
+      report first, instrumentation later. It starts when there is something honest to put
+      on it, and not before. <a href="/rss.xml">The RSS feed</a> is live in the meantime.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .reserved { padding-top: 4rem; min-height: 40vh; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; }
+</style>

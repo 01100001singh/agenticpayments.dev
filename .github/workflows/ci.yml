@@ -1,0 +1,37 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - name: Validate Spine (closed enums, related ids, schema)
+        run: npm run validate
+
+      - name: Generate stock + machine layer (build 1)
+        run: npm run gen:stock && npm run gen:machine
+
+      - name: Byte-stability assertion (build 2 must be byte-identical)
+        run: |
+          mkdir -p /tmp/build1
+          cp -r public/cuts /tmp/build1/cuts 2>/dev/null || true
+          cp public/spine.jsonl public/graph.json /tmp/build1/
+          npm run gen:stock && npm run gen:machine
+          diff -r /tmp/build1/cuts public/cuts
+          diff /tmp/build1/spine.jsonl public/spine.jsonl
+          diff /tmp/build1/graph.json public/graph.json
+          echo "byte-stable ✓"
+
+      - name: Astro build
+        run: npx astro build

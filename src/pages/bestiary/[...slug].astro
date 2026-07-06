@@ -1,0 +1,142 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PromptSidebar from '../../components/PromptSidebar.astro';
+import CookedFrom from '../../components/CookedFrom.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('bestiary', (e) => !e.data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const url = `https://agenticpayments.dev/bestiary/${entry.id}`;
+
+const FIELDS: [keyof typeof d.fields, string][] = [
+  ['habitat', 'Habitat'],
+  ['diet', 'Diet'],
+  ['lifespan', 'Lifespan'],
+  ['predators', 'Predators'],
+  ['symbiotes', 'Symbiotes'],
+  ['markings', 'Markings'],
+  ['first_observed', 'First observed'],
+];
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: `${d.title} (${d.latin})`,
+  datePublished: d.date.toISOString().slice(0, 10),
+  url,
+  license: 'https://creativecommons.org/licenses/by/4.0/',
+  author: { '@type': 'Person', name: 'Ankit Singh' },
+};
+---
+
+<Base title={d.title} description={d.summary ?? `${d.title} — ${d.latin}. A specimen from the bestiary of payment protocols.`} path={`/bestiary/${entry.id}`} jsonld={jsonld}>
+  <div class="wrap layout">
+    <article class="specimen">
+      <header>
+        <p class="eyebrow eyebrow--crimson">Bestiary · specimen</p>
+        <h1>{d.title}</h1>
+        <p class="latin">{d.latin}</p>
+      </header>
+
+      {d.image ? (
+        <figure class="engraving">
+          <img src={d.image} alt={`Engraving of ${d.title}`} loading="lazy" />
+        </figure>
+      ) : (
+        <div class="engraving engraving--fallback" aria-hidden="true">
+          <span class="fallback-mark">{d.title.replace(/^The /, '').slice(0, 1)}</span>
+          <span class="fallback-note">fig. — no engraving yet; the specimen stands on its field record</span>
+        </div>
+      )}
+
+      <dl class="field-list">
+        {FIELDS.map(([key, label]) => (
+          <div class="field-row">
+            <dt>{label}</dt>
+            <dd>{d.fields[key]}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <CookedFrom ids={d.cooked_from} />
+    </article>
+
+    <div class="side">
+      <PromptSidebar title={d.title} url={url} prompts={d.prompts} />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 3.5rem;
+    padding-top: 2.4rem;
+    align-items: start;
+  }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; margin: 0.3rem 0 0; }
+  .latin { font-style: italic; font-size: var(--fs-lg); color: var(--soft); margin: 0.1rem 0 1.6rem; }
+
+  .engraving {
+    margin: 0 0 1.8rem;
+    border: 1px solid var(--ink);
+    outline: 1px solid var(--rule2);
+    outline-offset: 3px;
+    background: var(--cream);
+  }
+  .engraving img { display: block; width: 100%; }
+  .engraving--fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 13rem;
+    padding: 2rem;
+  }
+  .fallback-mark {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 6rem;
+    line-height: 1;
+    color: var(--rule2);
+  }
+  .fallback-note { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); text-align: center; }
+
+  .field-list { margin: 0 0 2rem; border-top: 1px solid var(--ink); }
+  .field-row {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: 1.2rem;
+    border-bottom: 1px solid var(--rule);
+    padding: 0.55rem 0;
+  }
+  dt {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--track-label);
+    color: var(--crimson);
+    padding-top: 0.15rem;
+  }
+  dd { margin: 0; font-size: var(--fs-sm); }
+
+  .side { position: sticky; top: 1.5rem; }
+  @media (max-width: 58rem) {
+    .layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .side { position: static; }
+    .field-row { grid-template-columns: 1fr; gap: 0.15rem; }
+  }
+</style>
