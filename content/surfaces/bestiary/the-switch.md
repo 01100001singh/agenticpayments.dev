@@ -10,7 +10,7 @@ fields:
   diet: "Payment instructions by the billions; grows fatter every festival season. Notably does not eat fees — sustained by mandate and subsidy since the 2020 zero-MDR decree"
   lifespan: "Founded 2016 (public rollout); no natural death observed; institutional metabolism suggests decades"
   predators: "Concentration risk (it is its own predator), sovereign policy shifts, outage cascades at peak load, the slow starvation of its keepers"
-  symbiotes: "Banks (unwilling but bound), PSP apps who bring it food, the RBI whose accounts settle its meals, QR codes taped to twenty million counters"
+  symbiotes: "Banks (unwilling but bound), PSP apps who bring it food, the RBI whose accounts settle its meals, QR codes taped to counters beyond counting"
   markings: "Recognizable by the instant ✓ it leaves on every kill; underside marked with netted settlement batches, visible only to banks"
   first_observed: "2016, Mumbai; ubiquitous in the wild by 2019"
 prompts:
