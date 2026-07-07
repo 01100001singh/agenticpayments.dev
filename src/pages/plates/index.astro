@@ -31,6 +31,10 @@ const plates = (await getCollection('plates', (p) => !p.data.draft)).sort((a, b)
         </a>
       ))}
     </div>
+    <p class="plate-i-note">
+      Plate I — <em>dissection of a cash payment</em> — remains in preparation. The oldest
+      rail resists the table: it is the only one where both clocks strike at once.
+    </p>
   </div>
 </Base>
 
@@ -63,4 +67,13 @@ const plates = (await getCollection('plates', (p) => !p.data.draft)).sort((a, b)
   .plate-title { font-size: var(--fs-lg); font-weight: 700; }
   .plate-sub { font-style: italic; color: var(--soft); font-size: var(--fs-sm); }
   .plate-obs { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin-top: 0.5rem; }
+  .plate-i-note {
+    font-size: var(--fs-sm);
+    font-style: italic;
+    color: var(--faint);
+    border-top: 1px solid var(--rule);
+    padding-top: 1rem;
+    margin-top: 2.2rem;
+    max-width: 34rem;
+  }
 </style>
