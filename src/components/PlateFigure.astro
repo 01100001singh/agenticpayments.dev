@@ -1,0 +1,114 @@
+---
+/**
+ * Fig. 1 — the scissor diagram. Two clock axes, one per rule; each numbered
+ * part is placed at its position in that clock's time (0–1). Leader lines
+ * connect the same part across clocks: parallel lines mean the clocks agree,
+ * a fan means they've diverged. A part absent from a clock (null) simply
+ * doesn't register there — settlement has no position on an experience clock.
+ *
+ * Pure inline SVG generated from frontmatter. Flat ink; no images; no JS.
+ */
+interface Props {
+  clockA: string; // display name, e.g. "need clock"
+  clockB: string;
+  scaleA: string; // e.g. "≈ one day"
+  scaleB: string; // e.g. "months"
+  a: (number | null)[]; // position of part i+1 on clock A, 0–1
+  b: (number | null)[];
+  highlight?: number; // part number to set in crimson
+  caption: string;
+}
+const { clockA, clockB, scaleA, scaleB, a, b, highlight, caption } = Astro.props;
+
+const W = 720;
+const X0 = 10;
+const X1 = 710;
+const YA = 46;
+const YB = 148;
+const x = (p: number) => X0 + p * (X1 - X0);
+const parts = a.map((pa, i) => ({ n: i + 1, xa: pa == null ? null : x(pa), xb: b[i] == null ? null : x(b[i]!) }));
+---
+
+<figure class="plate-figure">
+  <svg viewBox={`0 0 ${W} 200`} role="img" aria-label={caption} preserveAspectRatio="xMidYMid meet">
+    <!-- clock labels -->
+    <text class="clock-label" x={X0} y="18">{clockA}</text>
+    <text class="scale-label" x={X1} y="18" text-anchor="end">{scaleA}</text>
+    <text class="clock-label" x={X0} y="192">{clockB}</text>
+    <text class="scale-label" x={X1} y="192" text-anchor="end">{scaleB}</text>
+
+    <!-- axes -->
+    <line class="axis" x1={X0} y1={YA} x2={X1} y2={YA} />
+    <line class="axis" x1={X0} y1={YB} x2={X1} y2={YB} />
+
+    <!-- leader lines: the scissor -->
+    {parts.map((p) =>
+      p.xa != null && p.xb != null ? (
+        <line
+          class:list={['leader', { 'leader--hl': p.n === highlight }]}
+          x1={p.xa}
+          y1={YA + 5}
+          x2={p.xb}
+          y2={YB - 5}
+        />
+      ) : null,
+    )}
+
+    <!-- ticks + numerals, clock A -->
+    {parts.map((p) =>
+      p.xa != null ? (
+        <>
+          <line class:list={['tick', { 'tick--hl': p.n === highlight }]} x1={p.xa} y1={YA - 5} x2={p.xa} y2={YA + 5} />
+          <text class:list={['num', { 'num--hl': p.n === highlight }]} x={p.xa} y={YA - 11} text-anchor="middle">{p.n}</text>
+        </>
+      ) : null,
+    )}
+
+    <!-- ticks + numerals, clock B -->
+    {parts.map((p) =>
+      p.xb != null ? (
+        <>
+          <line class:list={['tick', { 'tick--hl': p.n === highlight }]} x1={p.xb} y1={YB - 5} x2={p.xb} y2={YB + 5} />
+          <text class:list={['num', { 'num--hl': p.n === highlight }]} x={p.xb} y={YB + 20} text-anchor="middle">{p.n}</text>
+        </>
+      ) : null,
+    )}
+  </svg>
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .plate-figure {
+    margin: 0 0 1.8rem;
+    border: 1px solid var(--rule2);
+    background: var(--paper);
+    padding: 1.1rem 1.2rem 0.8rem;
+  }
+  svg { display: block; width: 100%; height: auto; }
+  .axis { stroke: var(--ink); stroke-width: 1; }
+  .tick { stroke: var(--ink); stroke-width: 1; }
+  .tick--hl { stroke: var(--crimson); stroke-width: 1.5; }
+  .leader { stroke: var(--rule2); stroke-width: 0.9; }
+  .leader--hl { stroke: var(--crimson); stroke-width: 1; }
+  .num {
+    font-family: var(--mono);
+    font-size: 13px;
+    fill: var(--soft);
+  }
+  .num--hl { fill: var(--crimson); font-weight: 600; }
+  .clock-label,
+  .scale-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    fill: var(--faint);
+  }
+  figcaption {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--faint);
+    margin-top: 0.6rem;
+    text-align: center;
+  }
+</style>

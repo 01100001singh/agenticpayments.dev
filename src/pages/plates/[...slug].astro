@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PromptSidebar from '../../components/PromptSidebar.astro';
 import CookedFrom from '../../components/CookedFrom.astro';
+import PlateFigure from '../../components/PlateFigure.astro';
 
 export async function getStaticPaths() {
   const plates = await getCollection('plates', (p) => !p.data.draft);
@@ -36,10 +37,23 @@ const jsonld = {
         <p class="observed">as observed {observed}</p>
       </header>
 
+      {d.figure && (
+        <PlateFigure
+          clockA={d.clocks[0]}
+          clockB={d.clocks[1]}
+          scaleA={d.figure.a_scale}
+          scaleB={d.figure.b_scale}
+          a={d.figure.a}
+          b={d.figure.b}
+          highlight={d.figure.highlight}
+          caption={`Fig. 1 — the two clocks of ${d.title.toLowerCase().replace(/^dissection of /, '')}; schematic, not to scale.`}
+        />
+      )}
+
       <div class="organ-table" role="table" aria-label={`Anatomy of ${d.title}`}>
         <div class="organ-row organ-row--head" role="row">
           <span role="columnheader" class="col-n">№</span>
-          <span role="columnheader" class="col-organ">Organ</span>
+          <span role="columnheader" class="col-organ">Part</span>
           <span role="columnheader" class="col-role">What it does</span>
           <span role="columnheader" class="col-clock">{d.clocks[0]}</span>
           <span role="columnheader" class="col-clock">{d.clocks[1]}</span>

@@ -4,7 +4,7 @@ plate: "II"
 subtitle: Transactio unificata — one scan-and-pay, laid open
 date: 2026-07-06
 as_observed: 2026-07-06
-summary: "A UPI P2M payment dissected organ by organ: what fires in the seconds you watch, and what settles on the clock you don't."
+summary: "A UPI P2M payment dissected part by part: what fires in the seconds you watch, and what settles on the clock you don't."
 tldr: "The success screen is the experience clock; the interbank money settles later, netted in batches. UPI's genius is making the deferral invisible — its risk is that everyone, including regulators, forgets the deferral exists."
 cooked_from: [cut-0200, cut-0201, cut-0203]
 pair_with:
@@ -13,6 +13,12 @@ pair_with:
   - href: /receipts/0071/
     label: Receipt #0071
 clocks: [experience clock, money clock]
+figure:
+  a: [0.04, 0.2, 0.3, 0.34, 0.42, null, null]
+  b: [null, null, 0.05, 0.07, 0.1, 0.78, null]
+  a_scale: "seconds"
+  b_scale: "hours"
+  highlight: 5
 organs:
   - n: 1
     organ: The address
@@ -50,17 +56,17 @@ organs:
     experience_clock: "noticed only when absent"
     money_clock: "runs on subsidy, not price"
 prompts:
-  - "Rebuild this Plate for PIX or FedNow — which organs are missing, which are renamed?"
+  - "Rebuild this Plate for PIX or FedNow — which parts are missing, which are renamed?"
   - "Redraw the two clocks for a wallet-to-wallet payment inside one PSP. What collapses?"
-  - "Explain organ 6 to a merchant who believes they've 'already been paid.'"
-  - "Write the failure story: what does the payer see if organ 5 dies after organ 4 fires?"
+  - "Explain part 6 to a merchant who believes they've 'already been paid.'"
+  - "Write the failure story: what does the payer see if part 5 dies after part 4 fires?"
   - "Turn this Plate into a 60-second script for a new fintech analyst."
 ---
 
 Every UPI payment you've ever made ended the same way: a checkmark, within seconds. That checkmark — row 5 in the table above — is a **message** completing, not money moving. The message is instant. The money is netted, batched, and settled between banks on a schedule the payer has never heard of. Both facts are true at once, and the system is *designed* so that only one of them is felt.
 
-Notice what the dissection shows about credentials: there is no card number to steal because there is no pull. The payer pushes (cut-0203); the PIN is captured inside the network's common library, not the app (organ 2); the merchant holds nothing reusable. Fraud, having no credentials to eat, migrates to persuasion — scams that talk the payer into pushing.
+Notice what the dissection shows about credentials: there is no card number to steal because there is no pull. The payer pushes (cut-0203); the PIN is captured inside the network's common library, not the app (row 2); the merchant holds nothing reusable. Fraud, having no credentials to eat, migrates to persuasion — scams that talk the payer into pushing.
 
-And notice organ 7, the one every diagram omits. The apparatus that keeps this rail trustworthy is real, staffed, and expensive — and its funding was set to zero as policy in 2020. The organ still works. It is also the one under chronic malnutrition, and organs like that fail slowly, then suddenly.
+And notice part 7, the one every diagram omits. The apparatus that keeps this rail trustworthy is real, staffed, and expensive — and its funding was set to zero as policy in 2020. The part still works. It is also the one under chronic malnutrition, and parts like that fail slowly, then suddenly.
 
-*One carcass, three dishes: this Plate, [The Switch](/bestiary/the-switch/), and [Receipt #0071](/receipts/0071/). Same spine, different cooking — which is the entire point of this site.*
+*One specimen, three dishes: this Plate, [The Switch](/bestiary/the-switch/), and [Receipt #0071](/receipts/0071/). Same spine, different cooking — which is the entire point of this site.*

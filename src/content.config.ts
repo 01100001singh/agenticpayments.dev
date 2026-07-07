@@ -73,6 +73,17 @@ const plates = defineCollection({
     pair_with: z
       .array(z.object({ href: z.string(), label: z.string() }))
       .default([]),
+    // Fig. 1 (scissor diagram): per-part positions (0–1) on each clock;
+    // null = the part doesn't register on that clock.
+    figure: z
+      .object({
+        a: z.array(z.number().nullable()),
+        b: z.array(z.number().nullable()),
+        a_scale: z.string(),
+        b_scale: z.string(),
+        highlight: z.number().optional(),
+      })
+      .optional(),
   }),
 });
 
