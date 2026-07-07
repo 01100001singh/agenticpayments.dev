@@ -35,17 +35,17 @@ const clip = (p: string) =>
 <aside class="sidebar" aria-labelledby="sidebar-heading">
   <p class="eyebrow eyebrow--crimson" id="sidebar-heading">Cook this with your agent</p>
   <p class="sidebar-note">
-    This page is one plating of the idea — the raw material is yours to re-cook. Copy a
-    prompt below and paste it into ChatGPT, Claude, Gemini, whatever you use. <strong>The
-    copied text carries the full source</strong>, so any model can cook it; no browsing,
-    no login, nothing else required.
+    This page is one plating of the idea — the raw material is yours to re-cook. Pick a
+    prompt below: you'll see <strong>exactly what lands on your clipboard</strong> — prompt
+    plus full source — before you take it. Then paste into ChatGPT, Claude, Gemini,
+    whatever you use; no browsing, no login, nothing else required.
   </p>
   <ul class="prompt-list">
     {list.map((p, i) => (
       <li>
         <button type="button" class="prompt" data-prompt={clip(p)} data-i={i}>
           <span class="prompt-text">{p}</span>
-          <span class="copy-mark" aria-hidden="true">copy</span>
+          <span class="copy-mark" aria-hidden="true">view</span>
         </button>
       </li>
     ))}
@@ -58,6 +58,22 @@ const clip = (p: string) =>
     </p>
   )}
 </aside>
+
+<dialog id="payload-modal" aria-labelledby="payload-modal-title">
+  <div class="modal-head">
+    <p class="eyebrow eyebrow--crimson" id="payload-modal-title">Your parcel, exactly as it will paste</p>
+    <button type="button" class="modal-close" id="payload-close" aria-label="Close">✕</button>
+  </div>
+  <p class="modal-note">
+    Everything below lands on your clipboard — prompt, full source, license, citation.
+    Paste it into ChatGPT, Claude, Gemini, or any model; nothing else is needed.
+  </p>
+  <pre class="modal-payload" id="payload-text" tabindex="0"></pre>
+  <div class="modal-actions">
+    <button type="button" class="modal-copy" id="payload-copy">Copy to clipboard</button>
+    <button type="button" class="modal-cancel" id="payload-cancel">Close</button>
+  </div>
+</dialog>
 
 <style>
   .sidebar {
@@ -103,27 +119,117 @@ const clip = (p: string) =>
     padding-top: 0.7rem;
     margin: 0.9rem 0 0;
   }
+
+  /* ————— payload modal ————— */
+  #payload-modal {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    outline: 1px solid var(--rule2);
+    outline-offset: 3px;
+    padding: 1.3rem 1.4rem 1.2rem;
+    width: min(44rem, calc(100vw - 2rem));
+    max-height: min(80dvh, 46rem);
+    margin: auto;
+    display: none;
+    flex-direction: column;
+  }
+  #payload-modal[open] { display: flex; }
+  #payload-modal::backdrop { background: rgba(33, 30, 26, 0.45); }
+  .modal-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .modal-close {
+    font-family: var(--mono);
+    font-size: var(--fs-sm);
+    background: none;
+    border: 0;
+    color: var(--faint);
+    cursor: pointer;
+    padding: 0 0.2rem;
+  }
+  .modal-close:hover { color: var(--crimson); }
+  .modal-note { font-size: var(--fs-sm); color: var(--soft); margin: 0.5rem 0 0.8rem; }
+  .modal-payload {
+    flex: 1;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    line-height: 1.55;
+    background: var(--cream);
+    border: 1px solid var(--rule2);
+    padding: 0.9rem 1rem;
+    margin: 0 0 1rem;
+    min-height: 8rem;
+  }
+  .modal-actions { display: flex; gap: 0.6rem; }
+  .modal-copy {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--crimson);
+    background: var(--crimson);
+    color: var(--paper);
+    cursor: pointer;
+  }
+  .modal-copy:hover { background: var(--crimson2); border-color: var(--crimson2); }
+  .modal-copy.done { background: var(--olive); border-color: var(--olive); }
+  .modal-cancel {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--rule2);
+    background: var(--paper);
+    color: var(--soft);
+    cursor: pointer;
+  }
+  .modal-cancel:hover { border-color: var(--soft); }
 </style>
 
 <script>
+  const modal = document.getElementById('payload-modal') as HTMLDialogElement;
+  const payloadText = document.getElementById('payload-text')!;
+  const copyBtn = document.getElementById('payload-copy') as HTMLButtonElement;
+  let currentIndex = '';
+
   for (const btn of document.querySelectorAll<HTMLButtonElement>('.prompt')) {
-    btn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(btn.dataset.prompt!);
-        const mark = btn.querySelector('.copy-mark')!;
-        btn.classList.add('copied');
-        mark.textContent = 'copied';
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          mark.textContent = 'copy';
-        }, 1600);
-        (window as any).va?.('event', {
-          name: 'prompt_copy',
-          data: { page: location.pathname, prompt: btn.dataset.i },
-        });
-      } catch {
-        /* clipboard unavailable; nothing to do */
-      }
+    btn.addEventListener('click', () => {
+      payloadText.textContent = btn.dataset.prompt!;
+      currentIndex = btn.dataset.i ?? '';
+      copyBtn.classList.remove('done');
+      copyBtn.textContent = 'Copy to clipboard';
+      modal.showModal();
+      payloadText.scrollTop = 0;
+      (window as any).va?.('event', {
+        name: 'prompt_view',
+        data: { page: location.pathname, prompt: currentIndex },
+      });
     });
   }
+
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(payloadText.textContent ?? '');
+      copyBtn.classList.add('done');
+      copyBtn.textContent = 'Copied — go cook';
+      (window as any).va?.('event', {
+        name: 'prompt_copy',
+        data: { page: location.pathname, prompt: currentIndex },
+      });
+      setTimeout(() => modal.close(), 900);
+    } catch {
+      copyBtn.textContent = 'Select the text and copy manually';
+    }
+  });
+
+  document.getElementById('payload-close')!.addEventListener('click', () => modal.close());
+  document.getElementById('payload-cancel')!.addEventListener('click', () => modal.close());
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.close(); // backdrop click
+  });
 </script>
