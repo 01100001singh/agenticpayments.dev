@@ -6,7 +6,7 @@ date: 2026-07-06
 as_observed: 2026-07-06
 summary: "A UPI P2M payment dissected organ by organ: what fires in the seconds you watch, and what settles on the clock you don't."
 tldr: "The success screen is the experience clock; the interbank money settles later, netted in batches. UPI's genius is making the deferral invisible — its risk is that everyone, including regulators, forgets the deferral exists."
-cooked_from: [cut-0200, cut-0201, cut-0203, cut-0204]
+cooked_from: [cut-0200, cut-0201, cut-0203]
 pair_with:
   - href: /bestiary/the-switch/
     label: The Switch (bestiary)
@@ -61,6 +61,6 @@ Every UPI payment you've ever made ended the same way: a checkmark, within secon
 
 Notice what the dissection shows about credentials: there is no card number to steal because there is no pull. The payer pushes (cut-0203); the PIN is captured inside the network's common library, not the app (organ 2); the merchant holds nothing reusable. Fraud, having no credentials to eat, migrates to persuasion — scams that talk the payer into pushing.
 
-And notice organ 7, the one every diagram omits. The apparatus that keeps this rail trustworthy is real, staffed, and expensive — and its funding was set to zero as policy (cut-0204). The organ still works. It is also the one under chronic malnutrition, and organs like that fail slowly, then suddenly.
+And notice organ 7, the one every diagram omits. The apparatus that keeps this rail trustworthy is real, staffed, and expensive — and its funding was set to zero as policy in 2020. The organ still works. It is also the one under chronic malnutrition, and organs like that fail slowly, then suddenly.
 
 *One carcass, three dishes: this Plate, [The Switch](/bestiary/the-switch/), and [Receipt #0071](/receipts/0071/). Same spine, different cooking — which is the entire point of this site.*

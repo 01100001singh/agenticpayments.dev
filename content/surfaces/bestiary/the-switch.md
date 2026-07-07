@@ -3,7 +3,7 @@ title: The Switch
 latin: Commutator indicus npci
 date: 2026-07-06
 summary: "The UPI switch, observed as a creature: one narrow waist through which a nation's retail payments pass, kept by a nonprofit, fed by mandate."
-cooked_from: [cut-0201, cut-0203, cut-0204]
+cooked_from: [cut-0201, cut-0203]
 image: null
 fields:
   habitat: "The narrow waist of Indian retail payments — between every PSP app and every bank, single species, no competing population"
@@ -24,6 +24,6 @@ The Switch is the rarest of payment fauna: a true monopolist that behaves like p
 
 Its evolutionary advantage was never speed. It was **addressability** (it resolves human-readable names to bank plumbing, cut-0201) and **direction** (it only accepts pushes, never pulls, cut-0203). Together these traits let it colonize environments no card-shaped organism ever penetrated: the kirana counter, the vegetable cart, the temple donation box.
 
-Its vulnerability is written in its diet. A creature this size that eats no fees survives on institutional goodwill (cut-0204) — and goodwill is a nutrient with political seasons. Observers should watch not whether The Switch dies (it won't) but whether its keepers stay fed enough to keep its immune system — fraud and dispute machinery — in working order.
+Its vulnerability is written in its diet. A creature this size that eats no fees survives on institutional goodwill — and goodwill is a nutrient with political seasons. Observers should watch not whether The Switch dies (it won't) but whether its keepers stay fed enough to keep its immune system — fraud and dispute machinery — in working order.
 
 Agentic-era relevance: every new protocol that dreams of being "the narrow waist for agent payments" is dreaming, specifically, of becoming this animal. Few of their architects have studied what it costs to keep one alive.

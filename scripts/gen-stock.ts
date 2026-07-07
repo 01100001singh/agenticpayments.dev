@@ -9,7 +9,7 @@
  * same source are byte-identical. Signing happens in a separate step.
  */
 import { createHash } from 'node:crypto';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { canonicalize } from './lib/canonical.ts';
 import { loadCuts, lexiconSlugs, isoDate, PUBLIC_DIR, SITE } from './lib/cuts.ts';
@@ -21,6 +21,13 @@ mkdirSync(outDir, { recursive: true });
 
 const slugs = lexiconSlugs();
 const cuts = loadCuts().filter((c) => !c.data.draft);
+
+// Remove orphaned twins of Cuts that no longer exist (or went draft) —
+// a superseded Cut keeps its page and twin; a deleted Cut keeps neither.
+const live = new Set(cuts.map((c) => `${c.data.id}.stock.json`));
+for (const f of readdirSync(outDir).filter((f) => f.endsWith('.stock.json'))) {
+  if (!live.has(f)) unlinkSync(join(outDir, f));
+}
 
 for (const cut of cuts) {
   const fm = cut.data;

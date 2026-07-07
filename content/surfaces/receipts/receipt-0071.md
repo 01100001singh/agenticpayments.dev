@@ -4,7 +4,7 @@ number: "0071"
 date: 2026-07-06
 merchant: "SRI GANESH GENERAL STORE"
 summary: "A ₹340 grocery run, receipted the way the rail actually experienced it."
-cooked_from: [cut-0200, cut-0204]
+cooked_from: [cut-0200]
 items:
   - label: "Groceries (assorted)"
     amount: "₹340.00"
@@ -33,4 +33,4 @@ prompts:
   - "The '— unpriced —' line: write the invoice if it ever arrives."
 ---
 
-A receipt is the smallest honest document in commerce, so this one is honest about the rail too. Every ₹0.00 above is a real service with a real cost, priced at zero by design or by decree. The receipt form is the joke; the joke is that nobody prints the last line item (cut-0204).
+A receipt is the smallest honest document in commerce, so this one is honest about the rail too. Every ₹0.00 above is a real service with a real cost, priced at zero by design or by decree. The receipt form is the joke; the joke is that nobody prints the last line item.

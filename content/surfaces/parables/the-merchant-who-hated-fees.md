@@ -3,7 +3,7 @@ title: The Merchant Who Hated Fees
 date: 2026-07-06
 summary: "A parable about a merchant who got the zero-fee rail he demanded, and what arrived in the space the fee vacated."
 moral: "Moral: the fee was never the price of moving money. It was the price of someone else standing between the merchant and the worst day. Zero-fee rails are unpriced-risk rails."
-cooked_from: [cut-0204, cut-0212]
+cooked_from: [cut-0212, cut-0216]
 prompts:
   - "Retell this from the fraudster's perspective — what did the zero-fee rail look like to them?"
   - "Write the merchant's spreadsheet: fees saved vs. losses eaten, month by month."

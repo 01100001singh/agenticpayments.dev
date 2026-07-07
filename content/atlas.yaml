@@ -31,7 +31,7 @@ sections:
         section: rails
       - title: RBI — Master Directions on PPIs
         url: https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx
-        note: the weather system of cut-0100, in the regulator's own words
+        note: the regulatory weather system of the PPI era, in the regulator's own words
         section: rails
       - title: llms.txt specification
         url: https://llmstxt.org

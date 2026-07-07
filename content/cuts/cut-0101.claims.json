@@ -13,6 +13,6 @@
   },
   "relations": [
     { "type": "supports", "target": "cut-0215" },
-    { "type": "derives-from", "target": "cut-0100" }
+    { "type": "derives-from", "target": "cut-0102" }
   ]
 }
