@@ -25,7 +25,7 @@ against [`schema/cut.schema.json`](schema/cut.schema.json). Two taxonomies are *
 — free-text values fail the build:
 
 - `type`: `principle` · `scar` · `observation` · `parable` · `frame` · `datapoint` · `entry`
-- `era`: `ppi-india` · `upi` · `venmo` · `cards` · `agentic` · `crypto` · `universal`
+- `era`: `ppi-india` · `upi` · `venmo` · `cards` · `embedded` · `agentic` · `crypto` · `universal`
 
 A Cut must make sense with zero surrounding context. Context travels *as structure* —
 `era`, `provenance`, `valid_as_of`, `stale_after`, `superseded_by` — never as prose

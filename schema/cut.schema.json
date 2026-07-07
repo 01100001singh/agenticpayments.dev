@@ -14,7 +14,7 @@
     },
     "title": { "type": "string", "minLength": 3, "maxLength": 120 },
     "era": {
-      "enum": ["ppi-india", "upi", "venmo", "cards", "agentic", "crypto", "universal"]
+      "enum": ["ppi-india", "upi", "venmo", "cards", "embedded", "agentic", "crypto", "universal"]
     },
     "tags": {
       "type": "array",

@@ -10,7 +10,7 @@ export const PUBLIC_DIR = join(ROOT, 'public');
 export const SITE = 'https://agenticpayments.dev';
 
 export const CUT_TYPES = ['principle', 'scar', 'observation', 'parable', 'frame', 'datapoint', 'entry'] as const;
-export const CUT_ERAS = ['ppi-india', 'upi', 'venmo', 'cards', 'agentic', 'crypto', 'universal'] as const;
+export const CUT_ERAS = ['ppi-india', 'upi', 'venmo', 'cards', 'embedded', 'agentic', 'crypto', 'universal'] as const;
 
 export interface CutFile {
   id: string;

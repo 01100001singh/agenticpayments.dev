@@ -23,6 +23,24 @@ sections:
         url: https://a2a-protocol.org
         note: agents describing capabilities to each other; payments will ride on top
         section: protocols
+  - name: Emb.F[x] — the embedded era
+    links:
+      - title: Embedded Myopias (2024)
+        url: https://embed.substack.com/p/embedded-myopias
+        note: ten misconceptions from four years of embedded credit; the feedstock for this site's agentic-credit cuts
+        section: embfx
+      - title: The Embedded Lending Value Chain (2021)
+        url: https://embed.substack.com/p/the-embedded-lending-value-chain
+        note: the lending stack, disaggregated — and the phrase "agent of the borrower," four years early
+        section: embfx
+      - title: The Embedding Business Case — Platform Edition (2021)
+        url: https://embed.substack.com/p/the-embedding-business-case-platform
+        note: how a platform should decide whether it has any business embedding credit at all
+        section: embfx
+      - title: Product-Market Fit vs Product-Marketplace Fit (2021)
+        url: https://embed.substack.com/p/product-market-fit-vs-product-marketplace
+        note: why embedded products never get one PMF — they earn one per marketplace, per borrower type
+        section: embfx
   - name: Rails & primary sources
     links:
       - title: NPCI — UPI product overview

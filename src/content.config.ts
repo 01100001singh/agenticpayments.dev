@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const CUT_TYPES = ['principle', 'scar', 'observation', 'parable', 'frame', 'datapoint', 'entry'] as const;
-const CUT_ERAS = ['ppi-india', 'upi', 'venmo', 'cards', 'agentic', 'crypto', 'universal'] as const;
+const CUT_ERAS = ['ppi-india', 'upi', 'venmo', 'cards', 'embedded', 'agentic', 'crypto', 'universal'] as const;
 
 const cuts = defineCollection({
   loader: glob({ pattern: '*.md', base: './content/cuts' }),
