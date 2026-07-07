@@ -29,7 +29,12 @@ const url = `https://agenticpayments.dev/parables/${entry.id}`;
       <CookedFrom ids={d.cooked_from} />
     </article>
     <div class="side">
-      <PromptSidebar title={d.title} url={url} prompts={d.prompts} />
+      <PromptSidebar
+        title={d.title}
+        url={url}
+        prompts={d.prompts}
+        payload={`${d.title} (a parable)\n\n${(entry.body ?? '').trim()}\n\n${d.moral}`}
+      />
     </div>
   </div>
 </Base>

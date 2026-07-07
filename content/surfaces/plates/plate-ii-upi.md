@@ -57,7 +57,7 @@ prompts:
   - "Turn this Plate into a 60-second script for a new fintech analyst."
 ---
 
-What you just watched, when the checkmark appeared, was a **message** completing — not money moving. The message is instant. The money is netted, batched, and settled between banks on a schedule the payer has never heard of. Both facts are true at once, and the system is *designed* so that only one of them is felt.
+Every UPI payment you've ever made ended the same way: a checkmark, within seconds. That checkmark — row 5 in the table above — is a **message** completing, not money moving. The message is instant. The money is netted, batched, and settled between banks on a schedule the payer has never heard of. Both facts are true at once, and the system is *designed* so that only one of them is felt.
 
 Notice what the dissection shows about credentials: there is no card number to steal because there is no pull. The payer pushes (cut-0203); the PIN is captured inside the network's common library, not the app (organ 2); the merchant holds nothing reusable. Fraud, having no credentials to eat, migrates to persuasion — scams that talk the payer into pushing.
 

@@ -72,7 +72,18 @@ const jsonld = {
     </article>
 
     <div class="side">
-      <PromptSidebar title={d.title} url={url} prompts={d.prompts} />
+      <PromptSidebar
+        title={d.title}
+        url={url}
+        prompts={d.prompts}
+        payload={[
+          `${d.title} (${d.latin}) — a specimen from the bestiary of payment protocols`,
+          '',
+          ...FIELDS.map(([key, label]) => `${label.toUpperCase()}: ${d.fields[key]}`),
+          '',
+          (entry.body ?? '').trim(),
+        ].join('\n')}
+      />
     </div>
   </div>
 </Base>

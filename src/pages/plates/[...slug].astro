@@ -79,7 +79,24 @@ const jsonld = {
     </article>
 
     <div class="side">
-      <PromptSidebar title={`Plate ${d.plate} — ${d.title}`} url={url} prompts={d.prompts} />
+      <PromptSidebar
+        title={`Plate ${d.plate} — ${d.title}`}
+        url={url}
+        prompts={d.prompts}
+        payload={[
+          `Plate ${d.plate} — ${d.title}`,
+          `${d.subtitle} · as observed ${observed}`,
+          '',
+          ...d.organs.map(
+            (o) =>
+              `${o.n}. ${o.organ} — ${o.role} [${d.clocks[0]}: ${o.experience_clock} | ${d.clocks[1]}: ${o.money_clock}]`,
+          ),
+          '',
+          `TL;DR: ${d.tldr}`,
+          '',
+          (plate.body ?? '').trim(),
+        ].join('\n')}
+      />
     </div>
   </div>
 </Base>

@@ -2,14 +2,22 @@
 /**
  * The Prompt Sidebar — "cook this with your agent."
  * Static v1: a copy-button prompt list attached to every Cut and Surface.
+ *
+ * The copied text is SELF-CONTAINED: prompt + the full source material +
+ * citation. Paste it into any assistant — browsing or not, the model has
+ * everything it needs. (The Cuts are CC-BY and ~180 words; portability is
+ * the entire point of the format.)
+ *
  * Copies fire a Vercel Analytics custom event (no PII, prompt index only).
  */
 interface Props {
   title: string;
   url: string;
+  payload: string; // the full source material, as plain text
   prompts?: string[]; // per-surface overrides; falls back to the seed set
+  stockUrl?: string; // machine twin link — Cut pages only
 }
-const { title, url, prompts } = Astro.props;
+const { title, url, payload, prompts, stockUrl } = Astro.props;
 
 const seed = [
   'Turn this into a Socratic dialogue between a merchant and an agent.',
@@ -19,19 +27,23 @@ const seed = [
   'Stress-test it against a scenario from my own business.',
 ];
 const list = prompts?.length ? prompts : seed;
+
+const clip = (p: string) =>
+  `${p}\n\n--- SOURCE (CC-BY-4.0, cite the URL) ---\n\n${payload.trim()}\n\n"${title}" — ${url}`;
 ---
 
 <aside class="sidebar" aria-labelledby="sidebar-heading">
   <p class="eyebrow eyebrow--crimson" id="sidebar-heading">Cook this with your agent</p>
   <p class="sidebar-note">
-    This page is one rendering. The raw Cut is yours —
-    <a href={`${url}.stock.json`} data-stock>machine twin</a> included. Copy a prompt,
-    paste it with the link, and let your model plate it differently.
+    This page is one plating of the idea — the raw material is yours to re-cook. Copy a
+    prompt below and paste it into ChatGPT, Claude, Gemini, whatever you use. <strong>The
+    copied text carries the full source</strong>, so any model can cook it; no browsing,
+    no login, nothing else required.
   </p>
   <ul class="prompt-list">
     {list.map((p, i) => (
       <li>
-        <button type="button" class="prompt" data-prompt={`${p}\n\nSource: "${title}" — ${url}`} data-i={i}>
+        <button type="button" class="prompt" data-prompt={clip(p)} data-i={i}>
           <span class="prompt-text">{p}</span>
           <span class="copy-mark" aria-hidden="true">copy</span>
         </button>
@@ -39,6 +51,12 @@ const list = prompts?.length ? prompts : seed;
     ))}
   </ul>
   <p class="sidebar-own">…or paste your own scenario and see what your model does.</p>
+  {stockUrl && (
+    <p class="sidebar-stock">
+      Running an agent instead? The machine twin lives at
+      <a href={stockUrl}>{stockUrl.split('/').pop()}</a> — same meaning, zero prose.
+    </p>
+  )}
 </aside>
 
 <style>
@@ -77,6 +95,14 @@ const list = prompts?.length ? prompts : seed;
   }
   .prompt.copied .copy-mark { color: var(--olive); }
   .sidebar-own { font-size: var(--fs-sm); font-style: italic; color: var(--faint); margin: 0.9rem 0 0; }
+  .sidebar-stock {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--faint);
+    border-top: 1px solid var(--rule2);
+    padding-top: 0.7rem;
+    margin: 0.9rem 0 0;
+  }
 </style>
 
 <script>

@@ -115,7 +115,12 @@ const jsonld = {
     </article>
 
     <div class="side">
-      <PromptSidebar title={d.title} url={url} />
+      <PromptSidebar
+        title={d.title}
+        url={url}
+        payload={`${d.title}\n(${d.id} · ${d.type} · era: ${d.era} · ${dateStr} · provenance: ${d.provenance})\n\n${(cut.body ?? '').trim()}`}
+        stockUrl={`/cuts/${d.id}.stock.json`}
+      />
     </div>
   </div>
 </Base>

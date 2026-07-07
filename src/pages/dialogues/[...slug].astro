@@ -29,7 +29,12 @@ const url = `https://agenticpayments.dev/dialogues/${entry.id}`;
       <CookedFrom ids={d.cooked_from} />
     </article>
     <div class="side">
-      <PromptSidebar title={d.title} url={url} prompts={d.prompts} />
+      <PromptSidebar
+        title={d.title}
+        url={url}
+        prompts={d.prompts}
+        payload={`${d.title} (a dialogue between ${d.speakers.join(' and ')})\n\n${(entry.body ?? '').trim()}`}
+      />
     </div>
   </div>
 </Base>

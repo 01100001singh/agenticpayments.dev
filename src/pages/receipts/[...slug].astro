@@ -59,7 +59,21 @@ const hasBody = (entry.body ?? '').trim().length > 0;
       <CookedFrom ids={d.cooked_from} />
     </article>
     <div class="side">
-      <PromptSidebar title={`Receipt #${d.number} — ${d.title}`} url={url} prompts={d.prompts} />
+      <PromptSidebar
+        title={`Receipt #${d.number} — ${d.title}`}
+        url={url}
+        prompts={d.prompts}
+        payload={[
+          `${d.merchant} — RECEIPT #${d.number}`,
+          d.title,
+          '',
+          ...d.items.map((i) => `${i.label} ... ${i.amount}${i.note ? `  (${i.note})` : ''}`),
+          `${d.total.label} ... ${d.total.amount}`,
+          d.footer,
+          '',
+          (entry.body ?? '').trim(),
+        ].join('\n')}
+      />
     </div>
   </div>
 </Base>
