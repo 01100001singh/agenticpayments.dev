@@ -3,6 +3,15 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PromptSidebar from '../../components/PromptSidebar.astro';
 import CookedFrom from '../../components/CookedFrom.astro';
+import SwitchEmblem from '../../components/emblems/SwitchEmblem.astro';
+import MandatumEmblem from '../../components/emblems/MandatumEmblem.astro';
+
+// Heraldic marks, by specimen. A mark is structure, not depiction —
+// commissioned engravings can replace these via the `image` field.
+const EMBLEMS: Record<string, any> = {
+  'the-switch': SwitchEmblem,
+  'the-mandatum': MandatumEmblem,
+};
 
 export async function getStaticPaths() {
   const entries = await getCollection('bestiary', (e) => !e.data.draft);
@@ -47,6 +56,11 @@ const jsonld = {
       {d.image ? (
         <figure class="engraving">
           <img src={d.image} alt={`Engraving of ${d.title}`} loading="lazy" />
+        </figure>
+      ) : EMBLEMS[entry.id] ? (
+        <figure class="engraving engraving--emblem">
+          <span class="fig-label">Fig. — the mark of {d.title.toLowerCase()}</span>
+          {(() => { const Emblem = EMBLEMS[entry.id]; return <Emblem />; })()}
         </figure>
       ) : (
         <div class="engraving engraving--fallback" aria-hidden="true">
@@ -114,6 +128,21 @@ const jsonld = {
     background: var(--cream);
   }
   .engraving img { display: block; width: 100%; }
+  .engraving--emblem {
+    padding: 2.4rem 2rem 1.4rem;
+    position: relative;
+  }
+  .engraving--emblem .fig-label {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.9rem;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--track-label);
+    color: var(--faint);
+  }
   .engraving--fallback {
     display: flex;
     flex-direction: column;

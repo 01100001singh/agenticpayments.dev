@@ -1,0 +1,68 @@
+---
+/**
+ * The Switch — heraldic mark: the narrow waist. Many senders, one node,
+ * many receivers; every line crosses the center. Flat ink, hairlines,
+ * one crimson accent. No depiction, only structure — the manuscript
+ * emblem tradition, not the animal-painting one.
+ */
+---
+
+<svg viewBox="0 0 560 300" role="img" aria-label="Heraldic mark of The Switch: many lines converging through a single central node">
+  <!-- inner double border -->
+  <rect x="10" y="10" width="540" height="280" class="bd" />
+  <rect x="16" y="16" width="528" height="268" class="bd bd--faint" />
+  <!-- corner marks -->
+  <path d="M24 34 v-10 h10" class="bd" />
+  <path d="M536 34 v-10 h-10" class="bd" />
+  <path d="M24 266 v10 h10" class="bd" />
+  <path d="M536 266 v10 h-10" class="bd" />
+
+  <!-- left field: senders -->
+  {[70, 105, 140, 175, 210, 245].map((y, i) => (
+    <>
+      <circle cx={70} cy={y} r="3.5" class="node" />
+      <path d={`M74 ${y} C 160 ${y}, 210 ${150 + (y - 150) * 0.22}, 271 150`} class="wire" />
+    </>
+  ))}
+
+  <!-- right field: receivers -->
+  {[86, 122, 158, 194, 230].map((y) => (
+    <>
+      <circle cx={490} cy={y} r="3.5" class="node" />
+      <path d={`M486 ${y} C 400 ${y}, 350 ${150 + (y - 150) * 0.22}, 289 150`} class="wire" />
+    </>
+  ))}
+
+  <!-- the waist -->
+  <circle cx="280" cy="150" r="16" class="waist" />
+  <circle cx="280" cy="150" r="9" class="waist-inner" />
+  <circle cx="280" cy="150" r="2.6" class="waist-dot" />
+
+  <!-- engraving hatch under the waist -->
+  {[0, 1, 2, 3, 4].map((i) => (
+    <line x1={252 + i * 14} y1={196} x2={246 + i * 14} y2={210} class="hatch" />
+  ))}
+
+  <!-- motto rule -->
+  <line x1="180" y1="252" x2="380" y2="252" class="bd bd--faint" />
+  <text x="280" y="245" text-anchor="middle" class="motto">omnia per unum</text>
+</svg>
+
+<style>
+  svg { display: block; width: 100%; height: auto; }
+  .bd { fill: none; stroke: var(--ink); stroke-width: 1; }
+  .bd--faint { stroke: var(--rule2); }
+  .node { fill: var(--paper); stroke: var(--ink); stroke-width: 1.1; }
+  .wire { fill: none; stroke: var(--soft); stroke-width: 0.8; }
+  .waist { fill: var(--paper); stroke: var(--ink); stroke-width: 1.4; }
+  .waist-inner { fill: none; stroke: var(--rule2); stroke-width: 1; }
+  .waist-dot { fill: var(--crimson); }
+  .hatch { stroke: var(--rule2); stroke-width: 0.8; }
+  .motto {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    fill: var(--faint);
+    letter-spacing: 0.06em;
+  }
+</style>

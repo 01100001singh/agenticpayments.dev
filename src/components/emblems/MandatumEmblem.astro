@@ -1,0 +1,67 @@
+---
+/**
+ * The Mandatum — heraldic mark: a charter with its pendant seal.
+ * Medieval mandates were exactly this — a document whose authority hung
+ * below it in wax. The seal carries four bands: cap · scope · expiry ·
+ * signature. Flat ink, hairlines, one crimson accent.
+ */
+---
+
+<svg viewBox="0 0 560 300" role="img" aria-label="Heraldic mark of The Mandatum: a charter with a pendant seal of four bands">
+  <!-- inner double border -->
+  <rect x="10" y="10" width="540" height="280" class="bd" />
+  <rect x="16" y="16" width="528" height="268" class="bd bd--faint" />
+  <!-- corner marks -->
+  <path d="M24 34 v-10 h10" class="bd" />
+  <path d="M536 34 v-10 h-10" class="bd" />
+  <path d="M24 266 v10 h10" class="bd" />
+  <path d="M536 266 v10 h-10" class="bd" />
+
+  <!-- the charter -->
+  <rect x="185" y="34" width="190" height="104" class="charter" />
+  <rect x="190" y="39" width="180" height="94" class="bd bd--faint" />
+  <!-- written lines -->
+  {[58, 72, 86, 100].map((y) => (
+    <line x1="204" y1={y} x2="356" y2={y} class="script" />
+  ))}
+  <line x1="204" y1="114" x2="290" y2="114" class="script" />
+
+  <!-- ribbon: charter to seal -->
+  <path d="M272 138 l4 34 M288 138 l-4 34" class="ribbon" />
+
+  <!-- the pendant seal: four bands -->
+  <circle cx="280" cy="212" r="40" class="seal-outer" />
+  <circle cx="280" cy="212" r="31" class="seal-bands" pathLength="100" transform="rotate(-45 280 212)" />
+  <circle cx="280" cy="212" r="21" class="bd bd--faint" fill="none" />
+  <circle cx="280" cy="212" r="3" class="seal-dot" />
+
+  <!-- motto -->
+  <text x="452" y="216" text-anchor="middle" class="motto">quantum · quo</text>
+  <text x="452" y="234" text-anchor="middle" class="motto">quamdiu · quis</text>
+  <text x="108" y="216" text-anchor="middle" class="motto">cap · scope</text>
+  <text x="108" y="234" text-anchor="middle" class="motto">expiry · sig</text>
+</svg>
+
+<style>
+  svg { display: block; width: 100%; height: auto; }
+  .bd { fill: none; stroke: var(--ink); stroke-width: 1; }
+  .bd--faint { stroke: var(--rule2); }
+  .charter { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+  .script { stroke: var(--rule2); stroke-width: 1.4; }
+  .ribbon { fill: none; stroke: var(--soft); stroke-width: 1; }
+  .seal-outer { fill: var(--paper); stroke: var(--ink); stroke-width: 1.4; }
+  .seal-bands {
+    fill: none;
+    stroke: var(--crimson);
+    stroke-width: 3;
+    stroke-dasharray: 21.5 3.5;
+  }
+  .seal-dot { fill: var(--crimson); }
+  .motto {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12.5px;
+    fill: var(--faint);
+    letter-spacing: 0.05em;
+  }
+</style>
