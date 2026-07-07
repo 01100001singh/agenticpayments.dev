@@ -17,9 +17,22 @@ const entries = (await getCollection('bestiary', (e) => !e.data.draft)).sort(
       <p class="eyebrow eyebrow--crimson">Bestiary</p>
       <h1>Protocols, as creatures actually observed</h1>
       <p class="lede measure">
-        A spec records a protocol's promises. A field record shows how it actually lives —
-        its diet, its predators, and how long its kind survives in the wild.
+        A bestiary is an old form: a naturalist's catalog of creatures — their habits,
+        their habitats, what they feed on, what hunts them. This one catalogs payment
+        protocols the same way, because a spec records a protocol's promises, and a field
+        record shows how it actually lives.
       </p>
+      <div class="legend">
+        <p class="eyebrow">Read the fields like a naturalist</p>
+        <p class="legend-body">
+          <span class="fld">habitat</span> — where it operates ·
+          <span class="fld">diet</span> — what sustains it: volume, fees, subsidy, intent ·
+          <span class="fld">lifespan</span> — how long its kind lasts ·
+          <span class="fld">predators</span> — what kills it: regulation, concentration, starvation ·
+          <span class="fld">symbiotes</span> — what it depends on, and feeds in return ·
+          <span class="fld">markings</span> — how to recognize one in the wild
+        </p>
+      </div>
     </header>
     <div class="specimen-list">
       {entries.map((e) => (
@@ -37,6 +50,22 @@ const entries = (await getCollection('bestiary', (e) => !e.data.draft)).sort(
   .page-head { padding: 2.6rem 0 1.8rem; }
   h1 { font-size: var(--fs-xxl); font-weight: 800; max-width: 44rem; }
   .lede { font-size: var(--fs-lg); color: var(--soft); }
+  .legend {
+    background: var(--cream);
+    border: 1px solid var(--rule2);
+    padding: 0.9rem 1.1rem;
+    max-width: 46rem;
+    margin-top: 1.2rem;
+  }
+  .legend-body { font-size: var(--fs-sm); color: var(--soft); margin: 0.45rem 0 0; line-height: 1.75; }
+  .fld {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--crimson);
+  }
   .specimen-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1.2rem; }
   .specimen-card {
     display: flex;
