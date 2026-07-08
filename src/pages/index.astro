@@ -50,7 +50,14 @@ const jsonld = {
     </section>
 
     <section class="start-here" aria-labelledby="start-here-h">
-      <p class="eyebrow" id="start-here-h">Start here — the reference pair</p>
+      <p class="eyebrow" id="start-here-h">Start here</p>
+      <a class="start-essay" href="/start-here/">
+        <span class="start-title">The lending value chain, redrawn for agents</span>
+        <span class="start-note">
+          One essay, no vocabulary required: what I mapped in 2021, and what changes now that
+          the software borrowing on a business's behalf is a literal agent.
+        </span>
+      </a>
       <div class="start-grid">
         <a class="start-item" href="/plates/plate-ii-upi/">
           <span class="plate-no">Plate II</span>
@@ -64,11 +71,8 @@ const jsonld = {
         </a>
       </div>
       <p class="start-math">
-        One UPI specimen yields a <a href="/bestiary/the-switch/">creature</a>, a plate, and a
-        <a href="/receipts/0071/">receipt</a>; one card specimen yields a plate, a
-        <a href="/dialogues/the-agent-meets-the-network/">dialogue</a>, and a
-        <a href="/parables/the-merchant-who-hated-fees/">parable</a>. Two spines, six dishes —
-        that's the whole thesis, performed.
+        Everything here is written for people and published simultaneously in a structured form
+        for software agents — <a href="/about/">how this site works →</a>
       </p>
     </section>
 
@@ -109,11 +113,22 @@ const jsonld = {
     padding: 1.2rem 1.4rem 1.1rem;
     margin-bottom: 3rem;
   }
+  .start-essay {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    background: var(--paper);
+    border: 1px solid var(--rule2);
+    padding: 0.9rem 1rem;
+    color: var(--ink);
+    margin-top: 0.8rem;
+  }
+  .start-essay:hover { text-decoration: none; border-color: var(--crimson); }
   .start-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.2rem;
-    margin-top: 0.8rem;
+    margin-top: 1.2rem;
   }
   .start-item {
     display: flex;

@@ -64,6 +64,7 @@ Each stock object carries: gist (one-sentence summary), claims (subject-predicat
 
 ## Human layer
 
+- [Start here](${SITE}/start-here): the front-door essay — the lending value chain, redrawn for agents
 - [The Counter](${SITE}/): recent Cuts, typed and dated
 - [About](${SITE}/about): thesis, how to read this site, licensing
 - [Lexicon](${SITE}/lexicon): stable glossary anchors used by entity links
@@ -133,7 +134,7 @@ ${items
 writeFileSync(join(PUBLIC_DIR, 'rss.xml'), rss, 'utf8');
 
 // ---- sitemap.xml ------------------------------------------------------------
-const staticRoutes = ['/', '/about', '/journal', '/lexicon', '/atlas', '/bestiary', '/plates'];
+const staticRoutes = ['/', '/start-here', '/about', '/journal', '/lexicon', '/atlas', '/bestiary', '/plates'];
 const lexicon = existsSync(join(PUBLIC_DIR, '../content/lexicon'))
   ? readdirSync(join(PUBLIC_DIR, '../content/lexicon'))
       .filter((f) => f.endsWith('.md'))

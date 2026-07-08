@@ -1,0 +1,174 @@
+---
+/**
+ * Start here — the plain-language front door. One essay a cold visitor can
+ * read start-to-finish with zero invented vocabulary: the 2021 embedded-
+ * lending value chain, run forward into the agentic era. The matrix figure
+ * is pulled live from cut-0303's frontmatter so the two never drift.
+ */
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import MatrixFigure from '../components/MatrixFigure.astro';
+import { cutPath } from '../lib/cutPath';
+
+const matrixCut = (await getCollection('cuts', (c) => c.data.id === 'cut-0303'))[0];
+const fig = matrixCut?.data.figure;
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'The lending value chain, redrawn for agents',
+  datePublished: '2026-07-07',
+  url: 'https://agenticpayments.dev/start-here/',
+  author: { '@type': 'Person', name: 'Ankit Singh', url: 'https://agenticpayments.dev/about/' },
+  publisher: { '@type': 'Organization', name: 'agenticpayments.dev', url: 'https://agenticpayments.dev/' },
+};
+---
+
+<Base
+  title="The lending value chain, redrawn for agents"
+  description="Start here: what I mapped about embedded lending in 2021, and what changes now that the software borrowing on a business's behalf is a literal agent."
+  path="/start-here"
+  jsonld={jsonld}
+>
+  <div class="wrap">
+    <article class="essay">
+      <header>
+        <p class="eyebrow eyebrow--crimson">Start here</p>
+        <h1>The lending value chain, redrawn for agents</h1>
+        <p class="plain-date">July 2026 · a five-minute read, no vocabulary required</p>
+      </header>
+
+      <div class="prose measure">
+        <p>
+          In May 2021 I published a map. Embedded lending — credit offered inside the software a
+          business already uses, instead of across a bank's desk — was becoming the default way
+          small businesses would borrow, and I wanted to name every party it takes to make one
+          such loan happen. The map had nine boxes on a ladder: the borrower at the bottom, the
+          lender at the top, and between them the platform embedding the loan, the infrastructure
+          providers laying the rails, the firms that aggregate raw data and the firms that refine
+          it into something a lender can price, the payment providers that move money out and
+          collect it back, the credit bureaus, and the underwriting modellers.
+        </p>
+        <p>
+          One phrase from that post has refused to stay a metaphor, and it is the reason this
+          site exists. But start with the map.
+        </p>
+        <p>
+          The useful discovery wasn't the nine boxes — it was that their contributions collapse.
+          Whatever hat an entity wears, what it actually brings to a loan is some mix of just
+          four things: <strong>capital, distribution, data, and technology</strong>. That frame
+          settled arguments then and settles them now. If a new entrant can't name which of the
+          four it strengthens, it isn't in the value chain; it's in the way.
+        </p>
+      </div>
+
+      {fig && <MatrixFigure cols={fig.cols} rows={fig.rows} caption={fig.caption} />}
+
+      <div class="prose measure">
+        <p>
+          The map also predicted where the money would go. As platforms multiplied, the points
+          where a loan begins became ubiquitous — and when a stage of a value chain becomes
+          ubiquitous, the profits move next door. Distribution, the online lenders' crown jewel,
+          was commoditising; the attractive profit pools were shifting to the adjacent stages —
+          infrastructure, refined data, underwriting expertise. And borrowers had a reason to
+          prefer the new arrangement: a marketplace that blasts you with loan offers is a
+          low-trust counterparty, while the platform that runs your invoicing sees your actual
+          cash flows and hurts when you fail. In 2021 I put it this way: the embedding platform
+          can be <em>a true agent of the borrower</em> — it would never push credit for credit's
+          sake, because its incentives ride on your survival, not on loan volume.
+        </p>
+        <p>
+          Four years later, "agent" stopped being a figure of speech.
+        </p>
+        <p>
+          The software acting on a business's behalf is now literal: it reads the ledger,
+          compares the terms, signs the payment authorisations. And the question my 2021 map
+          never had to answer is suddenly load-bearing — <strong>does the literal agent inherit
+          the alignment?</strong> A platform earned trust because losing a customer hurt it. An
+          agent's incentives are whatever its operator's business model says they are. That makes
+          "agent of the borrower" either a design constraint or a marketing lie, and the
+          difference will decide who gets to underwrite the agentic era.
+        </p>
+        <p>Three shifts follow, and I'd bet on each of them.</p>
+        <p>
+          First, the contest moves off the screen. Embedded lending's hardest-won rule was that
+          credit lives or dies by where it appears — a banner fails where a well-placed moment
+          converts. When the buyer of credit is an agent, there are no pixels to fight over; the
+          battle relocates to machine surfaces. Offers will win by being discoverable and
+          structured cleanly enough to be <em>compared</em>, because the buyer has no eyes.
+        </p>
+        <p>
+          Second, the credit file inverts. An agent operating a business's payments doesn't just
+          hold the transaction log — it generates it, signed and structured. Every spending cap,
+          every completed payment, every revoked authorisation is repayment behaviour in
+          miniature. The credit file stops being a report a stranger assembles about you and
+          becomes a byproduct of your agent doing its job. Whoever holds that log holds the
+          origination franchise.
+        </p>
+        <p>
+          Third — look back at the grid above. The agent is a new row, not a new column. It
+          concentrates distribution, because it <em>is</em> the channel now. It generates
+          underwriting-grade data. It rents its technology and brings no capital. Read its row
+          against the embedding platform's and the coming fight is legible before it starts: two
+          actors competing for the same two columns, while capital remains, as ever, somebody
+          else's job. That collision is where the next five years of embedded lending will be
+          decided.
+        </p>
+        <p>
+          That's the kind of thinking this site publishes: short pieces, one idea each, dated,
+          signed, and licensed for reuse — written for people, and published simultaneously in a
+          structured form that software agents can read, verify, and build on. The grid above
+          isn't a picture; it ships as data, so your agent can redraw it.
+        </p>
+      </div>
+
+      <footer class="essay-footer">
+        <p class="eyebrow">Where to go next</p>
+        <ul>
+          <li>
+            <a href="/plates/plate-ii-upi/">How a UPI payment actually works</a> and
+            <a href="/plates/plate-iii-cards/">how a card purchase actually works</a> — two
+            payments, laid open part by part.
+          </li>
+          <li><a href="/about/">How this site works</a> — the format, the licensing, and the machine layer.</li>
+        </ul>
+        <p class="sources">
+          This essay compresses four shorter, citable pieces —
+          <a href="/cuts/cut-0300/">agent of the borrower</a>,
+          <a href="/cuts/cut-0301/">the battle is won in the pixels</a>,
+          <a href="/cuts/cut-0302/">the transaction log is the credit file</a>, and
+          {matrixCut && <a href={cutPath(matrixCut.data)}>four things anyone can bring to a loan</a>}
+          — and draws on the 2021 original,
+          <a href="https://embed.substack.com/p/the-embedded-lending-value-chain">The Embedded Lending Value Chain</a>
+          (Emb.F[x]).
+        </p>
+      </footer>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .essay { padding-top: 2.4rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 800; max-width: 46rem; margin: 0.3rem 0 0; }
+  .plain-date {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--faint);
+    margin: 0.7rem 0 0;
+  }
+  .prose { margin-top: 1.6rem; }
+  .essay-footer {
+    margin-top: 2.8rem;
+    border-top: 1px solid var(--ink);
+    padding-top: 0.9rem;
+    position: relative;
+  }
+  .essay-footer::before {
+    content: '';
+    position: absolute; top: 2px; left: 0; right: 0;
+    border-top: 1px solid var(--rule2);
+  }
+  .essay-footer ul { list-style: none; margin: 0.6rem 0 0; padding: 0; }
+  .essay-footer li { font-size: var(--fs-sm); color: var(--soft); margin-bottom: 0.4rem; }
+  .sources { font-size: var(--fs-sm); color: var(--soft); margin-top: 1.2rem; }
+</style>
