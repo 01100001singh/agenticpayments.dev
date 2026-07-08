@@ -8,6 +8,11 @@
   "required": ["id", "date", "type", "title", "era", "tags", "license", "provenance", "valid_as_of"],
   "properties": {
     "id": { "type": "string", "pattern": "^cut-[0-9]{4}$" },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Human, keyword-bearing URL slug. New Cuts get one; existing Cuts keep their id-based canonical URLs (signed, never move). The machine twin stays id-addressed either way."
+    },
     "date": { "type": "string", "format": "date" },
     "type": {
       "enum": ["principle", "scar", "observation", "parable", "frame", "datapoint", "entry"]

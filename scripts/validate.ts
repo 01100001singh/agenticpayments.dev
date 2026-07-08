@@ -14,6 +14,10 @@ const isoDateString = z
 const cutSchema = z
   .object({
     id: z.string().regex(/^cut-\d{4}$/, 'id must look like cut-0142'),
+    slug: z
+      .string()
+      .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'slug must be lowercase-kebab')
+      .optional(),
     date: isoDateString,
     type: z.enum(CUT_TYPES),
     title: z.string().min(3).max(120),
@@ -60,6 +64,18 @@ const cuts = loadCuts().map((c) => ({
 
 const ids = new Set(cuts.map((c) => c.data.id));
 const errors: string[] = [];
+
+// Slugs share the /cuts/ namespace with ids: no duplicates, no id-lookalikes.
+const seenSlugs = new Map<string, string>();
+for (const cut of cuts) {
+  const slug = cut.data.slug;
+  if (!slug) continue;
+  const where = `content/cuts/${cut.file}`;
+  if (/^cut-\d{4}$/.test(slug)) errors.push(`${where}: slug "${slug}" collides with the id namespace`);
+  if (ids.has(slug)) errors.push(`${where}: slug "${slug}" collides with an existing Cut id`);
+  if (seenSlugs.has(slug)) errors.push(`${where}: slug "${slug}" already used by ${seenSlugs.get(slug)}`);
+  seenSlugs.set(slug, cut.data.id);
+}
 
 for (const cut of cuts) {
   const where = `content/cuts/${cut.file}`;

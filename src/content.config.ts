@@ -8,6 +8,9 @@ const cuts = defineCollection({
   loader: glob({ pattern: '*.md', base: './content/cuts' }),
   schema: z.object({
     id: z.string().regex(/^cut-\d{4}$/),
+    // Human, keyword-bearing URL slug. New Cuts get one; existing Cuts keep
+    // their id-based canonical URLs — those are signed and never move.
+    slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).optional(),
     date: z.coerce.date(),
     type: z.enum(CUT_TYPES),
     title: z.string(),

@@ -25,9 +25,11 @@ const site = 'https://agenticpayments.dev';
 const canonical = site + (path === '/' ? '/' : path.replace(/\/?$/, '/'));
 const fullTitle = path === '/' ? 'agenticpayments.dev — cuts on agentic payments' : `${title} · agenticpayments.dev`;
 
+// Dual labels: the descriptive word does the wayfinding, the invented word
+// keeps the branding. Plain words stand alone.
 const nav = [
-  ['/plates', 'Plates'],
-  ['/bestiary', 'Bestiary'],
+  ['/plates', 'Dissections (Plates)'],
+  ['/bestiary', 'Field guide (Bestiary)'],
   ['/journal', 'Journal'],
   ['/lexicon', 'Lexicon'],
   ['/atlas', 'Atlas'],

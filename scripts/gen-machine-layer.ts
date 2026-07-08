@@ -35,7 +35,7 @@ const graph = {
     title: c.data.title,
     type: c.data.type,
     era: c.data.era,
-    url: `${SITE}/cuts/${c.data.id}`,
+    url: `${SITE}/cuts/${c.data.slug ?? c.data.id}`,
   })),
   edges: stocks.flatMap((s: any) =>
     (s.relations ?? []).map((r: any) => ({ source: s.id, type: r.type, target: r.target })),
@@ -91,7 +91,7 @@ interface FeedItem { title: string; url: string; date: string; body: string; cat
 const items: FeedItem[] = [
   ...cuts.map((c) => ({
     title: c.data.title as string,
-    url: `${SITE}/cuts/${c.data.id}`,
+    url: `${SITE}/cuts/${c.data.slug ?? c.data.id}`,
     date: isoDate(c.data.date)!,
     body: c.body,
     category: `cut/${c.data.type}`,
@@ -141,7 +141,7 @@ const lexicon = existsSync(join(PUBLIC_DIR, '../content/lexicon'))
   : [];
 const urls = [
   ...staticRoutes.map((r) => ({ loc: r, lastmod: null as string | null })),
-  ...cuts.map((c) => ({ loc: `/cuts/${c.data.id}`, lastmod: isoDate(c.data.date) })),
+  ...cuts.map((c) => ({ loc: `/cuts/${c.data.slug ?? c.data.id}`, lastmod: isoDate(c.data.date) })),
   ...surfaces.map((s) => ({ loc: surfacePath(s), lastmod: isoDate(s.data.date) })),
   ...lexicon.map((l) => ({ loc: l, lastmod: null as string | null })),
 ].sort((a, b) => a.loc.localeCompare(b.loc));

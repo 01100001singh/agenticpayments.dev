@@ -4,16 +4,17 @@ import Base from '../../layouts/Base.astro';
 import Chips from '../../components/Chips.astro';
 import MatrixFigure from '../../components/MatrixFigure.astro';
 import PromptSidebar from '../../components/PromptSidebar.astro';
+import { cutPath } from '../../lib/cutPath';
 
 export async function getStaticPaths() {
   const cuts = await getCollection('cuts', (c) => !c.data.draft);
-  return cuts.map((cut) => ({ params: { id: cut.data.id }, props: { cut } }));
+  return cuts.map((cut) => ({ params: { id: cut.data.slug ?? cut.data.id }, props: { cut } }));
 }
 
 const { cut } = Astro.props;
 const d = cut.data;
 const { Content } = await render(cut);
-const url = `https://agenticpayments.dev/cuts/${d.id}`;
+const url = `https://agenticpayments.dev${cutPath(d).replace(/\/$/, '')}`;
 const dateStr = d.date.toISOString().slice(0, 10);
 const validStr = d.valid_as_of.toISOString().slice(0, 10);
 const staleStr = d.stale_after ? d.stale_after.toISOString().slice(0, 10) : null;
@@ -46,11 +47,15 @@ const jsonld = {
   author: { '@type': 'Person', name: 'Ankit Singh', url: 'https://agenticpayments.dev/about/' },
   publisher: { '@type': 'Organization', name: 'agenticpayments.dev', url: 'https://agenticpayments.dev/' },
   keywords: d.tags.join(', '),
-  encoding: { '@type': 'MediaObject', contentUrl: `${url}.stock.json`, encodingFormat: 'application/json' },
+  encoding: {
+    '@type': 'MediaObject',
+    contentUrl: `https://agenticpayments.dev/cuts/${d.id}.stock.json`,
+    encodingFormat: 'application/json',
+  },
 };
 ---
 
-<Base title={d.title} description={`${preview}…`} path={`/cuts/${d.id}`} jsonld={jsonld}>
+<Base title={d.title} description={`${preview}…`} path={cutPath(d).replace(/\/$/, '')} jsonld={jsonld}>
   <div class="wrap layout">
     <article class="cut">
       <header>
@@ -95,7 +100,7 @@ const jsonld = {
             <ul>
               {related.map((r) => (
                 <li>
-                  <a href={`/cuts/${r.data.id}/`}>{r.data.id}</a>
+                  <a href={cutPath(r.data)}>{r.data.id}</a>
                   <span class="rel-title">— {r.data.title}</span>
                 </li>
               ))}

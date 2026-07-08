@@ -31,7 +31,7 @@ for (const f of readdirSync(outDir).filter((f) => f.endsWith('.stock.json'))) {
 
 for (const cut of cuts) {
   const fm = cut.data;
-  const url = `${SITE}/cuts/${fm.id}`;
+  const url = `${SITE}/cuts/${fm.slug ?? fm.id}`;
   const date = isoDate(fm.date)!;
   const [y, m] = date.split('-');
   const contentHash = 'sha256:' + createHash('sha256').update(cut.raw, 'utf8').digest('hex');

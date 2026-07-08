@@ -1,5 +1,6 @@
 ---
 import Chips from './Chips.astro';
+import { cutPath } from '../lib/cutPath';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -20,7 +21,7 @@ const dateStr = d.date.toISOString().slice(0, 10);
     <Chips type={d.type} era={d.era} />
     <span class="cut-id">{d.id}</span>
   </div>
-  <h3 class="card-title"><a href={`/cuts/${d.id}/`}>{d.title}</a></h3>
+  <h3 class="card-title"><a href={cutPath(d)}>{d.title}</a></h3>
   <p class="card-preview">{preview}…</p>
   <p class="card-date">{dateStr}</p>
 </article>
