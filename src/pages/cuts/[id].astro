@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Chips from '../../components/Chips.astro';
 import MatrixFigure from '../../components/MatrixFigure.astro';
 import PromptSidebar from '../../components/PromptSidebar.astro';
+import ViewToggle from '../../components/ViewToggle.astro';
 import { cutPath } from '../../lib/cutPath';
 
 export async function getStaticPaths() {
@@ -56,27 +57,7 @@ const jsonld = {
 ---
 
 <Base title={d.title} description={`${preview}…`} path={cutPath(d).replace(/\/$/, '')} jsonld={jsonld}>
-  <!-- Set the view before the article parses: no flash. Without JS the page
-       stays in the full (remix) state and the toggle never appears. -->
-  <script is:inline>
-    (function () {
-      var VIEWS = ['read', 'remix', 'raw'];
-      var q = new URLSearchParams(location.search).get('view');
-      var saved = null;
-      try { saved = localStorage.getItem('agp-view'); } catch (e) {}
-      var v = VIEWS.indexOf(q) >= 0 ? q : VIEWS.indexOf(saved) >= 0 ? saved : 'read';
-      document.documentElement.dataset.view = v;
-    })();
-  </script>
-
-  <div class="wrap">
-    <div class="view-toggle" role="group" aria-label="Page view" hidden>
-      <span class="vt-label">view</span>
-      <button type="button" data-setview="read" title="Just the writing">read</button>
-      <button type="button" data-setview="remix" title="The full specimen: prompts, record, lineage">remix</button>
-      <button type="button" data-setview="raw" title="What an agent sees: the signed machine twin">raw</button>
-    </div>
-  </div>
+  <ViewToggle />
 
   <div class="wrap layout">
     <article class="cut">
@@ -171,47 +152,6 @@ const jsonld = {
     </p>
     <pre class="raw-json" data-stock={`/cuts/${d.id}.stock.json`}>loading…</pre>
   </div>
-
-  <script is:inline>
-    (function () {
-      var doc = document.documentElement;
-      var bar = document.querySelector('.view-toggle');
-      if (!bar) return;
-      var filled = false;
-      function fillRaw() {
-        if (filled) return;
-        filled = true;
-        var pre = document.querySelector('.raw-json');
-        fetch(pre.getAttribute('data-stock'))
-          .then(function (r) { return r.json(); })
-          .then(function (j) { pre.textContent = JSON.stringify(j, null, 2); })
-          .catch(function () { pre.textContent = 'Could not load — open the raw file link above.'; });
-      }
-      function setView(v) {
-        doc.dataset.view = v;
-        try { localStorage.setItem('agp-view', v); } catch (e) {}
-        var u = new URL(location.href);
-        if (v === 'read') u.searchParams.delete('view');
-        else u.searchParams.set('view', v);
-        history.replaceState(null, '', u);
-        bar.querySelectorAll('button').forEach(function (b) {
-          b.setAttribute('aria-pressed', String(b.getAttribute('data-setview') === v));
-        });
-        if (v === 'raw') fillRaw();
-      }
-      bar.hidden = false;
-      bar.querySelectorAll('button').forEach(function (b) {
-        b.addEventListener('click', function () { setView(b.getAttribute('data-setview')); });
-      });
-      document.querySelectorAll('a[data-setview]').forEach(function (a) {
-        a.addEventListener('click', function (e) {
-          e.preventDefault();
-          setView(a.getAttribute('data-setview'));
-        });
-      });
-      setView(doc.dataset.view || 'read');
-    })();
-  </script>
 </Base>
 
 <style>
@@ -268,34 +208,7 @@ const jsonld = {
     .side { position: static; }
   }
 
-  /* ---- Read / Remix / Raw ------------------------------------------------
-     No data-view attribute (no JS) = the full remix page; the toggle stays
-     hidden. read strips the ontology chrome; raw swaps in the machine twin. */
-  .view-toggle {
-    display: flex;
-    gap: 0.6rem;
-    align-items: baseline;
-    padding-top: 1.6rem;
-    font-family: var(--mono);
-    font-size: var(--fs-xs);
-  }
-  .vt-label { color: var(--faint); text-transform: uppercase; letter-spacing: 0.09em; }
-  .view-toggle button {
-    font-family: var(--mono);
-    font-size: var(--fs-xs);
-    text-transform: lowercase;
-    background: none;
-    border: 1px solid var(--rule2);
-    padding: 0.2rem 0.65rem;
-    color: var(--soft);
-    cursor: pointer;
-  }
-  .view-toggle button:hover { color: var(--crimson); border-color: var(--crimson); }
-  .view-toggle button[aria-pressed='true'] { color: var(--crimson); border-color: var(--crimson); }
-
-  .only-read { display: none; }
-  :global(html[data-view='read']) .only-read { display: block; }
-  :global(html[data-view='read']) .only-remix { display: none; }
+  /* ---- Read / Remix / Raw (page-specific; the control lives in ViewToggle) */
   :global(html[data-view='read']) .layout { grid-template-columns: minmax(0, 1fr); }
 
   .plain-date { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin: 0.5rem 0 0; }

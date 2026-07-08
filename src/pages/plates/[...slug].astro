@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import PromptSidebar from '../../components/PromptSidebar.astro';
 import CookedFrom from '../../components/CookedFrom.astro';
 import PlateFigure from '../../components/PlateFigure.astro';
+import ViewToggle from '../../components/ViewToggle.astro';
 
 export async function getStaticPaths() {
   const plates = await getCollection('plates', (p) => !p.data.draft);
@@ -28,6 +29,9 @@ const jsonld = {
 ---
 
 <Base title={`Plate ${d.plate} — ${d.title}`} description={d.summary ?? d.tldr} path={`/plates/${plate.id}`} jsonld={jsonld}>
+  <!-- A Plate has no single machine twin, so no raw view here. -->
+  <ViewToggle views={['read', 'remix']} />
+
   <div class="wrap layout">
     <article>
       <header class="plate-head">
@@ -77,7 +81,9 @@ const jsonld = {
         <Content />
       </div>
 
-      <CookedFrom ids={d.cooked_from} />
+      <div class="only-remix">
+        <CookedFrom ids={d.cooked_from} />
+      </div>
 
       {d.pair_with.length > 0 && (
         <p class="pairing">
@@ -92,7 +98,7 @@ const jsonld = {
       )}
     </article>
 
-    <div class="side">
+    <div class="side only-remix">
       <PromptSidebar
         title={`Plate ${d.plate} — ${d.title}`}
         url={url}
@@ -172,6 +178,7 @@ const jsonld = {
   .pairing { font-size: var(--fs-sm); font-style: italic; color: var(--soft); margin-top: 1.6rem; }
 
   .side { position: sticky; top: 1.5rem; }
+  :global(html[data-view='read']) .layout { grid-template-columns: minmax(0, 1fr); }
   @media (max-width: 58rem) {
     .layout { grid-template-columns: 1fr; gap: 2.5rem; }
     .side { position: static; }

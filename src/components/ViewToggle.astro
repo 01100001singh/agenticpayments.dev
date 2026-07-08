@@ -1,0 +1,112 @@
+---
+/**
+ * Read / Remix / Raw — the page-view control. `read` strips the ontology
+ * chrome (anything tagged .only-remix) and reveals .only-read; `remix` is
+ * the full page; `raw` (where offered) swaps the article for the machine
+ * twin — the page renders its own .raw-pane with a [data-stock] <pre>, and
+ * the toggle fills it on demand. Without JS the data-view attribute never
+ * lands: the page stays in the full remix state and the bar stays hidden.
+ * A saved preference this page doesn't offer (raw on a Plate) falls back
+ * to read.
+ */
+interface Props {
+  views?: string[];
+}
+const { views = ['read', 'remix', 'raw'] } = Astro.props;
+const TITLES: Record<string, string> = {
+  read: 'Just the writing',
+  remix: 'The full specimen: prompts, record, lineage',
+  raw: 'What an agent sees: the signed machine twin',
+};
+---
+
+<script is:inline define:vars={{ views }}>
+  (function () {
+    var q = new URLSearchParams(location.search).get('view');
+    var saved = null;
+    try { saved = localStorage.getItem('agp-view'); } catch (e) {}
+    var v = views.indexOf(q) >= 0 ? q : views.indexOf(saved) >= 0 ? saved : 'read';
+    document.documentElement.dataset.view = v;
+  })();
+</script>
+
+<div class="wrap">
+  <div class="view-toggle" role="group" aria-label="Page view" hidden>
+    <span class="vt-label">view</span>
+    {views.map((v) => (
+      <button type="button" data-setview={v} title={TITLES[v]}>{v}</button>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+    var doc = document.documentElement;
+    var bar = document.querySelector('.view-toggle');
+    if (!bar) return;
+    var filled = false;
+    function fillRaw() {
+      if (filled) return;
+      filled = true;
+      var pre = document.querySelector('.raw-json[data-stock]');
+      if (!pre) return;
+      fetch(pre.getAttribute('data-stock'))
+        .then(function (r) { return r.json(); })
+        .then(function (j) { pre.textContent = JSON.stringify(j, null, 2); })
+        .catch(function () { pre.textContent = 'Could not load — open the raw file link above.'; });
+    }
+    function setView(v) {
+      doc.dataset.view = v;
+      try { localStorage.setItem('agp-view', v); } catch (e) {}
+      var u = new URL(location.href);
+      if (v === 'read') u.searchParams.delete('view');
+      else u.searchParams.set('view', v);
+      history.replaceState(null, '', u);
+      bar.querySelectorAll('button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-setview') === v));
+      });
+      if (v === 'raw') fillRaw();
+    }
+    bar.hidden = false;
+    bar.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () { setView(b.getAttribute('data-setview')); });
+    });
+    document.querySelectorAll('a[data-setview]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        setView(a.getAttribute('data-setview'));
+      });
+    });
+    setView(doc.dataset.view || 'read');
+  });
+</script>
+
+<style>
+  .view-toggle {
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+    padding-top: 1.6rem;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+  }
+  .vt-label { color: var(--faint); text-transform: uppercase; letter-spacing: 0.09em; }
+  .view-toggle button {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    text-transform: lowercase;
+    background: none;
+    border: 1px solid var(--rule2);
+    padding: 0.2rem 0.65rem;
+    color: var(--soft);
+    cursor: pointer;
+  }
+  .view-toggle button:hover { color: var(--crimson); border-color: var(--crimson); }
+  .view-toggle button[aria-pressed='true'] { color: var(--crimson); border-color: var(--crimson); }
+</style>
+
+<style is:global>
+  .only-read { display: none; }
+  html[data-view='read'] .only-read { display: block; }
+  html[data-view='read'] .only-remix { display: none; }
+</style>
