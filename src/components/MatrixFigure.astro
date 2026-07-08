@@ -1,0 +1,106 @@
+---
+/**
+ * Fig. 1 — the matrix. Rows are actors, columns are value dimensions; each
+ * cell records how much of that dimension the actor sells: ● primary,
+ * ○ contributing, · none. A highlighted row is set in crimson and separated
+ * by a dashed rule — a new arrival, read against the incumbent grid.
+ *
+ * Pure inline SVG generated from frontmatter. Flat ink; no images; no JS.
+ */
+interface Row {
+  label: string;
+  cells: number[];
+  highlight?: boolean;
+}
+interface Props {
+  cols: string[];
+  rows: Row[];
+  caption: string;
+}
+const { cols, rows, caption } = Astro.props;
+
+const W = 720;
+const GUTTER = 240; // row labels, right-aligned into this
+const X1 = 706;
+const colX = (i: number) => GUTTER + ((i + 0.5) * (X1 - GUTTER)) / cols.length;
+const HEAD = 26;
+const ROW_H = 27;
+const rowY = (i: number) => HEAD + 24 + i * ROW_H;
+const H = rowY(rows.length - 1) + 18;
+const hlIndex = rows.findIndex((r) => r.highlight);
+---
+
+<figure class="matrix-figure">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={caption} preserveAspectRatio="xMidYMid meet">
+    <!-- column headers -->
+    {cols.map((c, i) => (
+      <text class="col-label" x={colX(i)} y={HEAD - 8} text-anchor="middle">{c}</text>
+    ))}
+    <line class="axis" x1={10} y1={HEAD} x2={X1} y2={HEAD} />
+
+    <!-- the dashed rule above a highlighted row: 2021 above, the new arrival below -->
+    {hlIndex > 0 && (
+      <line class="divider" x1={10} y1={rowY(hlIndex) - ROW_H / 2} x2={X1} y2={rowY(hlIndex) - ROW_H / 2} />
+    )}
+
+    {rows.map((r, ri) => (
+      <>
+        <text
+          class:list={['row-label', { 'row-label--hl': r.highlight }]}
+          x={GUTTER - 16}
+          y={rowY(ri) + 4}
+          text-anchor="end"
+        >{r.label}</text>
+        {r.cells.map((v, ci) =>
+          v === 2 ? (
+            <circle class:list={['dot-full', { 'dot-full--hl': r.highlight }]} cx={colX(ci)} cy={rowY(ri)} r="5" />
+          ) : v === 1 ? (
+            <circle class:list={['dot-half', { 'dot-half--hl': r.highlight }]} cx={colX(ci)} cy={rowY(ri)} r="5" />
+          ) : (
+            <circle class="dot-none" cx={colX(ci)} cy={rowY(ri)} r="1.4" />
+          ),
+        )}
+      </>
+    ))}
+  </svg>
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .matrix-figure {
+    margin: 0 0 1.8rem;
+    border: 1px solid var(--rule2);
+    background: var(--paper);
+    padding: 1.1rem 1.2rem 0.8rem;
+  }
+  svg { display: block; width: 100%; height: auto; }
+  .axis { stroke: var(--ink); stroke-width: 1; }
+  .divider { stroke: var(--crimson); stroke-width: 0.8; stroke-dasharray: 3 4; opacity: 0.55; }
+  .col-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    fill: var(--faint);
+  }
+  .row-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    fill: var(--soft);
+  }
+  .row-label--hl { fill: var(--crimson); font-weight: 600; }
+  .dot-full { fill: var(--ink); }
+  .dot-full--hl { fill: var(--crimson); }
+  .dot-half { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+  .dot-half--hl { stroke: var(--crimson); stroke-width: 1.4; }
+  .dot-none { fill: var(--rule2); }
+  figcaption {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--faint);
+    margin-top: 0.6rem;
+    text-align: center;
+  }
+</style>

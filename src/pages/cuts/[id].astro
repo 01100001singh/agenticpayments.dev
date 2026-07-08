@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Chips from '../../components/Chips.astro';
+import MatrixFigure from '../../components/MatrixFigure.astro';
 import PromptSidebar from '../../components/PromptSidebar.astro';
 
 export async function getStaticPaths() {
@@ -63,6 +64,10 @@ const jsonld = {
       <div class="prose cut-body">
         <Content />
       </div>
+
+      {d.figure?.kind === 'matrix' && (
+        <MatrixFigure cols={d.figure.cols} rows={d.figure.rows} caption={d.figure.caption} />
+      )}
 
       {d.superseded_by && (
         <p class="supersede">

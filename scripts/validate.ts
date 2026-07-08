@@ -28,6 +28,23 @@ const cutSchema = z
     stale_after: isoDateString.nullable().optional(),
     superseded_by: z.string().regex(/^cut-\d{4}$/).nullable().default(null),
     draft: z.boolean().optional(),
+    figure: z
+      .object({
+        kind: z.literal('matrix'),
+        caption: z.string(),
+        cols: z.array(z.string()).min(1),
+        rows: z
+          .array(
+            z.object({
+              label: z.string(),
+              cells: z.array(z.number().int().min(0).max(2)),
+              highlight: z.boolean().optional(),
+            }),
+          )
+          .min(1),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 
@@ -62,6 +79,15 @@ for (const cut of cuts) {
     errors.push(`${where}: superseded_by "${fm.superseded_by}" does not exist in the Spine`);
   }
   if (!cut.body || cut.body.length < 40) errors.push(`${where}: body is empty or too short to be a Cut`);
+  if (fm.figure) {
+    for (const [i, row] of fm.figure.rows.entries()) {
+      if (row.cells.length !== fm.figure.cols.length) {
+        errors.push(
+          `${where}: figure row ${i + 1} ("${row.label}") has ${row.cells.length} cells; expected ${fm.figure.cols.length}`,
+        );
+      }
+    }
+  }
 }
 
 if (errors.length) {

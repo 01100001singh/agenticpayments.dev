@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "gist": "Every participant in the lending value chain adds value along one or more of four dimensions — capital, distribution, data, technology. New entrants are new rows in that grid, never new columns: an actor that cannot name its column is not in the chain. The borrower's agent enters as a distribution+data row, which puts it in direct competition with the embedding platform for the same two columns.",
+  "claims": [
+    { "s": "value-chain-entrant", "p": "is", "o": "new-row-not-new-column", "q": { "era": "universal" } },
+    { "s": "borrower", "p": "adds-value-along", "o": "data" },
+    { "s": "embedding-platform", "p": "adds-value-along", "o": "distribution+data", "q": { "secondary": "capital+technology" } },
+    { "s": "fintech-infra-provider", "p": "adds-value-along", "o": "technology" },
+    { "s": "data-aggregator", "p": "adds-value-along", "o": "data", "q": { "secondary": "technology" } },
+    { "s": "derived-data-provider", "p": "adds-value-along", "o": "data", "q": { "secondary": "technology" } },
+    { "s": "payments-services-provider", "p": "adds-value-along", "o": "technology", "q": { "secondary": "data" } },
+    { "s": "credit-bureau", "p": "adds-value-along", "o": "data" },
+    { "s": "underwriting-modeller", "p": "adds-value-along", "o": "technology", "q": { "secondary": "data" } },
+    { "s": "lender", "p": "adds-value-along", "o": "capital" },
+    { "s": "borrower-agent", "p": "adds-value-along", "o": "distribution+data", "q": { "era": "agentic", "secondary": "technology" } },
+    { "s": "borrower-agent", "p": "competes-with", "o": "embedding-platform", "q": { "columns": "distribution+data" } }
+  ],
+  "entities": {
+    "mandate": "lexicon/mandate",
+    "agentic-payment": "lexicon/agentic-payment"
+  },
+  "relations": [
+    { "type": "derives-from", "target": "cut-0300" },
+    { "type": "supports", "target": "cut-0302" }
+  ]
+}

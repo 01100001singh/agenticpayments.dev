@@ -22,6 +22,24 @@ const cuts = defineCollection({
     stale_after: z.coerce.date().nullable().optional(),
     superseded_by: z.string().nullable().default(null),
     draft: z.boolean().default(false),
+    // Optional generated figure. kind=matrix: actors × value dimensions;
+    // cell 0 = none, 1 = contributing, 2 = primary. Rendered by MatrixFigure.
+    figure: z
+      .object({
+        kind: z.literal('matrix'),
+        caption: z.string(),
+        cols: z.array(z.string()).min(1),
+        rows: z
+          .array(
+            z.object({
+              label: z.string(),
+              cells: z.array(z.number().int().min(0).max(2)),
+              highlight: z.boolean().default(false),
+            }),
+          )
+          .min(1),
+      })
+      .optional(),
   }),
 });
 

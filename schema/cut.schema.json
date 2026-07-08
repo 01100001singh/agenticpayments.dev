@@ -33,6 +33,31 @@
     "valid_as_of": { "type": "string", "format": "date" },
     "stale_after": { "type": ["string", "null"], "format": "date" },
     "superseded_by": { "type": ["string", "null"], "pattern": "^cut-[0-9]{4}$" },
-    "draft": { "type": "boolean", "description": "Draft Cuts build locally but are excluded from the site, the stock layer, and the spine." }
+    "draft": { "type": "boolean", "description": "Draft Cuts build locally but are excluded from the site, the stock layer, and the spine." },
+    "figure": {
+      "type": "object",
+      "description": "Optional generated figure. kind=matrix: rows are actors, cols are value dimensions; cell 0 = none, 1 = contributing, 2 = primary.",
+      "additionalProperties": false,
+      "required": ["kind", "caption", "cols", "rows"],
+      "properties": {
+        "kind": { "const": "matrix" },
+        "caption": { "type": "string" },
+        "cols": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "cells"],
+            "properties": {
+              "label": { "type": "string" },
+              "cells": { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 2 } },
+              "highlight": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
   }
 }
