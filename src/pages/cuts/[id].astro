@@ -21,8 +21,8 @@ const validStr = d.valid_as_of.toISOString().slice(0, 10);
 const staleStr = d.stale_after ? d.stale_after.toISOString().slice(0, 10) : null;
 const preview = (cut.body ?? '').split(/\n\n+/)[0].replace(/[#*_>`[\]]/g, '').replace(/\n/g, ' ').slice(0, 155);
 
-// Which authored Surfaces were cooked from this Cut
-const surfaceKinds = ['bestiary', 'plates', 'parables', 'dialogues', 'receipts', 'journal', 'notebook'] as const;
+// Which authored pieces were cooked from this Cut
+const surfaceKinds = ['bestiary', 'plates', 'parables', 'dialogues', 'receipts', 'journal'] as const;
 const cookedInto: { title: string; href: string; kind: string }[] = [];
 for (const kind of surfaceKinds) {
   for (const s of await getCollection(kind, (e: any) => !e.data.draft)) {
@@ -84,8 +84,8 @@ const jsonld = {
         </p>
       )}
 
-      <footer class="colophon only-remix" aria-label="Specimen record">
-        <p class="eyebrow">Specimen record</p>
+      <footer class="colophon only-remix" aria-label="Cut record">
+        <p class="eyebrow">Cut record</p>
         <dl>
           <div><dt>provenance</dt><dd>{d.provenance}</dd></div>
           <div><dt>valid as of</dt><dd>{validStr}</dd></div>
@@ -148,7 +148,7 @@ const jsonld = {
   <div class="wrap raw-pane" aria-label="Machine twin">
     <p class="raw-head">
       /cuts/{d.id}.stock.json — the machine twin: same meaning, presentation deleted.
-      <a href={`/cuts/${d.id}.stock.json`}>raw file</a> · <a href="/spine.jsonl">whole spine</a>
+      <a href={`/cuts/${d.id}.stock.json`}>raw file</a> · <a href="/spine.jsonl">whole corpus</a>
     </p>
     <pre class="raw-json" data-stock={`/cuts/${d.id}.stock.json`}>loading…</pre>
   </div>

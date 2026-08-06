@@ -1,4 +1,4 @@
-/** Loader for Surface content (bestiary, plates, parables, dialogues, receipts, journal, notebook). */
+/** Loader for Surface content (bestiary, plates, parables, dialogues, receipts, journal). */
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import matter from 'gray-matter';
@@ -11,7 +11,6 @@ export const SURFACE_KINDS = [
   'dialogues',
   'receipts',
   'journal',
-  'notebook',
 ] as const;
 export type SurfaceKind = (typeof SURFACE_KINDS)[number];
 
