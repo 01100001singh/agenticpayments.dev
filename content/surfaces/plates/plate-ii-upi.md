@@ -9,7 +9,7 @@ tldr: "The success screen is the experience clock; the interbank money settles l
 cooked_from: [cut-0200, cut-0201, cut-0203]
 pair_with:
   - href: /bestiary/the-switch/
-    label: The Switch (bestiary)
+    label: The Switch (field guide)
   - href: /receipts/0071/
     label: Receipt #0071
 clocks: [experience clock, money clock]

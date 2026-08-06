@@ -18,7 +18,8 @@ const dateStr = d.date.toISOString().slice(0, 10);
 
 <article class="cut-card">
   <div class="card-top">
-    <Chips type={d.type} era={d.era} />
+    {/* era stays in frontmatter and on the Cut page; the browsing card shows type only */}
+    <Chips type={d.type} />
     <span class="cut-id">{d.id}</span>
   </div>
   <h3 class="card-title"><a href={cutPath(d)}>{d.title}</a></h3>

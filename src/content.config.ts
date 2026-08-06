@@ -59,7 +59,8 @@ const bestiary = defineCollection({
   loader: glob({ pattern: '*.{md,mdx}', base: './content/surfaces/bestiary' }),
   schema: z.object({
     ...surfaceBase,
-    latin: z.string(),
+    // Retired from display; kept optional so existing frontmatter still parses.
+    latin: z.string().optional(),
     fields: z.object({
       habitat: z.string(),
       diet: z.string(),
@@ -135,11 +136,6 @@ const journal = defineCollection({
   schema: z.object({ ...surfaceBase }),
 });
 
-const notebook = defineCollection({
-  loader: glob({ pattern: '*.{md,mdx}', base: './content/surfaces/notebook' }),
-  schema: z.object({ ...surfaceBase }),
-});
-
 const lexicon = defineCollection({
   loader: glob({ pattern: '*.md', base: './content/lexicon' }),
   schema: z.object({
@@ -149,4 +145,4 @@ const lexicon = defineCollection({
   }),
 });
 
-export const collections = { cuts, bestiary, plates, parables, dialogues, receipts, journal, notebook, lexicon };
+export const collections = { cuts, bestiary, plates, parables, dialogues, receipts, journal, lexicon };
