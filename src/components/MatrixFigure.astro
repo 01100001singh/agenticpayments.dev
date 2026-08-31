@@ -2,7 +2,7 @@
 /**
  * Fig. 1 — the matrix. Rows are actors, columns are value dimensions; each
  * cell records how much of that dimension the actor sells: ● primary,
- * ○ contributing, · none. A highlighted row is set in crimson and separated
+ * ○ contributing, · none. A highlighted row is set in the accent ink and separated
  * by a dashed rule — a new arrival, read against the incumbent grid.
  *
  * Pure inline SVG generated from frontmatter. Flat ink; no images; no JS.
@@ -75,7 +75,7 @@ const hlIndex = rows.findIndex((r) => r.highlight);
   }
   svg { display: block; width: 100%; height: auto; }
   .axis { stroke: var(--ink); stroke-width: 1; }
-  .divider { stroke: var(--crimson); stroke-width: 0.8; stroke-dasharray: 3 4; opacity: 0.55; }
+  .divider { stroke: var(--accent); stroke-width: 0.8; stroke-dasharray: 3 4; opacity: 0.55; }
   .col-label {
     font-family: var(--mono);
     font-size: 11.5px;
@@ -90,11 +90,11 @@ const hlIndex = rows.findIndex((r) => r.highlight);
     text-transform: uppercase;
     fill: var(--soft);
   }
-  .row-label--hl { fill: var(--crimson); font-weight: 600; }
+  .row-label--hl { fill: var(--accent); font-weight: 600; }
   .dot-full { fill: var(--ink); }
-  .dot-full--hl { fill: var(--crimson); }
+  .dot-full--hl { fill: var(--accent); }
   .dot-half { fill: none; stroke: var(--ink); stroke-width: 1.2; }
-  .dot-half--hl { stroke: var(--crimson); stroke-width: 1.4; }
+  .dot-half--hl { stroke: var(--accent); stroke-width: 1.4; }
   .dot-none { fill: var(--rule2); }
   figcaption {
     font-family: var(--mono);

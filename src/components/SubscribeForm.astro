@@ -41,7 +41,7 @@ const enabled = Boolean(url && key);
     color: var(--ink);
     min-width: 0;
   }
-  input:focus { outline: 2px solid var(--crimson); outline-offset: -1px; }
+  input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
   button {
     font-family: var(--mono);
     font-size: var(--fs-xs);
@@ -49,15 +49,15 @@ const enabled = Boolean(url && key);
     text-transform: uppercase;
     letter-spacing: 0.09em;
     padding: 0.5rem 0.9rem;
-    border: 1px solid var(--crimson);
-    background: var(--crimson);
+    border: 1px solid var(--accent);
+    background: var(--accent);
     color: var(--paper);
     cursor: pointer;
   }
-  button:hover { background: var(--crimson2); border-color: var(--crimson2); }
+  button:hover { background: var(--accent2); border-color: var(--accent2); }
   .sub-status { font-family: var(--mono); font-size: var(--fs-xs); margin-top: 0.5rem; min-height: 1em; }
-  .sub-status.ok { color: var(--olive); }
-  .sub-status.err { color: var(--crimson); }
+  .sub-status.ok { color: var(--accent); }
+  .sub-status.err { color: var(--accent); }
   .visually-hidden {
     position: absolute; width: 1px; height: 1px; margin: -1px;
     clip-path: inset(50%); overflow: hidden; white-space: nowrap;

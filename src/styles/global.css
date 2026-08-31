@@ -1,29 +1,31 @@
 /* ————————————————————————————————————————————————————————————————
    agenticpayments.dev — design tokens & base styles
-   Register: scientific engraving. Flat ink on warm paper; depth comes
-   from hairlines and panel layering, never shadows. The failure mode
-   is cute; every choice moves toward naturalist precision.
+   Register: protocol documentation meets security printing. Flat ink
+   on cool paper; depth comes from hairlines, never shadows. One
+   working ink (safety-ink teal — the hue of cheque and ledger
+   security printing). A tinted panel is reserved for machine content,
+   so tint carries meaning. The failure mode is cute; every choice
+   moves toward the precision of a spec sheet.
    ———————————————————————————————————————————————————————————————— */
 
 :root {
   /* palette (house style) */
-  --ink: #211e1a;
-  --soft: #57514a;
-  --faint: #8a8275;
-  --paper: #fdfcf9;
-  --cream: #f6f1e7;
-  --cream2: #efe6d5;
-  --cream3: #e9dfca;
-  --crimson: #9c2b27;
-  --crimson2: #7f231f;
-  --ochre: #b07d2e;
-  --olive: #566b34;
-  --rule: #e7e0d0;
-  --rule2: #d8cfba;
+  --ink: #17201d;
+  --soft: #4a5751;
+  --faint: #78857e;
+  --paper: #fbfdfc;
+  --tint: #f0f5f2;   /* machine-content ground: stock, raw, code */
+  --tint2: #e4ece8;
+  --tint3: #d5e0db;
+  --accent: #0b5f55; /* safety-ink teal — the only working color */
+  --accent2: #07463f;
+  --rule: #dce4e0;
+  --rule2: #c9d5d0;
 
-  /* type */
-  --serif: 'Spectral', 'Iowan Old Style', Georgia, serif;
-  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* type — one system, three governed voices */
+  --serif: 'IBM Plex Serif', 'Iowan Old Style', Georgia, serif; /* reading */
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif; /* display */
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace; /* machine */
 
   /* scale (fluid) */
   --fs-xs: 0.72rem;
@@ -61,22 +63,23 @@ body {
 main { flex: 1; width: 100%; }
 
 h1, h2, h3, h4 {
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-weight: 700;
   line-height: 1.15;
   margin: 0 0 0.5em;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 p { margin: 0 0 1em; }
 
-a { color: var(--crimson); text-decoration: none; }
-a:hover { color: var(--crimson2); text-decoration: underline; text-underline-offset: 0.18em; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent2); text-decoration: underline; text-underline-offset: 0.18em; }
 
 code, kbd, pre { font-family: var(--mono); font-size: 0.88em; }
 pre {
-  background: var(--cream);
+  background: var(--tint);
   border: 1px solid var(--rule2);
+  border-left: 2px solid var(--accent);
   padding: 1rem 1.25rem;
   overflow-x: auto;
   line-height: 1.5;
@@ -86,7 +89,7 @@ hr { border: 0; border-top: 1px solid var(--rule2); margin: 2.5rem 0; }
 
 img { max-width: 100%; height: auto; }
 
-::selection { background: var(--cream3); }
+::selection { background: var(--tint3); }
 
 /* ————— shared primitives ————— */
 
@@ -103,22 +106,26 @@ img { max-width: 100%; height: auto; }
   color: var(--faint);
 }
 
-.eyebrow--crimson { color: var(--crimson); }
+.eyebrow--accent { color: var(--accent); }
 
-/* engraving-style double rule */
-.double-rule {
-  border: 0;
+/* microtext rule — security-print heir to the old engraved double rule.
+   The site's own provenance line set at 5px, the way banknotes carry
+   microprinting under a border. Decorative; always aria-hidden. */
+.microrule {
   border-top: 1px solid var(--ink);
-  position: relative;
+  padding-top: 2px;
   margin: 0.4rem 0 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 5px;
+  line-height: 1.4;
+  letter-spacing: 0.22em;
+  color: var(--rule2);
+  user-select: none;
 }
-.double-rule::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 0;
-  right: 0;
-  border-top: 1px solid var(--rule2);
+.microrule::after {
+  content: 'AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · AGENTICPAYMENTS.DEV · ED25519 SIGNED · CC-BY-4.0 · CITE THE CANONICAL URL · ';
 }
 
 /* type/era chips */
@@ -131,12 +138,12 @@ img { max-width: 100%; height: auto; }
   letter-spacing: 0.09em;
   padding: 0.12rem 0.5rem;
   border: 1px solid var(--rule2);
-  background: var(--cream);
+  background: transparent;
   color: var(--soft);
   white-space: nowrap;
 }
-.chip--type { border-color: var(--crimson); color: var(--crimson); background: transparent; }
-.chip--era { }
+.chip--type { }
+.chip--era { border-color: var(--accent); color: var(--accent); }
 
 /* long-form article body */
 .prose { max-width: var(--measure); }
@@ -145,7 +152,7 @@ img { max-width: 100%; height: auto; }
 .prose blockquote {
   margin: 1.5em 0;
   padding: 0 0 0 1.25em;
-  border-left: 2px solid var(--crimson);
+  border-left: 2px solid var(--accent);
   font-style: italic;
   color: var(--soft);
 }
@@ -163,7 +170,7 @@ th {
   color: var(--soft);
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--ink);
-  background: var(--cream2);
+  background: var(--tint2);
 }
 td {
   padding: 0.55rem 0.75rem;
