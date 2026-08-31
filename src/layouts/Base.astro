@@ -1,12 +1,10 @@
 ---
-import '@fontsource/spectral/300.css';
-import '@fontsource/spectral/400.css';
-import '@fontsource/spectral/400-italic.css';
-import '@fontsource/spectral/500.css';
-import '@fontsource/spectral/600.css';
-import '@fontsource/spectral/600-italic.css';
-import '@fontsource/spectral/700.css';
-import '@fontsource/spectral/800.css';
+import '@fontsource/ibm-plex-serif/400.css';
+import '@fontsource/ibm-plex-serif/400-italic.css';
+import '@fontsource/ibm-plex-serif/600.css';
+import '@fontsource/ibm-plex-serif/600-italic.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-sans/700.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '@fontsource/ibm-plex-mono/600.css';
@@ -70,7 +68,7 @@ const nav = [
           ))}
         </nav>
       </div>
-      <div class="wrap"><hr class="double-rule" /></div>
+      <div class="wrap"><div class="microrule" aria-hidden="true"></div></div>
     </header>
 
     <main id="main">
@@ -79,7 +77,7 @@ const nav = [
 
     <footer class="site-footer">
       <div class="wrap">
-        <hr class="double-rule" />
+        <div class="microrule" aria-hidden="true"></div>
         <div class="footer-grid">
           <div>
             <p class="eyebrow">Colophon</p>
@@ -119,7 +117,7 @@ const nav = [
     color: var(--ink);
   }
   .logotype:hover { text-decoration: none; color: var(--ink); }
-  .dot { color: var(--crimson); }
+  .dot { color: var(--accent); }
   nav { display: flex; gap: 1.1rem; flex-wrap: wrap; }
   .nav-link {
     font-family: var(--mono);
@@ -127,8 +125,8 @@ const nav = [
     text-transform: lowercase;
     color: var(--soft);
   }
-  .nav-link:hover { color: var(--crimson); text-decoration: none; }
-  .nav-link.active { color: var(--crimson); }
+  .nav-link:hover { color: var(--accent); text-decoration: none; }
+  .nav-link.active { color: var(--accent); }
 
   .site-footer { margin-top: 4.5rem; padding-bottom: 2.5rem; }
   .footer-grid {
@@ -140,7 +138,7 @@ const nav = [
   .footer-note { font-size: var(--fs-sm); color: var(--soft); max-width: 34rem; }
   .mono-links { font-family: var(--mono); font-size: var(--fs-xs); }
   .mono-links a { color: var(--faint); }
-  .mono-links a:hover { color: var(--crimson); }
+  .mono-links a:hover { color: var(--accent); }
   @media (max-width: 44rem) {
     .footer-grid { grid-template-columns: 1fr; }
   }

@@ -15,7 +15,7 @@ interface Props {
   scaleB: string; // e.g. "months"
   a: (number | null)[]; // position of part i+1 on clock A, 0–1
   b: (number | null)[];
-  highlight?: number; // part number to set in crimson
+  highlight?: number; // part number to set in the accent ink
   caption: string;
 }
 const { clockA, clockB, scaleA, scaleB, a, b, highlight, caption } = Astro.props;
@@ -87,15 +87,15 @@ const parts = a.map((pa, i) => ({ n: i + 1, xa: pa == null ? null : x(pa), xb: b
   svg { display: block; width: 100%; height: auto; }
   .axis { stroke: var(--ink); stroke-width: 1; }
   .tick { stroke: var(--ink); stroke-width: 1; }
-  .tick--hl { stroke: var(--crimson); stroke-width: 1.5; }
+  .tick--hl { stroke: var(--accent); stroke-width: 1.5; }
   .leader { stroke: var(--rule2); stroke-width: 0.9; }
-  .leader--hl { stroke: var(--crimson); stroke-width: 1; }
+  .leader--hl { stroke: var(--accent); stroke-width: 1; }
   .num {
     font-family: var(--mono);
     font-size: 13px;
     fill: var(--soft);
   }
-  .num--hl { fill: var(--crimson); font-weight: 600; }
+  .num--hl { fill: var(--accent); font-weight: 600; }
   .clock-label,
   .scale-label {
     font-family: var(--mono);

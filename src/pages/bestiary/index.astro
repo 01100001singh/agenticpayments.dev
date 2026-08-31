@@ -14,7 +14,7 @@ const entries = (await getCollection('bestiary', (e) => !e.data.draft)).sort(
 >
   <div class="wrap">
     <header class="page-head">
-      <p class="eyebrow eyebrow--crimson">Field guide</p>
+      <p class="eyebrow eyebrow--accent">Field guide</p>
       <h1>Protocols, as creatures actually observed</h1>
       <p class="lede measure">
         A naturalist's field guide catalogs creatures — their habits, their habitats, what
@@ -48,10 +48,10 @@ const entries = (await getCollection('bestiary', (e) => !e.data.draft)).sort(
 
 <style>
   .page-head { padding: 2.6rem 0 1.8rem; }
-  h1 { font-size: var(--fs-xxl); font-weight: 800; max-width: 44rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 700; max-width: 44rem; }
   .lede { font-size: var(--fs-lg); color: var(--soft); }
   .legend {
-    background: var(--cream);
+    background: var(--tint);
     border: 1px solid var(--rule2);
     padding: 0.9rem 1.1rem;
     max-width: 46rem;
@@ -64,7 +64,7 @@ const entries = (await getCollection('bestiary', (e) => !e.data.draft)).sort(
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.09em;
-    color: var(--crimson);
+    color: var(--accent);
   }
   .specimen-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1.2rem; }
   .specimen-card {
@@ -72,11 +72,11 @@ const entries = (await getCollection('bestiary', (e) => !e.data.draft)).sort(
     flex-direction: column;
     gap: 0.2rem;
     border: 1px solid var(--rule2);
-    background: var(--cream);
+    background: var(--tint);
     padding: 1.1rem 1.2rem;
     color: var(--ink);
   }
-  .specimen-card:hover { border-color: var(--crimson); text-decoration: none; }
+  .specimen-card:hover { border-color: var(--accent); text-decoration: none; }
   .spec-name { font-size: var(--fs-lg); font-weight: 700; }
   .spec-latin { font-style: italic; color: var(--soft); font-size: var(--fs-sm); }
   .spec-habitat { font-family: var(--mono); font-size: var(--fs-xs); color: var(--faint); margin-top: 0.5rem; }

@@ -1,0 +1,68 @@
+---
+/**
+ * Guilloché band — generated interference curves in the accent ink,
+ * quoting the engine-turned borders of banknotes and share certificates.
+ * Purely decorative: empty without JS, hidden from assistive tech.
+ */
+interface Props {
+  height?: number;
+}
+const { height = 44 } = Astro.props;
+---
+
+<canvas class="guilloche" data-guilloche style={`height: ${height}px`} aria-hidden="true"></canvas>
+
+<script>
+  function draw(canvas: HTMLCanvasElement) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    if (!w || !h) return;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, w, h);
+    const accent =
+      getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0b5f55';
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 0.55;
+    const strands = 22;
+    const steps = Math.max(240, Math.floor(w / 3));
+    for (let i = 0; i < strands; i++) {
+      const phase = (i / strands) * Math.PI * 2;
+      ctx.globalAlpha = 0.16 + 0.1 * Math.sin(phase * 3);
+      ctx.beginPath();
+      for (let s = 0; s <= steps; s++) {
+        const u = s / steps;
+        const y =
+          h / 2 +
+          h * 0.3 * Math.sin(u * Math.PI * 6 + phase) +
+          h * 0.16 * Math.sin(u * Math.PI * 14 - phase * 2) +
+          h * 0.06 * Math.sin(u * Math.PI * 30 + phase * 4);
+        if (s === 0) ctx.moveTo(u * w, y);
+        else ctx.lineTo(u * w, y);
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawAll() {
+    document.querySelectorAll<HTMLCanvasElement>('[data-guilloche]').forEach(draw);
+  }
+  drawAll();
+  let t: ReturnType<typeof setTimeout>;
+  window.addEventListener('resize', () => {
+    clearTimeout(t);
+    t = setTimeout(drawAll, 150);
+  });
+</script>
+
+<style>
+  .guilloche {
+    display: block;
+    width: 100%;
+  }
+</style>

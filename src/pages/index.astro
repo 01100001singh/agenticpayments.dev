@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import CutCard from '../components/CutCard.astro';
+import Guilloche from '../components/Guilloche.astro';
 import { cutPath } from '../lib/cutPath';
 
 const cuts = (await getCollection('cuts', (c) => !c.data.draft)).sort(
@@ -54,7 +55,7 @@ const jsonld = {
 
         {demoCut && (
           <div class="demo">
-            <p class="eyebrow eyebrow--crimson">Try it now — a recipe, live</p>
+            <p class="eyebrow eyebrow--accent">Try it now — a recipe, live</p>
             <button type="button" class="demo-recipe" id="demo-recipe" data-clip={demoClip}>
               <span class="demo-text">
                 Turn <em>"{demoCut.data.title}"</em> into a five-panel comic for a
@@ -77,6 +78,8 @@ const jsonld = {
           <a href="/llms.txt"><code>/llms.txt</code></a> and skip the reading layer.
         </p>
       </div>
+
+      <div class="band"><Guilloche /></div>
     </section>
 
     <section class="start-here" aria-labelledby="start-here-h">
@@ -132,7 +135,8 @@ const jsonld = {
 
 <style>
   .masthead { padding: 2.6rem 0 2.4rem; }
-  h1 { font-size: var(--fs-xxl); font-weight: 800; max-width: 46rem; }
+  .band { margin-top: 2.2rem; }
+  h1 { font-size: var(--fs-xxl); font-weight: 700; max-width: 46rem; }
 
   .intro { margin-top: 1.1rem; display: grid; gap: 0.9rem; }
   .intro-who { font-size: var(--fs-lg); color: var(--ink); line-height: 1.55; }
@@ -140,10 +144,10 @@ const jsonld = {
   .intro-doors { font-size: var(--fs-sm); color: var(--soft); }
 
   .demo {
-    border: 1px solid var(--crimson);
+    border: 1px solid var(--accent);
     outline: 1px solid var(--rule2);
     outline-offset: 3px;
-    background: var(--cream);
+    background: var(--tint);
     padding: 1rem 1.1rem 0.9rem;
     max-width: 40rem;
     margin: 0.4rem 0;
@@ -165,8 +169,8 @@ const jsonld = {
     margin-top: 0.7rem;
     cursor: pointer;
   }
-  .demo-recipe:hover { border-color: var(--crimson); }
-  .demo-recipe:hover .copy-mark { color: var(--crimson); }
+  .demo-recipe:hover { border-color: var(--accent); }
+  .demo-recipe:hover .copy-mark { color: var(--accent); }
   .copy-mark {
     font-family: var(--mono);
     font-size: var(--fs-xs);
@@ -175,13 +179,13 @@ const jsonld = {
     color: var(--faint);
     flex-shrink: 0;
   }
-  .demo-recipe.copied { border-color: var(--olive); }
-  .demo-recipe.copied .copy-mark { color: var(--olive); }
+  .demo-recipe.copied { border-color: var(--accent); }
+  .demo-recipe.copied .copy-mark { color: var(--accent); }
   .demo-note { font-size: var(--fs-sm); color: var(--soft); margin: 0.6rem 0 0; }
 
   .start-here {
     border: 1px solid var(--rule2);
-    background: var(--cream);
+    background: var(--tint);
     padding: 1.2rem 1.4rem 1.2rem;
     margin-bottom: 3rem;
   }
@@ -195,7 +199,7 @@ const jsonld = {
     color: var(--ink);
     margin-top: 0.8rem;
   }
-  .start-essay:hover { text-decoration: none; border-color: var(--crimson); }
+  .start-essay:hover { text-decoration: none; border-color: var(--accent); }
   .start-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -211,14 +215,14 @@ const jsonld = {
     padding: 0.9rem 1rem;
     color: var(--ink);
   }
-  .start-item:hover { text-decoration: none; border-color: var(--crimson); }
+  .start-item:hover { text-decoration: none; border-color: var(--accent); }
   .plate-no {
     font-family: var(--mono);
     font-size: var(--fs-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: var(--track-label);
-    color: var(--crimson);
+    color: var(--accent);
   }
   .start-title { font-size: var(--fs-lg); font-weight: 700; line-height: 1.2; }
   .start-note { font-size: var(--fs-sm); color: var(--soft); }
@@ -231,7 +235,7 @@ const jsonld = {
     text-transform: uppercase;
     letter-spacing: var(--track-label);
     color: var(--ink);
-    background: var(--cream2);
+    background: var(--tint2);
     border: 1px solid var(--rule2);
     display: inline-block;
     padding: 0.25rem 0.7rem;

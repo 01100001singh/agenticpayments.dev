@@ -14,7 +14,7 @@ const plates = (await getCollection('plates', (p) => !p.data.draft)).sort((a, b)
 >
   <div class="wrap">
     <header class="page-head">
-      <p class="eyebrow eyebrow--crimson">Dissections</p>
+      <p class="eyebrow eyebrow--accent">Dissections</p>
       <h1>Dissections of payment flows</h1>
       <p class="lede measure">
         Every payment system is two clocks: the one the user watches and the one the money
@@ -40,7 +40,7 @@ const plates = (await getCollection('plates', (p) => !p.data.draft)).sort((a, b)
 
 <style>
   .page-head { padding: 2.6rem 0 1.8rem; }
-  h1 { font-size: var(--fs-xxl); font-weight: 800; }
+  h1 { font-size: var(--fs-xxl); font-weight: 700; }
   .lede { font-size: var(--fs-lg); color: var(--soft); }
   .plate-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); gap: 1.2rem; }
   .plate-card {
@@ -55,14 +55,14 @@ const plates = (await getCollection('plates', (p) => !p.data.draft)).sort((a, b)
     color: var(--ink);
     margin: 3px;
   }
-  .plate-card:hover { text-decoration: none; border-color: var(--crimson); }
+  .plate-card:hover { text-decoration: none; border-color: var(--accent); }
   .plate-no {
     font-family: var(--mono);
     font-size: var(--fs-xs);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: var(--track-label);
-    color: var(--crimson);
+    color: var(--accent);
   }
   .plate-title { font-size: var(--fs-lg); font-weight: 700; }
   .plate-sub { font-style: italic; color: var(--soft); font-size: var(--fs-sm); }
