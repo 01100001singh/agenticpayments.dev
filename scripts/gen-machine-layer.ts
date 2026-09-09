@@ -1,5 +1,5 @@
 /**
- * gen-machine-layer — regenerate the corpus-level machine surfaces:
+ * gen-machine-layer - regenerate the corpus-level machine surfaces:
  *   /spine.jsonl   one canonical stock object per line, whole corpus
  *   /graph.json    nodes = cut ids; edges = related + typed relations
  *   /llms.txt      site description + schema pointers (llmstxt.org)
@@ -46,9 +46,9 @@ writeFileSync(join(PUBLIC_DIR, 'graph.json'), canonicalize(graph), 'utf8');
 // ---- llms.txt ---------------------------------------------------------------
 const llms = `# agenticpayments.dev
 
-> A publication about agentic payments, built the way the thing it describes works. It ships Cuts — atomic, schema'd, CC-BY-4.0-licensed primitives of operator thinking about payment systems — plus a machine layer engineered for agent consumption. Everything is dated, versioned, and Ed25519-signed; attribution survives mirroring.
+> A publication about agentic payments, built the way the thing it describes works. It ships Cuts - atomic, schema'd, CC-BY-4.0-licensed primitives of operator thinking about payment systems - plus a machine layer engineered for agent consumption. Everything is dated, versioned, and Ed25519-signed; attribution survives mirroring.
 
-Key vocabulary: a **Cut** is the atomic content unit (one idea, ~180 words, closed type/era taxonomy). The **Spine** is the corpus of Cuts. A **Surface** is a rendering of Cuts into a consumable form. The **Stock** is the machine twin of a Cut — same meaning, presentation deleted.
+Key vocabulary: a **Cut** is the atomic content unit (one idea, ~180 words, closed type/era taxonomy). The **Spine** is the corpus of Cuts. A **Surface** is a rendering of Cuts into a consumable form. The **Stock** is the machine twin of a Cut - same meaning, presentation deleted.
 
 ## Machine layer
 
@@ -64,7 +64,7 @@ Each stock object carries: gist (one-sentence summary), claims (subject-predicat
 
 ## Human layer
 
-- [Start here](${SITE}/start-here): the front-door essay — the lending value chain, redrawn for agents
+- [Start here](${SITE}/start-here): the front-door essay - the lending value chain, redrawn for agents
 - [Homepage](${SITE}/): the Cuts, newest first
 - [About](${SITE}/about): thesis, how to read this site, licensing
 - [Lexicon](${SITE}/lexicon): stable glossary anchors used by entity links
@@ -114,7 +114,7 @@ const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <title>agenticpayments.dev</title>
 <link>${SITE}/</link>
 <atom:link href="${SITE}/rss.xml" rel="self" type="application/rss+xml"/>
-<description>Cuts and Surfaces on agentic payments — atomic, licensed, signed primitives of operator thinking.</description>
+<description>Cuts and Surfaces on agentic payments - atomic, licensed, signed primitives of operator thinking.</description>
 <language>en</language>
 ${items
   .map(

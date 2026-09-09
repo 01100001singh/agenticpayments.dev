@@ -20,7 +20,7 @@ const observed = d.as_observed.toISOString().slice(0, 10);
 const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: `Plate ${d.plate} — ${d.title}`,
+  headline: `Plate ${d.plate} - ${d.title}`,
   datePublished: d.date.toISOString().slice(0, 10),
   url,
   license: 'https://creativecommons.org/licenses/by/4.0/',
@@ -28,7 +28,7 @@ const jsonld = {
 };
 ---
 
-<Base title={`Plate ${d.plate} — ${d.title}`} description={d.summary ?? d.tldr} path={`/plates/${plate.id}`} jsonld={jsonld}>
+<Base title={`Plate ${d.plate} - ${d.title}`} description={d.summary ?? d.tldr} path={`/plates/${plate.id}`} jsonld={jsonld}>
   <!-- A Plate has no single machine twin, so no raw view here. -->
   <ViewToggle views={['read', 'remix']} />
 
@@ -50,7 +50,7 @@ const jsonld = {
           a={d.figure.a}
           b={d.figure.b}
           highlight={d.figure.highlight}
-          caption={`Fig. 1 — the two clocks of ${d.title.toLowerCase().replace(/^dissection of /, '')}; schematic, not to scale.`}
+          caption={`Fig. 1 - the two clocks of ${d.title.toLowerCase().replace(/^dissection of /, '')}; schematic, not to scale.`}
         />
       )}
 
@@ -87,7 +87,7 @@ const jsonld = {
 
       {d.pair_with.length > 0 && (
         <p class="pairing">
-          This Plate is one half of a pairing — see also{' '}
+          This Plate is one half of a pairing - see also{' '}
           {d.pair_with.map((p, i) => (
             <>
               {i > 0 && ' · '}
@@ -100,16 +100,16 @@ const jsonld = {
 
     <div class="side only-remix">
       <PromptSidebar
-        title={`Plate ${d.plate} — ${d.title}`}
+        title={`Plate ${d.plate} - ${d.title}`}
         url={url}
         prompts={d.prompts}
         payload={[
-          `Plate ${d.plate} — ${d.title}`,
+          `Plate ${d.plate} - ${d.title}`,
           `${d.subtitle} · as observed ${observed}`,
           '',
           ...d.organs.map(
             (o) =>
-              `${o.n}. ${o.organ} — ${o.role} [${d.clocks[0]}: ${o.experience_clock} | ${d.clocks[1]}: ${o.money_clock}]`,
+              `${o.n}. ${o.organ} - ${o.role} [${d.clocks[0]}: ${o.experience_clock} | ${d.clocks[1]}: ${o.money_clock}]`,
           ),
           '',
           `TL;DR: ${d.tldr}`,
@@ -188,7 +188,7 @@ const jsonld = {
     .col-role { grid-column: 2; padding-top: 0; }
     .col-clock { grid-column: 2; padding-top: 0; }
     .col-clock::before {
-      content: attr(data-label) ' — ';
+      content: attr(data-label) ' - ';
       color: var(--faint);
       text-transform: uppercase;
       letter-spacing: 0.07em;

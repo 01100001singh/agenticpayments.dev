@@ -36,7 +36,7 @@ const atlas = yaml.load(readFileSync(new URL('../../content/atlas.yaml', import.
           {section.links.map((l) => (
             <li>
               <a href={l.url} rel="noopener">{l.title}</a>
-              <span class="note">— {l.note}</span>
+              <span class="note">- {l.note}</span>
             </li>
           ))}
         </ul>

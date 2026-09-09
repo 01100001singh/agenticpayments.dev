@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import CutCard from '../components/CutCard.astro';
 import Guilloche from '../components/Guilloche.astro';
 
-// Held back from the coming-soon glimpse only — the Cuts themselves, their
+// Held back from the coming-soon glimpse only - the Cuts themselves, their
 // signed URLs, and the machine layer are untouched (the Spine is append-only).
 const HIDDEN_FROM_HOME = new Set(['cut-0200', 'cut-0203', 'cut-0211', 'cut-0212']);
 
@@ -25,7 +25,7 @@ const jsonld = {
 
 <Base
   title="Operator notes on agentic payments"
-  description="Operator notes on agentic payments and commerce — short, dated, licensed Cuts written for people and structured for agents. Full site coming soon; a glimpse below."
+  description="Operator notes on agentic payments and commerce - short, dated, licensed Cuts written for people and structured for agents. Full site coming soon; a glimpse below."
   path="/"
   jsonld={jsonld}
 >
@@ -36,9 +36,9 @@ const jsonld = {
       <div class="intro">
         <p class="eyebrow eyebrow--accent">Coming soon</p>
         <p class="intro-who measure">
-          I'm <strong>Ankit</strong> — 2x Fintech Founder and Fellow in Residence at
+          I'm <strong>Ankit</strong> - 2x Fintech Founder and Fellow in Residence at
           India Stack (UPI, OCEN). I'm turning my blog into this: operator notes on
-          agentic payments and commerce, published as <strong>Cuts</strong> — one idea in
+          agentic payments and commerce, published as <strong>Cuts</strong> - one idea in
           ~180 words, visual primitives and more. There's a lot more on the way and a
           glimpse of it is below.
         </p>
@@ -48,7 +48,7 @@ const jsonld = {
     </section>
 
     <section class="case-section" aria-label="The cuts, newest first">
-      <p class="case-label">The cuts — newest first</p>
+      <p class="case-label">The cuts - newest first</p>
       <div class="counter-grid">
         {cuts.map((cut) => (
           <CutCard cut={cut} />

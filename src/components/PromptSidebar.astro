@@ -1,10 +1,10 @@
 ---
 /**
- * The Prompt Sidebar — "cook this with your agent."
+ * The Prompt Sidebar - "cook this with your agent."
  * Static v1: a copy-button prompt list attached to every Cut and Surface.
  *
  * The copied text is SELF-CONTAINED: prompt + the full source material +
- * citation. Paste it into any assistant — browsing or not, the model has
+ * citation. Paste it into any assistant - browsing or not, the model has
  * everything it needs. (The Cuts are CC-BY and ~180 words; portability is
  * the entire point of the format.)
  *
@@ -15,7 +15,7 @@ interface Props {
   url: string;
   payload: string; // the full source material, as plain text
   prompts?: string[]; // per-surface overrides; falls back to the seed set
-  stockUrl?: string; // machine twin link — Cut pages only
+  stockUrl?: string; // machine twin link - Cut pages only
 }
 const { title, url, payload, prompts, stockUrl } = Astro.props;
 
@@ -29,15 +29,15 @@ const seed = [
 const list = prompts?.length ? prompts : seed;
 
 const clip = (p: string) =>
-  `${p}\n\n--- SOURCE (CC-BY-4.0, cite the URL) ---\n\n${payload.trim()}\n\n"${title}" — ${url}`;
+  `${p}\n\n--- SOURCE (CC-BY-4.0, cite the URL) ---\n\n${payload.trim()}\n\n"${title}" - ${url}`;
 ---
 
 <aside class="sidebar" aria-labelledby="sidebar-heading">
-  <p class="eyebrow eyebrow--accent" id="sidebar-heading">Recipes — cook this with your AI</p>
+  <p class="eyebrow eyebrow--accent" id="sidebar-heading">Recipes - cook this with your AI</p>
   <p class="sidebar-note">
-    This page is one plating of the idea — the raw material is yours to re-cook. Pick a
-    recipe below: you'll see <strong>exactly what lands on your clipboard</strong> — the
-    instruction plus the full source — before you take it. Then paste into ChatGPT, Claude,
+    This page is one plating of the idea - the raw material is yours to re-cook. Pick a
+    recipe below: you'll see <strong>exactly what lands on your clipboard</strong> - the
+    instruction plus the full source - before you take it. Then paste into ChatGPT, Claude,
     Gemini, whatever you use; no browsing, no login, nothing else required.
   </p>
   <ul class="prompt-list">
@@ -54,7 +54,7 @@ const clip = (p: string) =>
   {stockUrl && (
     <p class="sidebar-stock">
       Running an agent instead? The machine twin lives at
-      <a href={stockUrl}>{stockUrl.split('/').pop()}</a> — same meaning, zero prose.
+      <a href={stockUrl}>{stockUrl.split('/').pop()}</a> - same meaning, zero prose.
     </p>
   )}
 </aside>
@@ -65,7 +65,7 @@ const clip = (p: string) =>
     <button type="button" class="modal-close" id="payload-close" aria-label="Close">✕</button>
   </div>
   <p class="modal-note">
-    Everything below lands on your clipboard — prompt, full source, license, citation.
+    Everything below lands on your clipboard - prompt, full source, license, citation.
     Paste it into ChatGPT, Claude, Gemini, or any model; nothing else is needed.
   </p>
   <pre class="modal-payload" id="payload-text" tabindex="0"></pre>
@@ -216,7 +216,7 @@ const clip = (p: string) =>
     try {
       await navigator.clipboard.writeText(payloadText.textContent ?? '');
       copyBtn.classList.add('done');
-      copyBtn.textContent = 'Copied — go cook';
+      copyBtn.textContent = 'Copied - go cook';
       (window as any).va?.('event', {
         name: 'prompt_copy',
         data: { page: location.pathname, prompt: currentIndex },

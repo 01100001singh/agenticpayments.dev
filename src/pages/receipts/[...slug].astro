@@ -16,7 +16,7 @@ const url = `https://agenticpayments.dev/receipts/${d.number}`;
 const hasBody = (entry.body ?? '').trim().length > 0;
 ---
 
-<Base title={`Receipt #${d.number} — ${d.title}`} description={d.summary ?? d.title} path={`/receipts/${d.number}`}>
+<Base title={`Receipt #${d.number} - ${d.title}`} description={d.summary ?? d.title} path={`/receipts/${d.number}`}>
   <div class="wrap layout">
     <article>
       <header>
@@ -60,11 +60,11 @@ const hasBody = (entry.body ?? '').trim().length > 0;
     </article>
     <div class="side">
       <PromptSidebar
-        title={`Receipt #${d.number} — ${d.title}`}
+        title={`Receipt #${d.number} - ${d.title}`}
         url={url}
         prompts={d.prompts}
         payload={[
-          `${d.merchant} — RECEIPT #${d.number}`,
+          `${d.merchant} - RECEIPT #${d.number}`,
           d.title,
           '',
           ...d.items.map((i) => `${i.label} ... ${i.amount}${i.note ? `  (${i.note})` : ''}`),

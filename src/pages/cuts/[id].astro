@@ -90,7 +90,7 @@ const jsonld = {
           <div><dt>provenance</dt><dd>{d.provenance}</dd></div>
           <div><dt>valid as of</dt><dd>{validStr}</dd></div>
           {staleStr && <div><dt>stale after</dt><dd>{staleStr}</dd></div>}
-          <div><dt>license</dt><dd>CC-BY-4.0 — take it, cite the URL</dd></div>
+          <div><dt>license</dt><dd>CC-BY-4.0 - take it, cite the URL</dd></div>
           <div><dt>tags</dt><dd>{d.tags.join(' · ')}</dd></div>
           <div>
             <dt>machine twin</dt>
@@ -105,7 +105,7 @@ const jsonld = {
               {related.map((r) => (
                 <li>
                   <a href={cutPath(r.data)}>{r.data.id}</a>
-                  <span class="rel-title">— {r.data.title}</span>
+                  <span class="rel-title">- {r.data.title}</span>
                 </li>
               ))}
             </ul>
@@ -129,7 +129,7 @@ const jsonld = {
 
       <footer class="read-license only-read">
         <p>
-          Licensed CC-BY-4.0 — take it, cite this URL.
+          Licensed CC-BY-4.0 - take it, cite this URL.
           <a href="?view=remix" data-setview="remix">Full record →</a>
         </p>
       </footer>
@@ -147,7 +147,7 @@ const jsonld = {
 
   <div class="wrap raw-pane" aria-label="Machine twin">
     <p class="raw-head">
-      /cuts/{d.id}.stock.json — the machine twin: same meaning, presentation deleted.
+      /cuts/{d.id}.stock.json - the machine twin: same meaning, presentation deleted.
       <a href={`/cuts/${d.id}.stock.json`}>raw file</a> · <a href="/spine.jsonl">whole corpus</a>
     </p>
     <pre class="raw-json" data-stock={`/cuts/${d.id}.stock.json`}>loading…</pre>

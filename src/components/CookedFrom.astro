@@ -1,5 +1,5 @@
 ---
-/** "Cooked from" footer — which Cuts a Surface was rendered from. */
+/** "Cooked from" footer - which Cuts a Surface was rendered from. */
 import { getCollection } from 'astro:content';
 import { cutPath } from '../lib/cutPath';
 
@@ -21,7 +21,7 @@ const cuts = ids.length
       {cuts.map((c) => (
         <li>
           <a href={cutPath(c.data)}>{c.data.id}</a>
-          <span class="cooked-title">— {c.data.title}</span>
+          <span class="cooked-title">- {c.data.title}</span>
         </li>
       ))}
     </ul>

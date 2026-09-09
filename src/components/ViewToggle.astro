@@ -1,9 +1,9 @@
 ---
 /**
- * Read / Remix / Raw — the page-view control. `read` strips the ontology
+ * Read / Remix / Raw - the page-view control. `read` strips the ontology
  * chrome (anything tagged .only-remix) and reveals .only-read; `remix` is
  * the full page; `raw` (where offered) swaps the article for the machine
- * twin — the page renders its own .raw-pane with a [data-stock] <pre>, and
+ * twin - the page renders its own .raw-pane with a [data-stock] <pre>, and
  * the toggle fills it on demand. Without JS the data-view attribute never
  * lands: the page stays in the full remix state and the bar stays hidden.
  * A saved preference this page doesn't offer (raw on a Plate) falls back
@@ -53,7 +53,7 @@ const TITLES: Record<string, string> = {
       fetch(pre.getAttribute('data-stock'))
         .then(function (r) { return r.json(); })
         .then(function (j) { pre.textContent = JSON.stringify(j, null, 2); })
-        .catch(function () { pre.textContent = 'Could not load — open the raw file link above.'; });
+        .catch(function () { pre.textContent = 'Could not load - open the raw file link above.'; });
     }
     function setView(v) {
       doc.dataset.view = v;

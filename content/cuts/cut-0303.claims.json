@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "gist": "Every participant in the lending value chain adds value along one or more of four dimensions — capital, distribution, data, technology. New entrants are new rows in that grid, never new columns: an actor that cannot name its column is not in the chain. The borrower's agent enters as a distribution+data row, which puts it in direct competition with the embedding platform for the same two columns.",
+  "gist": "Every participant in the lending value chain adds value along one or more of four dimensions - capital, distribution, data, technology. New entrants are new rows in that grid, never new columns: an actor that cannot name its column is not in the chain. The borrower's agent enters as a distribution+data row, which puts it in direct competition with the embedding platform for the same two columns.",
   "claims": [
     { "s": "value-chain-entrant", "p": "is", "o": "new-row-not-new-column", "q": { "era": "universal" } },
     { "s": "borrower", "p": "adds-value-along", "o": "data" },
