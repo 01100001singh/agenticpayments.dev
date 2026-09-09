@@ -4,9 +4,14 @@ import Base from '../layouts/Base.astro';
 import CutCard from '../components/CutCard.astro';
 import Guilloche from '../components/Guilloche.astro';
 
-const cuts = (await getCollection('cuts', (c) => !c.data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.id.localeCompare(b.data.id),
-);
+// Held back from the coming-soon glimpse only — the Cuts themselves, their
+// signed URLs, and the machine layer are untouched (the Spine is append-only).
+const HIDDEN_FROM_HOME = new Set(['cut-0200', 'cut-0203', 'cut-0211', 'cut-0212']);
+
+const cuts = (await getCollection('cuts', (c) => !c.data.draft && !HIDDEN_FROM_HOME.has(c.data.id)))
+  .sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.id.localeCompare(b.data.id),
+  );
 
 const jsonld = {
   '@context': 'https://schema.org',
