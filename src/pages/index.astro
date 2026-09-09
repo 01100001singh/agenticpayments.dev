@@ -3,20 +3,10 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import CutCard from '../components/CutCard.astro';
 import Guilloche from '../components/Guilloche.astro';
-import { cutPath } from '../lib/cutPath';
 
 const cuts = (await getCollection('cuts', (c) => !c.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.id.localeCompare(b.data.id),
 );
-
-// The live recipe demo: one real Cut, one real prompt, wired to the clipboard
-// in the same self-contained format the prompt sidebar uses.
-const demoCut = cuts.find((c) => c.data.id === 'cut-0101');
-const demoPrompt = 'Generate a five-panel comic explaining this to a twelve-year-old.';
-const demoUrl = demoCut ? `https://agenticpayments.dev${cutPath(demoCut.data).replace(/\/$/, '')}` : '';
-const demoClip = demoCut
-  ? `${demoPrompt}\n\n--- SOURCE (CC-BY-4.0, cite the URL) ---\n\n${(demoCut.body ?? '').trim()}\n\n"${demoCut.data.title}" — ${demoUrl}`
-  : '';
 
 const jsonld = {
   '@context': 'https://schema.org',
@@ -30,7 +20,7 @@ const jsonld = {
 
 <Base
   title="Operator notes on agentic payments"
-  description="Operator notes on agentic payments — short, dated, licensed Cuts written for people and structured for agents. Read them, or hand any one to your AI and have it re-cooked to your shape."
+  description="Operator notes on agentic payments and commerce — short, dated, licensed Cuts written for people and structured for agents. Full site coming soon; a glimpse below."
   path="/"
   jsonld={jsonld}
 >
@@ -39,70 +29,17 @@ const jsonld = {
       <h1>Operator notes on agentic payments and commerce,<br />served by the cut.</h1>
 
       <div class="intro">
+        <p class="eyebrow eyebrow--accent">Coming soon</p>
         <p class="intro-who measure">
           I'm <strong>Ankit Singh</strong> — two-time fintech founder, co-creator of OCEN
-          (India Stack's "UPI for credit"). This site is my working notes on agentic
-          payments: what happens when software starts spending money on your behalf.
-          <a href="/about/">More about me →</a>
-        </p>
-        <p class="intro-how measure">
-          Everything here is a <strong>Cut</strong> — one idea in ~180 words, dated, and
-          free to reuse. Read them like short posts. Or use the trick this site is built
-          for: every page carries <strong>recipes</strong>. Click one and it copies the
-          note plus an instruction to your clipboard; paste it into ChatGPT, Claude, or
-          Gemini, and the idea gets re-cooked into whatever shape you want.
-        </p>
-
-        {demoCut && (
-          <div class="demo">
-            <p class="eyebrow eyebrow--accent">Try it now — a recipe, live</p>
-            <button type="button" class="demo-recipe" id="demo-recipe" data-clip={demoClip}>
-              <span class="demo-text">
-                Turn <em>"{demoCut.data.title}"</em> into a five-panel comic for a
-                twelve-year-old
-              </span>
-              <span class="copy-mark" aria-hidden="true">copy</span>
-            </button>
-            <p class="demo-note">
-              <span id="demo-note-text">One click copies the recipe plus the full note —
-              paste it into any AI, nothing else needed.</span>
-              Or <a href={cutPath(demoCut.data)}>read the note itself →</a>
-            </p>
-          </div>
-        )}
-
-        <p class="intro-doors measure">
-          No AI required, either: the <a href="/plates/">dissections</a>, the
-          <a href="/bestiary/">field guide</a>, the dialogues and parables are complete
-          on their own. Running an agent instead? Point it at
-          <a href="/llms.txt"><code>/llms.txt</code></a> and skip the reading layer.
+          (India Stack's "UPI for credit"). I'm turning my blog into this: operator notes
+          on agentic payments and commerce, published as <strong>Cuts</strong> — one idea
+          in ~180 words, dated, and free to reuse. There's a lot more on the way; a
+          glimpse of it is below.
         </p>
       </div>
 
       <div class="band"><Guilloche /></div>
-    </section>
-
-    <section class="start-here" aria-labelledby="start-here-h">
-      <p class="eyebrow" id="start-here-h">Start here</p>
-      <a class="start-essay" href="/start-here/">
-        <span class="start-title">The lending value chain, redrawn for agents</span>
-        <span class="start-note">
-          One essay, no vocabulary required: what I mapped in 2021, and what changes now that
-          the software borrowing on a business's behalf is a literal agent.
-        </span>
-      </a>
-      <div class="start-grid">
-        <a class="start-item" href="/plates/plate-ii-upi/">
-          <span class="plate-no">Dissection · UPI</span>
-          <span class="start-title">How a UPI payment actually works</span>
-          <span class="start-note">A rail you half-know, laid open part by part.</span>
-        </a>
-        <a class="start-item" href="/plates/plate-iii-cards/">
-          <span class="plate-no">Dissection · Cards</span>
-          <span class="start-title">How a card purchase actually works</span>
-          <span class="start-note">The same template on the world's oldest online rail.</span>
-        </a>
-      </div>
     </section>
 
     <section class="case-section" aria-label="The cuts, newest first">
@@ -116,116 +53,13 @@ const jsonld = {
   </div>
 </Base>
 
-<script>
-  const btn = document.getElementById('demo-recipe') as HTMLButtonElement | null;
-  const noteText = document.getElementById('demo-note-text');
-  btn?.addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(btn.dataset.clip ?? '');
-      btn.classList.add('copied');
-      const mark = btn.querySelector('.copy-mark');
-      if (mark) mark.textContent = 'copied';
-      if (noteText) noteText.textContent = 'On your clipboard — now paste it into ChatGPT, Claude, or Gemini.';
-      (window as any).va?.('event', { name: 'prompt_copy', data: { page: '/', prompt: 'demo' } });
-    } catch {
-      if (noteText) noteText.textContent = 'Copy was blocked by the browser — open the note and use the recipe there.';
-    }
-  });
-</script>
-
 <style>
   .masthead { padding: 2.6rem 0 2.4rem; }
   .band { margin-top: 2.2rem; }
   h1 { font-size: var(--fs-xxl); font-weight: 700; max-width: 46rem; }
 
-  .intro { margin-top: 1.1rem; display: grid; gap: 0.9rem; }
+  .intro { margin-top: 1.1rem; display: grid; gap: 0.5rem; }
   .intro-who { font-size: var(--fs-lg); color: var(--ink); line-height: 1.55; }
-  .intro-how { font-size: var(--fs-base); color: var(--soft); line-height: 1.6; }
-  .intro-doors { font-size: var(--fs-sm); color: var(--soft); }
-
-  .demo {
-    border: 1px solid var(--accent);
-    outline: 1px solid var(--rule2);
-    outline-offset: 3px;
-    background: var(--tint);
-    padding: 1rem 1.1rem 0.9rem;
-    max-width: 40rem;
-    margin: 0.4rem 0;
-  }
-  .demo-recipe {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.7rem;
-    width: 100%;
-    text-align: left;
-    font-family: var(--serif);
-    font-size: var(--fs-base);
-    line-height: 1.45;
-    color: var(--ink);
-    background: var(--paper);
-    border: 1px solid var(--rule2);
-    padding: 0.65rem 0.8rem;
-    margin-top: 0.7rem;
-    cursor: pointer;
-  }
-  .demo-recipe:hover { border-color: var(--accent); }
-  .demo-recipe:hover .copy-mark { color: var(--accent); }
-  .copy-mark {
-    font-family: var(--mono);
-    font-size: var(--fs-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--faint);
-    flex-shrink: 0;
-  }
-  .demo-recipe.copied { border-color: var(--accent); }
-  .demo-recipe.copied .copy-mark { color: var(--accent); }
-  .demo-note { font-size: var(--fs-sm); color: var(--soft); margin: 0.6rem 0 0; }
-
-  .start-here {
-    border: 1px solid var(--rule2);
-    background: var(--tint);
-    padding: 1.2rem 1.4rem 1.2rem;
-    margin-bottom: 3rem;
-  }
-  .start-essay {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    background: var(--paper);
-    border: 1px solid var(--rule2);
-    padding: 0.9rem 1rem;
-    color: var(--ink);
-    margin-top: 0.8rem;
-  }
-  .start-essay:hover { text-decoration: none; border-color: var(--accent); }
-  .start-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
-    margin-top: 1.2rem;
-  }
-  .start-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    background: var(--paper);
-    border: 1px solid var(--rule2);
-    padding: 0.9rem 1rem;
-    color: var(--ink);
-  }
-  .start-item:hover { text-decoration: none; border-color: var(--accent); }
-  .plate-no {
-    font-family: var(--mono);
-    font-size: var(--fs-xs);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: var(--track-label);
-    color: var(--accent);
-  }
-  .start-title { font-size: var(--fs-lg); font-weight: 700; line-height: 1.2; }
-  .start-note { font-size: var(--fs-sm); color: var(--soft); }
 
   .case-section { margin-bottom: 2.6rem; }
   .case-label {
@@ -245,8 +79,5 @@ const jsonld = {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     gap: 0 2rem;
-  }
-  @media (max-width: 44rem) {
-    .start-grid { grid-template-columns: 1fr; }
   }
 </style>

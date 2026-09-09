@@ -23,17 +23,10 @@ const site = 'https://agenticpayments.dev';
 const canonical = site + (path === '/' ? '/' : path.replace(/\/?$/, '/'));
 const fullTitle = path === '/' ? 'agenticpayments.dev — cuts on agentic payments' : `${title} · agenticpayments.dev`;
 
-// Plain-English wayfinding only — a stranger should know what's behind a
-// link before clicking. Invented vocabulary lives inside the pages, not here.
-const nav = [
-  ['/start-here', 'Start here'],
-  ['/plates', 'Dissections'],
-  ['/bestiary', 'Field guide'],
-  ['/journal', 'Journal'],
-  ['/lexicon', 'Lexicon'],
-  ['/atlas', 'Sources'],
-  ['/about', 'About'],
-];
+// Coming-soon mode: no top navigation while the site is rearchitected.
+// The full nav lives on the `full-site` branch; pages stay reachable by
+// URL (Cut URLs are signed and must never break), just unlinked.
+const nav: [string, string][] = [];
 ---
 
 <!doctype html>
@@ -62,11 +55,13 @@ const nav = [
         <a href="/" class="logotype" aria-label="agenticpayments.dev — home"
           >agenticpayments<span class="dot">.</span>dev</a
         >
-        <nav aria-label="Primary">
-          {nav.map(([href, label]) => (
-            <a href={href} class:list={['nav-link', { active: path.startsWith(href) }]}>{label}</a>
-          ))}
-        </nav>
+        {nav.length > 0 && (
+          <nav aria-label="Primary">
+            {nav.map(([href, label]) => (
+              <a href={href} class:list={['nav-link', { active: path.startsWith(href) }]}>{label}</a>
+            ))}
+          </nav>
+        )}
       </div>
       <div class="wrap"><div class="microrule" aria-hidden="true"></div></div>
     </header>
