@@ -21,7 +21,7 @@ interface Props {
 const { title, description, path, jsonld } = Astro.props;
 const site = 'https://agenticpayments.dev';
 const canonical = site + (path === '/' ? '/' : path.replace(/\/?$/, '/'));
-const fullTitle = path === '/' ? 'agenticpayments.dev - cuts on agentic payments' : `${title} · agenticpayments.dev`;
+const fullTitle = path === '/' ? 'agenticpayments.dev - cuts on agentic payments and agentic commerce' : `${title} · agenticpayments.dev`;
 
 // Coming-soon mode: no top navigation while the site is rearchitected.
 // The full nav lives on the `full-site` branch; pages stay reachable by
@@ -82,6 +82,7 @@ const nav: [string, string][] = [];
               <a href="https://github.com/01100001singh/agenticpayments.dev">GitHub</a>.
             </p>
             <p class="footer-note mono-links">
+              <a href="/lexicon/">lexicon</a> ·
               <a href="/llms.txt">llms.txt</a> · <a href="/spine.jsonl">spine.jsonl</a> ·
               <a href="/graph.json">graph.json</a> · <a href="/rss.xml">rss</a> ·
               <a href="/.well-known/agenticpayments.json">keys</a>
