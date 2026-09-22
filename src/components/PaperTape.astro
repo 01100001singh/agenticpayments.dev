@@ -1,0 +1,52 @@
+---
+/**
+ * Paper-tape band - eight-channel punched tape whose holes spell the
+ * message in ASCII, sprocket feed row in the accent ink. The holes are
+ * real data: structure carrying meaning, applied to ornament. Static
+ * SVG generated at build time - no client JavaScript.
+ */
+interface Props {
+  message?: string;
+}
+const { message = 'AGENTICPAYMENTS.DEV ' } = Astro.props;
+
+const COL_W = 13;
+const ROW_H = 5.6;
+const R = 2.1; // data hole
+const RS = 1.1; // sprocket hole
+const PAD = 6;
+const W = 1100;
+const H = PAD * 2 + ROW_H * 8;
+const cols = Math.floor(W / COL_W);
+
+const holes: { cx: number; cy: number; r: number; accent: boolean }[] = [];
+for (let col = 0; col < cols; col++) {
+  const ch = message.charCodeAt(col % message.length);
+  const cx = COL_W / 2 + col * COL_W;
+  let row = 0;
+  for (let bit = 7; bit >= 0; bit--) {
+    if ((ch >> bit) & 1) {
+      holes.push({ cx, cy: PAD + row * ROW_H + ROW_H / 2, r: R, accent: false });
+    }
+    row++;
+    if (bit === 4) {
+      // sprocket feed row runs between channels 4 and 3, as on real tape
+      holes.push({ cx, cy: PAD + row * ROW_H, r: RS, accent: true });
+    }
+  }
+}
+---
+
+<svg class="tape" viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  {holes.map((h) => (
+    <circle cx={h.cx} cy={h.cy} r={h.r} fill={h.accent ? 'var(--accent)' : 'var(--ink)'} />
+  ))}
+</svg>
+
+<style>
+  .tape {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>
